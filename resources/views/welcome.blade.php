@@ -11,7 +11,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #b1def0;            
+            background-color: #c7d5dc;            
             overflow: hidden; 
         }
     
@@ -37,8 +37,22 @@
         .header .comunidad {
             font-size: 24px;
             font-weight: bold;
+            background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+            padding: 5px 10px; /* Relleno de texto */
+            border-radius: 5px; /* Bordes redondeados */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Sombra */
+            width: 29%;
+            height: 100%;
+            
+            /* Centramos el texto */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center; /* Asegura que el texto dentro también esté centrado */
+            white-space: nowrap; /* Evita que el texto se divida en varias líneas */
         }
-    
+
+            
         .card {
             background-color: white;
             padding: 13px;             /* Reducido el padding */
@@ -49,7 +63,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            height: 310px;            /* Altura ajustada */
+            height: 280px;            /* Altura ajustada */
             width: 90%;               /* Ancho ajustado */
         }
     
@@ -89,34 +103,94 @@
 
         #ultimaLecturaFecha {
             position: fixed;            /* Fija la posición en la pantalla */
-            bottom: 15px;               /* Alinea 10px desde el fondo */
-            right: 65px;                /* Alinea 10px desde la derecha */
-            font-size: 22px;            /* Ajusta el tamaño de la fuente */
+            bottom: 80px;               /* Alinea 10px desde el fondo */
+            left: 30px;                /* Alinea 10px desde la derecha */
+            font-size: 18px;            /* Ajusta el tamaño de la fuente */
             color: #333;                /* Color del texto */
             background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
             padding: 5px 10px;          /* Relleno de texto */
             border-radius: 5px;         /* Bordes redondeados */
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Sombra */
+            width: 465px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center; /* Asegura que el texto dentro también esté centrado */
+            white-space: nowrap; 
+        }
+
+        #imagen {
+            position: fixed;            
+            bottom: 30px;               /* Alinea 10px desde el fondo */
+            left: 320px;                /* Alinea 10px desde la derecha */
+            font-size: 22px;            /* Ajusta el tamaño de la fuente */   
+            padding: 5px 10px;          /* Relleno de texto */
             width: 420px;
             height: 28px;
             align-items: center
         }
 
-    
+        #arboles {
+            position: fixed;            /* Fija la posición en la pantalla */
+            bottom: 80px;               /* Alinea 10px desde el fondo */
+            right: 55px;                /* Alinea 10px desde la derecha */
+            font-size: 18px;            /* Ajusta el tamaño de la fuente */
+            color: #333;                /* Color del texto */
+            background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+            padding: 5px 10px;          /* Relleno de texto */
+            border-radius: 5px;         /* Bordes redondeados */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Sombra */
+            width: 200px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center; /* Asegura que el texto dentro también esté centrado */
+            white-space: nowrap; 
+        }
+
+        #toneladas {
+            position: fixed;            /* Fija la posición en la pantalla */
+            bottom: 80px;               /* Alinea 10px desde el fondo */
+            right: 320px;                /* Alinea 10px desde la derecha */
+            font-size: 18px;            /* Ajusta el tamaño de la fuente */
+            color: #333;                /* Color del texto */
+            background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+            padding: 5px 10px;          /* Relleno de texto */
+            border-radius: 5px;         /* Bordes redondeados */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Sombra */
+            width: 200px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center; /* Asegura que el texto dentro también esté centrado */
+            white-space: nowrap; 
+        }
+
+        #toneladas span,
+#arboles span {
+    margin-right: 8px; /* Ajusta el valor según el espacio deseado */
+    font-weight: bold; /* Para resaltar el valor si es necesario */
+}
+
     </style>
     
     <body>
         <div class="container">
             <!-- Header with Community Name -->
             <div class="header">
-                <div class="comunidad">{{ $proyectosContadoresLecturas[0]->COMUNIDAD }}</div>
-            </div>
+                <div class="comunidad">
+                    {{ preg_replace('/^Enneo - \d+\s*/', '', $proyectosContadoresLecturas[0]->COMUNIDAD) }}
+                </div>
+                            </div>
     
             <!-- Producción FTV Hoy -->
             <div class="card">
                 <div class="top-section">
                     <div class="title">
-                        Producción FTV Hoy
+                        Producción DIARIA
                     </div>
                     <div class="title">
                         <span id="produccionFtvHoyLecturaValor"></span> kWh
@@ -129,10 +203,10 @@
             <div class="card">
                 <div class="top-section">
                     <div class="title">
-                        Radiación
+                        Radiación DIARIA
                     </div>
                     <div class="title">
-                        <span id="radiacionLecturaValor"></span> kWh
+                        <span id="radiacionLecturaValor"></span> W/m2
                     </div>
                 </div>
                 <div id="radiacion"></div>
@@ -142,7 +216,7 @@
             <div class="card">
                 <div class="top-section">
                     <div class="title">
-                        Producción FTV Total
+                        Producción TOTAL
                     </div>
                     <div class="title">
                         <span id="produccionFtvTotalLecturaValor"></span> kWh
@@ -155,10 +229,10 @@
             <div class="card">
                 <div class="top-section">
                     <div class="title">
-                        Potencia Fotovoltaica
+                        Potencia DIARIA
                     </div>
                     <div class="title">
-                        <span id="potenciaFotovoltaicaLecturaValor"></span> kWh
+                        <span id="potenciaFotovoltaicaLecturaValor"></span> kW
                     </div>
                 </div>
                 <div id="potenciaFotovoltaica"></div>
@@ -168,10 +242,10 @@
             <div class="card">
                 <div class="top-section">
                     <div class="title">
-                        Potencia Red
+                        Potencia RED
                     </div>
                     <div class="title">
-                        <span id="potenciaRedLecturaValor"></span> kWh
+                        <span id="potenciaRedLecturaValor"></span> kW
                     </div>
                 </div>
                 <div id="potenciaRed"></div>
@@ -181,20 +255,28 @@
             <div class="card">
                 <div class="top-section">
                     <div class="title">
-                        Potencia Cargas
+                        Potencia de Cargas
                     </div>
                     <div class="title">
-                        <span id="potenciaCargasLecturaValor"></span> kWh
+                        <span id="potenciaCargasLecturaValor"></span> kW
                     </div>
                 </div>
                 <div id="potenciaCargas"></div>
             </div>
+
             <div id="ultimaLecturaFecha"></div>
+            <div id="toneladas">
+                <span id="toneladasValor">  </span>Ton/CO2 Evitadas
+            </div>
+            <div id="arboles">
+                <span id="arbolesValor">  </span>Árboles salvados
+            </div>
+            <div id="imagen">
+                <img src="{{ asset('almeria.png') }}" alt="Almería">
+            </div>   
 
         </div>
     </body>
-    
-    
     
 
 <script>
@@ -208,12 +290,16 @@
     const dataPotenciaFotovoltaica = lecturas.filter(item => item.DESCRIPCION === "Potencia Fotovoltaica").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
     const dataPotenciaRed = lecturas.filter(item => item.DESCRIPCION === "Potencia Red").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
     const dataPotenciaCargas = lecturas.filter(item => item.DESCRIPCION === "Potencia Cargas").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
+    const dataToneladas = lecturas.filter(item => item.DESCRIPCION === "Toneladas CO2").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
+    const dataArboles = lecturas.filter(item => item.DESCRIPCION === "Arboles").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
+
+
 
     // Función para formatear las fechas para que se muestren correctamente en el gráfico
     const formatDate = (date) => {
         const d = new Date(date);
         return d.toLocaleDateString('es-ES', {
-            month: 'short', day: 'numeric'
+            day: 'numeric'
         });
     };
 
@@ -249,13 +335,17 @@ updateLastReadingValue(dataFtvTotal, 'produccionFtvTotalLecturaValor');
 updateLastReadingValue(dataPotenciaFotovoltaica, 'potenciaFotovoltaicaLecturaValor');
 updateLastReadingValue(dataPotenciaRed, 'potenciaRedLecturaValor');
 updateLastReadingValue(dataPotenciaCargas, 'potenciaCargasLecturaValor');
+updateLastReadingValue(dataToneladas, 'toneladasValor');
+updateLastReadingValue(dataArboles, 'arbolesValor');
+
+
 
 // Función para obtener la última fecha de las lecturas
 const updateLastReadingDate = (data) => {
     const lastItem = data[data.length - 1];
     if (lastItem) {
         const lastReadingDate = formatDateTime(lastItem.fecha);  // Formateamos la fecha
-        document.getElementById('ultimaLecturaFecha').innerText = `Última Lectura: ${lastReadingDate}`;
+        document.getElementById('ultimaLecturaFecha').innerText = `Últimos valores actualizados: ${lastReadingDate}`;
     } else {
         document.getElementById('ultimaLecturaFecha').innerText = 'Última Lectura: No disponible';
     }
@@ -268,7 +358,7 @@ updateLastReadingDate(dataFtvHoy);
 // Crear gráfico para Producción FTV Hoy
 Highcharts.chart('produccionFtvHoy', {
     chart: {
-        type: 'column', height: 290 
+        type: 'column', height: 250 
     },
     title: false,
     xAxis: {
@@ -286,7 +376,7 @@ Highcharts.chart('produccionFtvHoy', {
 
 // Crear gráficos para otros datos de la misma manera
 Highcharts.chart('radiacion', {
-    chart: { type: 'column', height: 290  },
+    chart: { type: 'column', height: 250  },
     title: false,
     xAxis: { categories: dataRadiacion.map(item => formatDate(item.fecha)) },
     yAxis: { title: { text: 'kWh' } },
@@ -299,7 +389,7 @@ Highcharts.chart('radiacion', {
 });
 
 Highcharts.chart('produccionFtvTotal', {
-    chart: { type: 'column', height: 290  },
+    chart: { type: 'column', height: 250  },
     title: false,
     xAxis: { categories: dataFtvTotal.map(item => formatDate(item.fecha)) },
     yAxis: { title: { text: 'kWh' } },
@@ -312,7 +402,7 @@ Highcharts.chart('produccionFtvTotal', {
 });
 
 Highcharts.chart('potenciaFotovoltaica', {
-    chart: { type: 'column', height: 290 },
+    chart: { type: 'column', height: 250 },
     title: false,
     xAxis: { categories: dataPotenciaFotovoltaica.map(item => formatDate(item.fecha)) },
     yAxis: { title: { text: 'kWh' } },
@@ -325,7 +415,7 @@ Highcharts.chart('potenciaFotovoltaica', {
 });
 
 Highcharts.chart('potenciaRed', {
-    chart: { type: 'column', height: 290  },
+    chart: { type: 'column', height: 250  },
     title: false,
     xAxis: { categories: dataPotenciaRed.map(item => formatDate(item.fecha)) },
     yAxis: { title: { text: 'kWh' } },
@@ -338,7 +428,7 @@ Highcharts.chart('potenciaRed', {
 });
 
 Highcharts.chart('potenciaCargas', {
-    chart: { type: 'column', height: 290  },
+    chart: { type: 'column', height: 250  },
     title: false,
     xAxis: { categories: dataPotenciaCargas.map(item => formatDate(item.fecha)) },
     yAxis: { title: { text: 'kWh' } },
