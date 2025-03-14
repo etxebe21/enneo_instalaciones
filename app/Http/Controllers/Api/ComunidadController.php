@@ -109,128 +109,77 @@ class ComunidadController extends Controller
     //     return $lecturasFtvMaxMonth;
     // }
 
-    // public function lecturasFtv()
-    // {
-    //     // Consultar para el mes 2025-01
-    //     $lecturasFtvTotal01 = DB::table('proyectos')
-    //         ->join('contadores', 'proyectos.ID_COMUNIDAD', '=', 'contadores.ID_COMUNIDAD')
-    //         ->leftJoin('lecturas_2025_01', 'contadores.ID_CONTADOR', '=', 'lecturas_2025_01.ID_CONTADOR')
-    //         ->where('proyectos.ID_COMUNIDAD', 5066)
-    //         ->where('contadores.DESCRIPCION', 'Produccion FTV Total')
-    //         ->select(
-    //             'proyectos.ID_COMUNIDAD',
-    //             'proyectos.COMUNIDAD',
-    //             'contadores.ID_CONTADOR',
-    //             'contadores.DESCRIPCION',
-    //             'lecturas_2025_01.LECTURA as LECTURA_2025_01',
-    //             'lecturas_2025_01.FECHA as lectura_fecha_2025_01'
-    //         )
-    //         ->orderBy('lecturas_2025_01.FECHA', 'asc')
-    //         ->get();
+    public function lecturasFtv()
+    {
+        // Listado de tablas por cada mes
+        $tablas = ['lecturas_2024_12', 'lecturas_2025_01', 'lecturas_2025_02', 'lecturas_2025_03']; // Agrega más si es necesario
     
-    //     // Consultar para el mes 2025-02
-    //     $lecturasFtvTotal02 = DB::table('proyectos')
-    //         ->join('contadores', 'proyectos.ID_COMUNIDAD', '=', 'contadores.ID_COMUNIDAD')
-    //         ->leftJoin('lecturas_2025_02', 'contadores.ID_CONTADOR', '=', 'lecturas_2025_02.ID_CONTADOR')
-    //         ->where('proyectos.ID_COMUNIDAD', 5066)
-    //         ->where('contadores.DESCRIPCION', 'Produccion FTV Total')
-    //         ->select(
-    //             'proyectos.ID_COMUNIDAD',
-    //             'proyectos.COMUNIDAD',
-    //             'contadores.ID_CONTADOR',
-    //             'contadores.DESCRIPCION',
-    //             'lecturas_2025_02.LECTURA as LECTURA_2025_02',
-    //             'lecturas_2025_02.FECHA as lectura_fecha_2025_02'
-    //         )
-    //         ->orderBy('lecturas_2025_02.FECHA', 'asc')
-    //         ->get();
+        $lecturasFtvMaxMonth = collect(); // Colección vacía para almacenar los datos
     
-    //     // Consultar para el mes 2025-03
-    //     $lecturasFtvTotal03 = DB::table('proyectos')
-    //         ->join('contadores', 'proyectos.ID_COMUNIDAD', '=', 'contadores.ID_COMUNIDAD')
-    //         ->leftJoin('lecturas_2025_03', 'contadores.ID_CONTADOR', '=', 'lecturas_2025_03.ID_CONTADOR')
-    //         ->where('proyectos.ID_COMUNIDAD', 5066)
-    //         ->where('contadores.DESCRIPCION', 'Produccion FTV Total')
-    //         ->select(
-    //             'proyectos.ID_COMUNIDAD',
-    //             'proyectos.COMUNIDAD',
-    //             'contadores.ID_CONTADOR',
-    //             'contadores.DESCRIPCION',
-    //             'lecturas_2025_03.LECTURA as LECTURA_2025_03',
-    //             'lecturas_2025_03.FECHA as lectura_fecha_2025_03'
-    //         )
-    //         ->orderBy('lecturas_2025_03.FECHA', 'asc')
-    //         ->get();
+        foreach ($tablas as $tabla) {
+            // Obtener lecturas de la tabla actual
+            $lecturasFtvTotal = DB::table('proyectos')
+                ->join('contadores', 'proyectos.ID_COMUNIDAD', '=', 'contadores.ID_COMUNIDAD')
+                ->leftJoin($tabla, 'contadores.ID_CONTADOR', '=', "$tabla.ID_CONTADOR")
+                ->where('proyectos.ID_COMUNIDAD', 5066)
+                ->where('contadores.DESCRIPCION', 'Produccion FTV Total')
+                ->select(
+                    'proyectos.ID_COMUNIDAD',
+                    'proyectos.COMUNIDAD',
+                    'contadores.ID_CONTADOR',
+                    'contadores.DESCRIPCION',
+                    "$tabla.LECTURA as LECTURA",
+                    "$tabla.FECHA as lectura_fecha"
+                )
+                ->orderBy("$tabla.FECHA", 'asc')
+                ->get();
     
-    //     // Calcular el consumo para 2025-01
-    //     $lecturasFtvMaxMonth01 = $this->calcularConsumo($lecturasFtvTotal01, '2025-01');
-    //     // Calcular el consumo para 2025-02
-    //     $lecturasFtvMaxMonth02 = $this->calcularConsumo($lecturasFtvTotal02, '2025-02');
-    //     // Calcular el consumo para 2025-03
-    //     $lecturasFtvMaxMonth03 = $this->calcularConsumo($lecturasFtvTotal03, '2025-03');
+            // Agrupar por mes
+            $lecturasFtvTotalGrouped = $lecturasFtvTotal->groupBy(function ($date) {
+                return \Carbon\Carbon::parse($date->lectura_fecha)->format('Y-m');
+            });
     
-    //     // Combinar los resultados en un solo array
-    //     $lecturasFtvMaxMonth = $lecturasFtvMaxMonth01->merge($lecturasFtvMaxMonth02)->merge($lecturasFtvMaxMonth03);
+            // Obtener primer y último valor de cada mes
+            $resultadosMes = $lecturasFtvTotalGrouped->map(function ($group) {
+                if ($group->count() >= 2) {
+                    $group = $group->sortBy('lectura_fecha'); // Ordenar por fecha ascendente
     
-    //     // Retornar el resultado final
-    //     return $lecturasFtvMaxMonth;
-    // }
+                    $primer_valor = (float) $group->first()->LECTURA;
+                    $ultimo_valor = (float) $group->last()->LECTURA;
+                    $consumo = $ultimo_valor - $primer_valor;
     
-    // // Función para calcular el consumo total (diferencia entre primer y último valor)
-    // private function calcularConsumo($lecturasFtvTotal, $mes)
-    // {
-    //     // Agrupar las lecturas por mes (aunque ya las tenemos, es para mantener la coherencia)
-    //     $lecturasFtvTotalGrouped = $lecturasFtvTotal->groupBy(function($date) use ($mes) {
-    //         return \Carbon\Carbon::parse($date->{'lectura_fecha_' . $mes})->format('Y-m');  // Agrupamos por año-mes
-    //     });
+                    return [
+                        "lectura_fecha" => $group->first()->lectura_fecha,
+                        "ID_COMUNIDAD" => $group->first()->ID_COMUNIDAD,
+                        "COMUNIDAD" => $group->first()->COMUNIDAD,
+                        "ID_CONTADOR" => $group->first()->ID_CONTADOR,
+                        "DESCRIPCION" => $group->first()->DESCRIPCION,
+                        "primer_valor" => $primer_valor,
+                        "ultimo_valor" => $ultimo_valor,
+                        "LECTURA" => $consumo
+                    ];
+                }
+                return null;
+            })->filter(); // Elimina valores nulos
     
-    //     // Calcular el consumo para cada grupo de mes
-    //     return $lecturasFtvTotalGrouped->map(function($group) use ($mes) {
-    //         // Aseguramos que haya al menos una lectura
-    //         if(count($group) >= 1) {
-    //             // Ordenamos las lecturas por fecha de forma ascendente
-    //             $group = $group->sortBy('lectura_fecha_' . $mes); // Cambiar según la fecha de cada mes
+            // Agregar resultados a la colección principal
+            $lecturasFtvMaxMonth = $lecturasFtvMaxMonth->merge($resultadosMes);
+        }
     
-    //             // Tomamos la primera lectura (más baja) y la última lectura (más alta)
-    //             $firstValue = $group->first()->{'LECTURA_' . $mes};  // Primer valor (más bajo)
-    //             $firstDate = $group->first()->{'lectura_fecha_' . $mes}; // Fecha del primer valor
-    
-    //             $lastValue = $group->last()->{'LECTURA_' . $mes};   // Último valor (más alto)
-    //             $lastDate = $group->last()->{'lectura_fecha_' . $mes}; // Fecha del último valor
-    
-    //             // Calculamos el consumo total (diferencia entre el último y el primero)
-    //             $LECTURA = $lastValue - $firstValue;
-    
-    //             // Retornamos los valores: el primer valor, último valor, consumo total, y la fecha del mes
-    //             return [
-    //                 'ID_COMUNIDAD' => $group->first()->ID_COMUNIDAD,  // ID de la comunidad
-    //                 'COMUNIDAD' => $group->first()->COMUNIDAD,        // Nombre de la comunidad
-    //                 'ID_CONTADOR' => $group->first()->ID_CONTADOR,    // ID del contador
-    //                 'DESCRIPCION' => $group->first()->DESCRIPCION,    // Descripción
-    //                 'fecha' => \Carbon\Carbon::parse($lastDate)->format('Y-m'), // Solo la fecha del mes (Año-Mes)
-    //                 'primer_valor' => $firstValue,
-    //                 'ultimo_valor' => $lastValue,
-    //                 'LECTURA' => $LECTURA
-    //             ];
-    //         } else {
-    //             // Si no hay suficientes datos para calcular el consumo, retornamos null
-    //             return null;
-    //         }
-    //     });
-    // }
-    
+        return $lecturasFtvMaxMonth->values(); // Devolver valores en formato de array
+    }
     
     public function index()
     {
         // Llamamos al método 'lecturasInstalaciones' para obtener los datos
         $proyectosContadoresLecturas = $this->lecturasInstalaciones();
         $proyectosContadores = $this->getProyectosConContadores();
-        // $lecturasFtvMaxMonth = $this->lecturasFtv();
+        $lecturasFtvMaxMonth = $this->lecturasFtv();
         // dd($proyectosContadores);
-        //dd($lecturasFtvMaxMonth);
+        // dd($lecturasFtvMaxMonth);
     
         // Pasamos los datos a la vista 'welcome'
-        return view('welcome', ['proyectosContadoresLecturas' => $proyectosContadoresLecturas, 'proyectosContadores' => $proyectosContadores]);
+        return view('welcome', ['proyectosContadoresLecturas' => $proyectosContadoresLecturas, 'proyectosContadores' => $proyectosContadores, 'lecturasFtvMaxMonth'=>$lecturasFtvMaxMonth]);
     }
       
 }

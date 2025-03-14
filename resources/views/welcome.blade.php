@@ -294,49 +294,51 @@
 <script>
     // Datos de las lecturas reales pasados desde Laravel
     const lecturas = @json($proyectosContadoresLecturas);
-    // let dataFtvTotal = [];  
-    let dataFtvTotal = [
-    {
-        "lectura_fecha": "2024-12",
-        "ID_COMUNIDAD": 5066,
-        "COMUNIDAD": "Enneo - 2601 Dalias Ayuntamiento",
-        "ID_CONTADOR": 20168,
-        "DESCRIPCION": "Produccion FTV Total",
-        "primer_valor": 1062.00,
-        "ultimo_valor": 1456.00,
-        "LECTURA": 394
-    },
-    {
-        "lectura_fecha": "2025-01",
-        "ID_COMUNIDAD": 5066,
-        "COMUNIDAD": "Enneo - 2601 Dalias Ayuntamiento",
-        "ID_CONTADOR": 20168,
-        "DESCRIPCION": "Produccion FTV Total",
-        "primer_valor": 1062.00,
-        "ultimo_valor": 1456.00,
-        "LECTURA": 536
-    },
-    {
-        "lectura_fecha": "2025-02",
-        "ID_COMUNIDAD": 5066,
-        "COMUNIDAD": "Enneo - 2601 Dalias Ayuntamiento",
-        "ID_CONTADOR": 20168,
-        "DESCRIPCION": "Produccion FTV Total",
-        "primer_valor": 1500.00,
-        "ultimo_valor": 2000.00,
-        "LECTURA": 567
-    },
-    {
-        "lectura_fecha": "2025-03",
-        "ID_COMUNIDAD": 5066,
-        "COMUNIDAD": "Enneo - 2601 Dalias Ayuntamiento",
-        "ID_CONTADOR": 20168,
-        "DESCRIPCION": "Produccion FTV Total",
-        "primer_valor": 1200.00,
-        "ultimo_valor": 1600.00,
-        "LECTURA": 204
-    }
-];
+    const lecturasFtv=@json($lecturasFtvMaxMonth);
+    let dataFtvTotal = lecturasFtv;  
+    
+//     let dataFtvTotal = [
+//     {
+//         "lectura_fecha": "2024-12",
+//         "ID_COMUNIDAD": 5066,
+//         "COMUNIDAD": "Enneo - 2601 Dalias Ayuntamiento",
+//         "ID_CONTADOR": 20168,
+//         "DESCRIPCION": "Produccion FTV Total",
+//         "primer_valor": 1062.00,
+//         "ultimo_valor": 1456.00,
+//         "LECTURA": 394
+//     },
+//     {
+//         "lectura_fecha": "2025-01",
+//         "ID_COMUNIDAD": 5066,
+//         "COMUNIDAD": "Enneo - 2601 Dalias Ayuntamiento",
+//         "ID_CONTADOR": 20168,
+//         "DESCRIPCION": "Produccion FTV Total",
+//         "primer_valor": 1062.00,
+//         "ultimo_valor": 1456.00,
+//         "LECTURA": 536
+//     },
+//     {
+//         "lectura_fecha": "2025-02",
+//         "ID_COMUNIDAD": 5066,
+//         "COMUNIDAD": "Enneo - 2601 Dalias Ayuntamiento",
+//         "ID_CONTADOR": 20168,
+//         "DESCRIPCION": "Produccion FTV Total",
+//         "primer_valor": 1500.00,
+//         "ultimo_valor": 2000.00,
+//         "LECTURA": 567
+//     },
+//     {
+//         "lectura_fecha": "2025-03",
+//         "ID_COMUNIDAD": 5066,
+//         "COMUNIDAD": "Enneo - 2601 Dalias Ayuntamiento",
+//         "ID_CONTADOR": 20168,
+//         "DESCRIPCION": "Produccion FTV Total",
+//         "primer_valor": 1200.00,
+//         "ultimo_valor": 1600.00,
+//         "LECTURA": 204
+//     }
+// ];
 
 
 
@@ -463,7 +465,8 @@ const formatDateMonth = (date) => {
     const d = new Date(date);
     const options = {
         
-        month: 'long',
+        month: 'numeric',
+        year: 'numeric'
 
     };
     return d.toLocaleString('es-ES', options);
@@ -534,8 +537,6 @@ Highcharts.chart('radiacion', {
         title: { 
             text: 'kWh' 
         },
-        max: Math.ceil(Math.max(...dataPotenciaFotovoltaica.map(item => parseFloat(item.LECTURA)))/5) * 300, // Ajusta el max
-        tickInterval: 200, // Intervalo de tics en el eje Y
     },
     series: [{
         name: 'Radiación',
@@ -546,17 +547,26 @@ Highcharts.chart('radiacion', {
 });
 
 Highcharts.chart('produccionFtvTotal', {
-    chart: { type: 'column', height: 250,  backgroundColor: 'rgb(235, 229, 229)'  },
-    title: false,
-    xAxis: { categories: dataFtvTotal.map(item =>(item.lectura_fecha)) },
-    yAxis: { title: { text: 'kWh' } },
+    chart: { 
+        type: 'column', 
+        height: 250,  
+        backgroundColor: 'rgb(235, 229, 229)'  
+    },
+    title: { text: null }, // Eliminar el título si no lo necesitas
+    xAxis: { 
+        categories: dataFtvTotal.map(item => item.lectura_fecha.slice(0, 7)), // <-- SOLO "YYYY-MM"
+    },
+    yAxis: { 
+        title: { text: 'kWh' } 
+    },
     series: [{
         name: 'Producción FTV Total',
-        data: dataFtvTotal.map(item => parseFloat(item.LECTURA)),
+        data: dataFtvTotal.map(item => parseFloat(item.LECTURA)), // Asegurar valores numéricos
         color: '#9966FF'
     }],
     legend: { enabled: false }
 });
+
 
 
 Highcharts.chart('potenciaFotovoltaica', {
@@ -573,8 +583,6 @@ Highcharts.chart('potenciaFotovoltaica', {
         title: { 
             text: 'kWh' 
         },
-        max: Math.ceil(Math.max(...dataPotenciaFotovoltaica.map(item => parseFloat(item.LECTURA)))/4) * 4, // Ajusta el max
-        tickInterval: 2, // Intervalo de tics en el eje Y
     },
     series: [{
         name: 'Potencia Fotovoltaica',
@@ -593,8 +601,6 @@ Highcharts.chart('potenciaRed', {
         title: { 
             text: 'kWh' 
         },
-        max: Math.ceil(Math.max(...dataPotenciaFotovoltaica.map(item => parseFloat(item.LECTURA)))/3) * 2, // Ajusta el max
-        tickInterval: 2, // Intervalo de tics en el eje Y
     },
     series: [{
         name: 'Potencia Red',
@@ -612,8 +618,6 @@ Highcharts.chart('potenciaCargas', {
         title: { 
             text: 'kWh' 
         },
-        max: Math.ceil(Math.max(...dataPotenciaFotovoltaica.map(item => parseFloat(item.LECTURA)))/3) * 2, // Ajusta el max
-        tickInterval: 2, // Intervalo de tics en el eje Y
     },
     series: [{
         name: 'Potencia Cargas',
