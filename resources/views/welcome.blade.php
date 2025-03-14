@@ -11,108 +11,114 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;            
-            /* height: 100vh; */
+            background-color: #b1def0;            
             overflow: hidden; 
         }
-
+    
         .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            
+            display: grid;              
+            grid-template-columns: repeat(3, 1fr); /* 3 columnas de tamaño igual */
+            gap: 40px;                  /* Espacio entre las columnas */
             width: 100%;
-            height: 50%;
-            padding: 5px;
+            height: 100%;
+            padding: 30px;
             box-sizing: border-box;
+            margin-right: 20px;
         }
-
+    
         .header {
+            grid-column: span 3;       /* Hace que el encabezado ocupe las 3 columnas */
             display: flex;
             justify-content: space-between;
             width: 100%;
-            margin-bottom: 20px;
+            margin-bottom: -10px;
         }
-
+    
         .header .comunidad {
             font-size: 24px;
             font-weight: bold;
         }
-
-        .row {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            height: 50%;
-        }
-
+    
         .card {
             background-color: white;
-            padding: 20px;
-            margin: 10px;
+            padding: 13px;             /* Reducido el padding */
+            margin: 0px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 30%;
-            height:  30%;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 310px;            /* Altura ajustada */
+            width: 90%;               /* Ancho ajustado */
         }
-
+    
         .card .title {
-            font-size: 18px;
+            font-size: 22px;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
-
-        /* Dividir la parte superior de cada tarjeta en dos mitades */
+    
         .card .top-section {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
-        /* Descripción ocupará la mitad izquierda */
+    
         .card .description {
-            font-size: 14px;
+            font-size: 20px;
             flex: 1;
             text-align: left;
         }
-
-        /* La última lectura se ubicará a la derecha */
+    
         .card .last-reading {
-            font-size: 14px;
+            font-size: 20px;
             font-weight: bold;
-            color: #4CAF50; /* Puedes cambiar el color si lo prefieres */
+            color: #4CAF50;
             text-align: right;
         }
-
+    
         .card .fecha {
-            font-size: 12px;
+            font-size: 18px;
             color: #888;
         }
-
-        /* Última lectura y fecha deben alinearse correctamente */
+    
         .last-reading span {
             font-weight: bold;
         }
-    </style>
-</head>
-<body>
 
-    <div class="container">
-        <!-- Header with Community Name -->
-        <div class="header">
-            <div class="comunidad">{{ $proyectosContadoresLecturas[0]->COMUNIDAD }}</div>
-        </div>
+        #ultimaLecturaFecha {
+            position: fixed;            /* Fija la posición en la pantalla */
+            bottom: 15px;               /* Alinea 10px desde el fondo */
+            right: 65px;                /* Alinea 10px desde la derecha */
+            font-size: 22px;            /* Ajusta el tamaño de la fuente */
+            color: #333;                /* Color del texto */
+            background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+            padding: 5px 10px;          /* Relleno de texto */
+            border-radius: 5px;         /* Bordes redondeados */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Sombra */
+            width: 420px;
+            height: 28px;
+            align-items: center
+        }
+
     
-        <!-- Row for top 3 graphs -->
-        <div class="row">
+    </style>
+    
+    <body>
+        <div class="container">
+            <!-- Header with Community Name -->
+            <div class="header">
+                <div class="comunidad">{{ $proyectosContadoresLecturas[0]->COMUNIDAD }}</div>
+            </div>
+    
             <!-- Producción FTV Hoy -->
             <div class="card">
                 <div class="top-section">
                     <div class="title">
                         Producción FTV Hoy
                     </div>
-                    <div class="description">
+                    <div class="title">
                         <span id="produccionFtvHoyLecturaValor"></span> kWh
                     </div>
                 </div>
@@ -125,7 +131,7 @@
                     <div class="title">
                         Radiación
                     </div>
-                    <div class="description">
+                    <div class="title">
                         <span id="radiacionLecturaValor"></span> kWh
                     </div>
                 </div>
@@ -138,23 +144,20 @@
                     <div class="title">
                         Producción FTV Total
                     </div>
-                    <div class="description">
+                    <div class="title">
                         <span id="produccionFtvTotalLecturaValor"></span> kWh
                     </div>
                 </div>
                 <div id="produccionFtvTotal"></div>
             </div>
-        </div>
     
-        <!-- Row for bottom 3 graphs -->
-        <div class="row">
             <!-- Potencia Fotovoltaica -->
             <div class="card">
                 <div class="top-section">
                     <div class="title">
                         Potencia Fotovoltaica
                     </div>
-                    <div class="description">
+                    <div class="title">
                         <span id="potenciaFotovoltaicaLecturaValor"></span> kWh
                     </div>
                 </div>
@@ -167,7 +170,7 @@
                     <div class="title">
                         Potencia Red
                     </div>
-                    <div class="description">
+                    <div class="title">
                         <span id="potenciaRedLecturaValor"></span> kWh
                     </div>
                 </div>
@@ -180,14 +183,17 @@
                     <div class="title">
                         Potencia Cargas
                     </div>
-                    <div class="description">
+                    <div class="title">
                         <span id="potenciaCargasLecturaValor"></span> kWh
                     </div>
                 </div>
                 <div id="potenciaCargas"></div>
             </div>
+            <div id="ultimaLecturaFecha"></div>
+
         </div>
-    </div>
+    </body>
+    
     
     
 
@@ -211,6 +217,21 @@
         });
     };
 
+    const formatDateTime = (date) => {
+    const d = new Date(date);
+    const options = {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true // Esto garantiza que la hora esté en formato de 12 horas (AM/PM)
+    };
+    return d.toLocaleString('es-ES', options);
+};
+
+
    // Función para actualizar solo el valor de la lectura en la interfaz
 const updateLastReadingValue = (data, lecturaValorElementId) => {
     const lastItem = data[data.length - 1];
@@ -229,10 +250,25 @@ updateLastReadingValue(dataPotenciaFotovoltaica, 'potenciaFotovoltaicaLecturaVal
 updateLastReadingValue(dataPotenciaRed, 'potenciaRedLecturaValor');
 updateLastReadingValue(dataPotenciaCargas, 'potenciaCargasLecturaValor');
 
+// Función para obtener la última fecha de las lecturas
+const updateLastReadingDate = (data) => {
+    const lastItem = data[data.length - 1];
+    if (lastItem) {
+        const lastReadingDate = formatDateTime(lastItem.fecha);  // Formateamos la fecha
+        document.getElementById('ultimaLecturaFecha').innerText = `Última Lectura: ${lastReadingDate}`;
+    } else {
+        document.getElementById('ultimaLecturaFecha').innerText = 'Última Lectura: No disponible';
+    }
+};
+
+// Actualizar la fecha de la última lectura
+updateLastReadingDate(dataFtvHoy);
+
+
 // Crear gráfico para Producción FTV Hoy
 Highcharts.chart('produccionFtvHoy', {
     chart: {
-        type: 'column', height: 300 
+        type: 'column', height: 290 
     },
     title: false,
     xAxis: {
@@ -250,7 +286,7 @@ Highcharts.chart('produccionFtvHoy', {
 
 // Crear gráficos para otros datos de la misma manera
 Highcharts.chart('radiacion', {
-    chart: { type: 'column', height: 300  },
+    chart: { type: 'column', height: 290  },
     title: false,
     xAxis: { categories: dataRadiacion.map(item => formatDate(item.fecha)) },
     yAxis: { title: { text: 'kWh' } },
@@ -263,7 +299,7 @@ Highcharts.chart('radiacion', {
 });
 
 Highcharts.chart('produccionFtvTotal', {
-    chart: { type: 'column', height: 300  },
+    chart: { type: 'column', height: 290  },
     title: false,
     xAxis: { categories: dataFtvTotal.map(item => formatDate(item.fecha)) },
     yAxis: { title: { text: 'kWh' } },
@@ -276,7 +312,7 @@ Highcharts.chart('produccionFtvTotal', {
 });
 
 Highcharts.chart('potenciaFotovoltaica', {
-    chart: { type: 'column', height: 300 },
+    chart: { type: 'column', height: 290 },
     title: false,
     xAxis: { categories: dataPotenciaFotovoltaica.map(item => formatDate(item.fecha)) },
     yAxis: { title: { text: 'kWh' } },
@@ -289,7 +325,7 @@ Highcharts.chart('potenciaFotovoltaica', {
 });
 
 Highcharts.chart('potenciaRed', {
-    chart: { type: 'column', height: 300  },
+    chart: { type: 'column', height: 290  },
     title: false,
     xAxis: { categories: dataPotenciaRed.map(item => formatDate(item.fecha)) },
     yAxis: { title: { text: 'kWh' } },
@@ -302,7 +338,7 @@ Highcharts.chart('potenciaRed', {
 });
 
 Highcharts.chart('potenciaCargas', {
-    chart: { type: 'column', height: 300  },
+    chart: { type: 'column', height: 290  },
     title: false,
     xAxis: { categories: dataPotenciaCargas.map(item => formatDate(item.fecha)) },
     yAxis: { title: { text: 'kWh' } },
