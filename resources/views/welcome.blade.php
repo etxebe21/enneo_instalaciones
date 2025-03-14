@@ -294,45 +294,114 @@
 <script>
     // Datos de las lecturas reales pasados desde Laravel
     const lecturas = @json($proyectosContadoresLecturas);
+    // let dataFtvTotal = [];  
+    let dataFtvTotal = [
+    {
+        "lectura_fecha": "2024-12",
+        "ID_COMUNIDAD": 5066,
+        "COMUNIDAD": "Enneo - 2601 Dalias Ayuntamiento",
+        "ID_CONTADOR": 20168,
+        "DESCRIPCION": "Produccion FTV Total",
+        "primer_valor": 1062.00,
+        "ultimo_valor": 1456.00,
+        "LECTURA": 394
+    },
+    {
+        "lectura_fecha": "2025-01",
+        "ID_COMUNIDAD": 5066,
+        "COMUNIDAD": "Enneo - 2601 Dalias Ayuntamiento",
+        "ID_CONTADOR": 20168,
+        "DESCRIPCION": "Produccion FTV Total",
+        "primer_valor": 1062.00,
+        "ultimo_valor": 1456.00,
+        "LECTURA": 536
+    },
+    {
+        "lectura_fecha": "2025-02",
+        "ID_COMUNIDAD": 5066,
+        "COMUNIDAD": "Enneo - 2601 Dalias Ayuntamiento",
+        "ID_CONTADOR": 20168,
+        "DESCRIPCION": "Produccion FTV Total",
+        "primer_valor": 1500.00,
+        "ultimo_valor": 2000.00,
+        "LECTURA": 567
+    },
+    {
+        "lectura_fecha": "2025-03",
+        "ID_COMUNIDAD": 5066,
+        "COMUNIDAD": "Enneo - 2601 Dalias Ayuntamiento",
+        "ID_CONTADOR": 20168,
+        "DESCRIPCION": "Produccion FTV Total",
+        "primer_valor": 1200.00,
+        "ultimo_valor": 1600.00,
+        "LECTURA": 204
+    }
+];
 
-    // Obtener el último día disponible para la producción diaria
-const getLastDayData = (data) => {
-    const lastDate = new Date(Math.max(...data.map(item => new Date(item.fecha))));
-    return data.filter(item => new Date(item.fecha).toDateString() === lastDate.toDateString());
-};
 
-// Obtener el máximo valor de la semana para la producción total
-const getMaxWeekData = (data) => {
-    // Obtener la fecha actual
-    const today = new Date();
-    const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay())); // Lunes de la semana actual
 
-    // Filtrar los datos de esta semana
-    const weekData = data.filter(item => {
-        const itemDate = new Date(item.fecha);
-        return itemDate >= startOfWeek;
-    });
+    // // Función para obtener la última lectura disponible de cada mes
+    // const getLastMonthData = (data) => {
+    //     // Agrupar los datos por año y mes (usamos el formato "YYYY-MM")
+    //     const groupedByMonth = data.reduce((acc, item) => {
+    //         const monthKey = new Date(item.fecha).toISOString().slice(0, 7);  // Año-Mes en formato "YYYY-MM"
+    //         if (!acc[monthKey]) {
+    //             acc[monthKey] = [];
+    //         }
+    //         acc[monthKey].push(item);
+    //         return acc;
+    //     }, {});
 
-    // Encontrar el máximo valor de la semana
-    const maxItem = weekData.reduce((max, item) => (item.LECTURA > max.LECTURA ? item : max), weekData[0]);
-    return maxItem ? [maxItem] : [];
-};
+    //     // Obtener la última lectura de cada mes
+    //     const lastMonthData = Object.keys(groupedByMonth).map(month => {
+    //         const monthData = groupedByMonth[month];
+    //         const lastItem = monthData.reduce((max, item) => {
+    //             const itemDate = new Date(item.fecha);
+    //             return itemDate > new Date(max.fecha) ? item : max;  // Comparar fechas y obtener el más reciente
+    //         });
+    //         return lastItem;
+    //     });
 
-// Filtrar los datos de Producción FTV Hoy (último día)
-const dataFtvHoy = getLastDayData(lecturas.filter(item => item.DESCRIPCION === "Produccion FTV Hoy").map(item => ({
-    fecha: item.lectura_fecha,
-    LECTURA: item.LECTURA
-})));
+    //     return lastMonthData;
+    // };
 
-// Filtrar los datos de Producción FTV Total (máximo de la semana)
-const dataFtvTotal = getMaxWeekData(lecturas.filter(item => item.DESCRIPCION === "Produccion FTV Total").map(item => ({
-    fecha: item.lectura_fecha,
-    LECTURA: item.LECTURA
-})));
+    // // Verificar si `lecturasFtv` es un objeto y convertirlo en un arreglo
+    // if (typeof lecturasFtv === 'object' && !Array.isArray(lecturasFtv)) {
+    //     // Convertir el objeto en un arreglo con los valores
+    //     const lecturasFtvArray = Object.values(lecturasFtv);
 
-// Para comprobar los datos:
-console.log("Último día de Producción FTV Hoy:", dataFtvHoy);
-console.log("Máximo de la semana de Producción FTV Total:", dataFtvTotal);
+    //     // Filtrar los datos de Producción FTV Total
+    //     dataFtvTotal = getLastMonthData(
+    //         lecturasFtvArray
+    //             .filter(item => item.DESCRIPCION === "Produccion FTV Total")  // Filtrar por descripción
+    //             .map(item => ({
+    //                 fecha: item.lectura_fecha,
+    //                 LECTURA: parseFloat(item.LECTURA)  // Convertir LECTURA a número
+    //             }))
+    //     );
+
+    //     console.log(dataFtvTotal);  // Verificar el resultado de los datos filtrados y mapeados
+    // } else {
+    //     console.error("lecturasFtv no tiene el formato esperado", lecturasFtv);  // Mensaje de error si el formato es incorrecto
+    // }
+
+    // // Verificar si dataFtvTotal está definido antes de acceder
+    // if (dataFtvTotal.length > 0) {
+    //     console.log("Máximo de la semana de Producción FTV Total:", dataFtvTotal);
+    // } else {
+    //     console.log("No se encontró información para la Producción FTV Total.");
+    // }
+
+    const getLastDayData = (data) => {
+        const lastDate = new Date(Math.max(...data.map(item => new Date(item.fecha))));
+        return data.filter(item => new Date(item.fecha).toDateString() === lastDate.toDateString());
+    };
+
+    // Filtrar los datos de Producción FTV Hoy (último día)
+    const dataFtvHoy = getLastDayData(lecturas.filter(item => item.DESCRIPCION === "Produccion FTV Hoy").map(item => ({
+        fecha: item.lectura_fecha,
+        LECTURA: item.LECTURA
+    })));
 
     // Filtramos los datos por "DESCRIPCION" y guardamos tanto la fecha como la lectura
     // const dataFtvHoy = lecturas.filter(item => item.DESCRIPCION === "Produccion FTV Hoy").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
@@ -341,17 +410,17 @@ console.log("Máximo de la semana de Producción FTV Total:", dataFtvTotal);
     .map(item => ({ fecha: new Date(item.lectura_fecha), LECTURA: item.LECTURA }))
     .sort((a, b) => a.fecha - b.fecha); // Ordenar por fecha de menor a mayor
 
-const dataPotenciaFotovoltaica = lecturas.filter(item => item.DESCRIPCION === "Potencia Fotovoltaica")
-    .map(item => ({ fecha: new Date(item.lectura_fecha), LECTURA: item.LECTURA }))
-    .sort((a, b) => a.fecha - b.fecha); // Ordenar por fecha de menor a mayor
+    const dataPotenciaFotovoltaica = lecturas.filter(item => item.DESCRIPCION === "Potencia Fotovoltaica")
+        .map(item => ({ fecha: new Date(item.lectura_fecha), LECTURA: item.LECTURA }))
+        .sort((a, b) => a.fecha - b.fecha); // Ordenar por fecha de menor a mayor
 
-const dataPotenciaRed = lecturas.filter(item => item.DESCRIPCION === "Potencia Red")
-    .map(item => ({ fecha: new Date(item.lectura_fecha), LECTURA: item.LECTURA }))
-    .sort((a, b) => a.fecha - b.fecha); // Ordenar por fecha de menor a mayor
+    const dataPotenciaRed = lecturas.filter(item => item.DESCRIPCION === "Potencia Red")
+        .map(item => ({ fecha: new Date(item.lectura_fecha), LECTURA: item.LECTURA }))
+        .sort((a, b) => a.fecha - b.fecha); // Ordenar por fecha de menor a mayor
 
-const dataPotenciaCargas = lecturas.filter(item => item.DESCRIPCION === "Potencia Cargas")
-    .map(item => ({ fecha: new Date(item.lectura_fecha), LECTURA: item.LECTURA }))
-    .sort((a, b) => a.fecha - b.fecha); // Ordenar por fecha de menor a mayor
+    const dataPotenciaCargas = lecturas.filter(item => item.DESCRIPCION === "Potencia Cargas")
+        .map(item => ({ fecha: new Date(item.lectura_fecha), LECTURA: item.LECTURA }))
+        .sort((a, b) => a.fecha - b.fecha); // Ordenar por fecha de menor a mayor
 
     const dataToneladas = lecturas.filter(item => item.DESCRIPCION === "Toneladas CO2").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
     const dataArboles = lecturas.filter(item => item.DESCRIPCION === "Arboles").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
@@ -479,7 +548,7 @@ Highcharts.chart('radiacion', {
 Highcharts.chart('produccionFtvTotal', {
     chart: { type: 'column', height: 250,  backgroundColor: 'rgb(235, 229, 229)'  },
     title: false,
-    xAxis: { categories: dataFtvTotal.map(item => formatDateMonth(item.fecha)) },
+    xAxis: { categories: dataFtvTotal.map(item =>(item.lectura_fecha)) },
     yAxis: { title: { text: 'kWh' } },
     series: [{
         name: 'Producción FTV Total',
