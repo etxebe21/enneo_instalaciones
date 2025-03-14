@@ -11,8 +11,9 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #c7d5dc;            
+            background-color: #aab8bf;            
             overflow: hidden; 
+            margin-left: 15px;
         }
     
         .container {
@@ -31,34 +32,38 @@
             display: flex;
             justify-content: space-between;
             width: 100%;
-            margin-bottom: -10px;
+            margin-bottom: -10px;   
+            margin-top: -10px;
         }
     
         .header .comunidad {
             font-size: 24px;
             font-weight: bold;
-            background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+            color: #333; /* Un color de texto más oscuro para un contraste suave */
+            background-color: rgb(235, 229, 229);
             padding: 5px 10px; /* Relleno de texto */
-            border-radius: 5px; /* Bordes redondeados */
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Sombra */
+            border-radius: 12px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0.1, 0.2); /* Sombra suave y elegante */
             width: 29%;
-            height: 100%;
-            
-            /* Centramos el texto */
+            height: 110%;
+            text-transform: uppercase; 
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center; /* Asegura que el texto dentro también esté centrado */
             white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+            letter-spacing: 0.6px; /* Espaciado entre las letras para dar una sensación de amplitud */
+            font-family: 'Roboto', sans-serif; 
         }
 
             
         .card {
-            background-color: white;
+            background-color: rgb(235, 229, 229);
             padding: 13px;             /* Reducido el padding */
             margin: 0px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            left: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 15px rgba(0.2, 0.2, 0.2, 0.5); /* Sombra suave y elegante */
             text-align: center;
             display: flex;
             flex-direction: column;
@@ -68,10 +73,16 @@
         }
     
         .card .title {
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 20px;
+            font-size: 24px; /* Tamaño más grande para destacarlo */
+            font-weight: 600; /* Peso de fuente intermedio para mayor elegancia */
+            margin-bottom: 15px; /* Separación adecuada entre el título y el contenido */
+            color: #333; /* Un color de texto más oscuro para un contraste suave */
+            /* text-transform: uppercase;  */
+            letter-spacing: 0.6px; /* Espaciado entre las letras para dar una sensación de amplitud */
+            font-family: 'Roboto', sans-serif; /* Fuente moderna y legible */
+            padding-bottom: 5px; /* Espaciado debajo del título */
         }
+
     
         .card .top-section {
             display: flex;
@@ -104,15 +115,15 @@
         #ultimaLecturaFecha {
             position: fixed;            /* Fija la posición en la pantalla */
             bottom: 80px;               /* Alinea 10px desde el fondo */
-            left: 30px;                /* Alinea 10px desde la derecha */
+            left: 41px;                /* Alinea 10px desde la derecha */
             font-size: 18px;            /* Ajusta el tamaño de la fuente */
             color: #333;                /* Color del texto */
-            background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+            background-color: rgb(235, 229, 229);
             padding: 5px 10px;          /* Relleno de texto */
             border-radius: 5px;         /* Bordes redondeados */
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Sombra */
+            box-shadow: 0 10px 15px rgba(0, 0, 0.1, 0.2); /* Sombra suave y elegante */
             width: 465px;
-            height: 24px;
+            height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -122,13 +133,13 @@
 
         #imagen {
             position: fixed;            
-            bottom: 30px;               /* Alinea 10px desde el fondo */
-            left: 320px;                /* Alinea 10px desde la derecha */
+            bottom: 30px;               /* Alinea 30px desde el fondo */
+            transform: translateX(50%); /* Ajusta el elemento para que quede completamente centrado */
             font-size: 22px;            /* Ajusta el tamaño de la fuente */   
             padding: 5px 10px;          /* Relleno de texto */
-            width: 420px;
-            height: 28px;
-            align-items: center
+            width: 500px;               /* Ancho de la imagen */
+            height: 28px;               /* Altura de la imagen */
+            align-items: center;        /* Alinea los elementos dentro (si es necesario) */
         }
 
         #arboles {
@@ -137,12 +148,12 @@
             right: 55px;                /* Alinea 10px desde la derecha */
             font-size: 18px;            /* Ajusta el tamaño de la fuente */
             color: #333;                /* Color del texto */
-            background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+            background-color: rgb(235, 229, 229);
             padding: 5px 10px;          /* Relleno de texto */
             border-radius: 5px;         /* Bordes redondeados */
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Sombra */
-            width: 200px;
-            height: 24px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0.1, 0.2); /* Sombra suave y elegante */
+            width: 210px;
+            height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -153,15 +164,15 @@
         #toneladas {
             position: fixed;            /* Fija la posición en la pantalla */
             bottom: 80px;               /* Alinea 10px desde el fondo */
-            right: 320px;                /* Alinea 10px desde la derecha */
+            right: 305px;                /* Alinea 10px desde la derecha */
             font-size: 18px;            /* Ajusta el tamaño de la fuente */
             color: #333;                /* Color del texto */
-            background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+            background-color: rgb(235, 229, 229);
             padding: 5px 10px;          /* Relleno de texto */
             border-radius: 5px;         /* Bordes redondeados */
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Sombra */
-            width: 200px;
-            height: 24px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0.1, 0.2); /* Sombra suave y elegante */
+            width: 210px;
+            height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -170,10 +181,11 @@
         }
 
         #toneladas span,
-#arboles span {
-    margin-right: 8px; /* Ajusta el valor según el espacio deseado */
-    font-weight: bold; /* Para resaltar el valor si es necesario */
-}
+        #arboles span {
+            margin-right: 8px; /* Ajusta el valor según el espacio deseado */
+            font-weight: bold; /* Para resaltar el valor si es necesario */
+        }
+        
 
     </style>
     
@@ -283,23 +295,73 @@
     // Datos de las lecturas reales pasados desde Laravel
     const lecturas = @json($proyectosContadoresLecturas);
 
+    // Obtener el último día disponible para la producción diaria
+const getLastDayData = (data) => {
+    const lastDate = new Date(Math.max(...data.map(item => new Date(item.fecha))));
+    return data.filter(item => new Date(item.fecha).toDateString() === lastDate.toDateString());
+};
+
+// Obtener el máximo valor de la semana para la producción total
+const getMaxWeekData = (data) => {
+    // Obtener la fecha actual
+    const today = new Date();
+    const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay())); // Lunes de la semana actual
+
+    // Filtrar los datos de esta semana
+    const weekData = data.filter(item => {
+        const itemDate = new Date(item.fecha);
+        return itemDate >= startOfWeek;
+    });
+
+    // Encontrar el máximo valor de la semana
+    const maxItem = weekData.reduce((max, item) => (item.LECTURA > max.LECTURA ? item : max), weekData[0]);
+    return maxItem ? [maxItem] : [];
+};
+
+// Filtrar los datos de Producción FTV Hoy (último día)
+const dataFtvHoy = getLastDayData(lecturas.filter(item => item.DESCRIPCION === "Produccion FTV Hoy").map(item => ({
+    fecha: item.lectura_fecha,
+    LECTURA: item.LECTURA
+})));
+
+// Filtrar los datos de Producción FTV Total (máximo de la semana)
+const dataFtvTotal = getMaxWeekData(lecturas.filter(item => item.DESCRIPCION === "Produccion FTV Total").map(item => ({
+    fecha: item.lectura_fecha,
+    LECTURA: item.LECTURA
+})));
+
+// Para comprobar los datos:
+console.log("Último día de Producción FTV Hoy:", dataFtvHoy);
+console.log("Máximo de la semana de Producción FTV Total:", dataFtvTotal);
+
     // Filtramos los datos por "DESCRIPCION" y guardamos tanto la fecha como la lectura
-    const dataFtvHoy = lecturas.filter(item => item.DESCRIPCION === "Produccion FTV Hoy").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
-    const dataRadiacion = lecturas.filter(item => item.DESCRIPCION === "Radiacion").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
-    const dataFtvTotal = lecturas.filter(item => item.DESCRIPCION === "Produccion FTV Total").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
-    const dataPotenciaFotovoltaica = lecturas.filter(item => item.DESCRIPCION === "Potencia Fotovoltaica").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
-    const dataPotenciaRed = lecturas.filter(item => item.DESCRIPCION === "Potencia Red").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
-    const dataPotenciaCargas = lecturas.filter(item => item.DESCRIPCION === "Potencia Cargas").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
+    // const dataFtvHoy = lecturas.filter(item => item.DESCRIPCION === "Produccion FTV Hoy").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
+    // const dataFtvTotal = lecturas.filter(item => item.DESCRIPCION === "Produccion FTV Total").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
+    const dataRadiacion = lecturas.filter(item => item.DESCRIPCION === "Radiacion")
+    .map(item => ({ fecha: new Date(item.lectura_fecha), LECTURA: item.LECTURA }))
+    .sort((a, b) => a.fecha - b.fecha); // Ordenar por fecha de menor a mayor
+
+const dataPotenciaFotovoltaica = lecturas.filter(item => item.DESCRIPCION === "Potencia Fotovoltaica")
+    .map(item => ({ fecha: new Date(item.lectura_fecha), LECTURA: item.LECTURA }))
+    .sort((a, b) => a.fecha - b.fecha); // Ordenar por fecha de menor a mayor
+
+const dataPotenciaRed = lecturas.filter(item => item.DESCRIPCION === "Potencia Red")
+    .map(item => ({ fecha: new Date(item.lectura_fecha), LECTURA: item.LECTURA }))
+    .sort((a, b) => a.fecha - b.fecha); // Ordenar por fecha de menor a mayor
+
+const dataPotenciaCargas = lecturas.filter(item => item.DESCRIPCION === "Potencia Cargas")
+    .map(item => ({ fecha: new Date(item.lectura_fecha), LECTURA: item.LECTURA }))
+    .sort((a, b) => a.fecha - b.fecha); // Ordenar por fecha de menor a mayor
+
     const dataToneladas = lecturas.filter(item => item.DESCRIPCION === "Toneladas CO2").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
     const dataArboles = lecturas.filter(item => item.DESCRIPCION === "Arboles").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
-
 
 
     // Función para formatear las fechas para que se muestren correctamente en el gráfico
     const formatDate = (date) => {
         const d = new Date(date);
         return d.toLocaleDateString('es-ES', {
-            day: 'numeric'
+            day: 'numeric',
         });
     };
 
@@ -312,11 +374,31 @@
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
-        hour12: true // Esto garantiza que la hora esté en formato de 12 horas (AM/PM)
+        hour24: true // Esto garantiza que la hora esté en formato de 12 horas (AM/PM)
     };
     return d.toLocaleString('es-ES', options);
 };
 
+const formatDateDay = (date) => {
+    const d = new Date(date);
+    const options = {
+        
+        hour: '2-digit',
+        minute: '2-digit',
+        hour24: true // Esto garantiza que la hora esté en formato de 12 horas (AM/PM)
+    };
+    return d.toLocaleString('es-ES', options);
+};
+
+const formatDateMonth = (date) => {
+    const d = new Date(date);
+    const options = {
+        
+        month: 'long',
+
+    };
+    return d.toLocaleString('es-ES', options);
+};
 
    // Función para actualizar solo el valor de la lectura en la interfaz
 const updateLastReadingValue = (data, lecturaValorElementId) => {
@@ -358,11 +440,11 @@ updateLastReadingDate(dataFtvHoy);
 // Crear gráfico para Producción FTV Hoy
 Highcharts.chart('produccionFtvHoy', {
     chart: {
-        type: 'column', height: 250 
+        type: 'column', height: 250 , backgroundColor: 'rgb(235, 229, 229)'
     },
     title: false,
     xAxis: {
-        categories: dataFtvHoy.map(item => formatDate(item.fecha)),
+        categories: dataFtvHoy.map(item => formatDateDay(item.fecha)),
         labels: { rotation: -45 }
     },
     yAxis: { title: { text: 'kWh' } },
@@ -376,10 +458,16 @@ Highcharts.chart('produccionFtvHoy', {
 
 // Crear gráficos para otros datos de la misma manera
 Highcharts.chart('radiacion', {
-    chart: { type: 'column', height: 250  },
+    chart: { type: 'column', height: 250 ,  backgroundColor: 'rgb(235, 229, 229)'},
     title: false,
     xAxis: { categories: dataRadiacion.map(item => formatDate(item.fecha)) },
-    yAxis: { title: { text: 'kWh' } },
+    yAxis: { 
+        title: { 
+            text: 'kWh' 
+        },
+        max: Math.ceil(Math.max(...dataPotenciaFotovoltaica.map(item => parseFloat(item.LECTURA)))/5) * 300, // Ajusta el max
+        tickInterval: 200, // Intervalo de tics en el eje Y
+    },
     series: [{
         name: 'Radiación',
         data: dataRadiacion.map(item => parseFloat(item.LECTURA)),
@@ -389,9 +477,9 @@ Highcharts.chart('radiacion', {
 });
 
 Highcharts.chart('produccionFtvTotal', {
-    chart: { type: 'column', height: 250  },
+    chart: { type: 'column', height: 250,  backgroundColor: 'rgb(235, 229, 229)'  },
     title: false,
-    xAxis: { categories: dataFtvTotal.map(item => formatDate(item.fecha)) },
+    xAxis: { categories: dataFtvTotal.map(item => formatDateMonth(item.fecha)) },
     yAxis: { title: { text: 'kWh' } },
     series: [{
         name: 'Producción FTV Total',
@@ -401,11 +489,24 @@ Highcharts.chart('produccionFtvTotal', {
     legend: { enabled: false }
 });
 
+
 Highcharts.chart('potenciaFotovoltaica', {
-    chart: { type: 'column', height: 250 },
+    chart: { 
+        type: 'column', 
+        height: 250,  
+        backgroundColor: 'rgb(235, 229, 229)' 
+    },
     title: false,
-    xAxis: { categories: dataPotenciaFotovoltaica.map(item => formatDate(item.fecha)) },
-    yAxis: { title: { text: 'kWh' } },
+    xAxis: { 
+        categories: dataPotenciaFotovoltaica.map(item => formatDate(item.fecha))
+    },
+    yAxis: { 
+        title: { 
+            text: 'kWh' 
+        },
+        max: Math.ceil(Math.max(...dataPotenciaFotovoltaica.map(item => parseFloat(item.LECTURA)))/4) * 4, // Ajusta el max
+        tickInterval: 2, // Intervalo de tics en el eje Y
+    },
     series: [{
         name: 'Potencia Fotovoltaica',
         data: dataPotenciaFotovoltaica.map(item => parseFloat(item.LECTURA)),
@@ -414,11 +515,18 @@ Highcharts.chart('potenciaFotovoltaica', {
     legend: { enabled: false }
 });
 
+
 Highcharts.chart('potenciaRed', {
-    chart: { type: 'column', height: 250  },
+    chart: { type: 'column', height: 250,  backgroundColor: 'rgb(235, 229, 229)'  },
     title: false,
     xAxis: { categories: dataPotenciaRed.map(item => formatDate(item.fecha)) },
-    yAxis: { title: { text: 'kWh' } },
+    yAxis: { 
+        title: { 
+            text: 'kWh' 
+        },
+        max: Math.ceil(Math.max(...dataPotenciaFotovoltaica.map(item => parseFloat(item.LECTURA)))/3) * 2, // Ajusta el max
+        tickInterval: 2, // Intervalo de tics en el eje Y
+    },
     series: [{
         name: 'Potencia Red',
         data: dataPotenciaRed.map(item => parseFloat(item.LECTURA)),
@@ -428,10 +536,16 @@ Highcharts.chart('potenciaRed', {
 });
 
 Highcharts.chart('potenciaCargas', {
-    chart: { type: 'column', height: 250  },
+    chart: { type: 'column', height: 250,  backgroundColor: 'rgb(235, 229, 229)'  },
     title: false,
     xAxis: { categories: dataPotenciaCargas.map(item => formatDate(item.fecha)) },
-    yAxis: { title: { text: 'kWh' } },
+    yAxis: { 
+        title: { 
+            text: 'kWh' 
+        },
+        max: Math.ceil(Math.max(...dataPotenciaFotovoltaica.map(item => parseFloat(item.LECTURA)))/3) * 2, // Ajusta el max
+        tickInterval: 2, // Intervalo de tics en el eje Y
+    },
     series: [{
         name: 'Potencia Cargas',
         data: dataPotenciaCargas.map(item => parseFloat(item.LECTURA)),
