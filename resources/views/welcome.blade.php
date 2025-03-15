@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Lecturas</title>
+    <title>INSTALACIONES FOTOVOLTAICAS</title>
     <!-- Cargar Highcharts para gráficos -->
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <style>
@@ -196,7 +196,7 @@
                 <div class="comunidad">
                     {{ preg_replace('/^Enneo - \d+\s*/', '', $proyectosContadoresLecturas[0]->COMUNIDAD) }}
                 </div>
-                            </div>
+            </div>
     
             <!-- Producción FTV Hoy -->
             <div class="card">
@@ -295,105 +295,7 @@
     // Datos de las lecturas reales pasados desde Laravel
     const lecturas = @json($proyectosContadoresLecturas);
     const lecturasFtv=@json($lecturasFtvMaxMonth);
-    let dataFtvTotal = lecturasFtv;  
-    
-//     let dataFtvTotal = [
-//     {
-//         "lectura_fecha": "2024-12",
-//         "ID_COMUNIDAD": 5066,
-//         "COMUNIDAD": "Enneo - 2601 Dalias Ayuntamiento",
-//         "ID_CONTADOR": 20168,
-//         "DESCRIPCION": "Produccion FTV Total",
-//         "primer_valor": 1062.00,
-//         "ultimo_valor": 1456.00,
-//         "LECTURA": 394
-//     },
-//     {
-//         "lectura_fecha": "2025-01",
-//         "ID_COMUNIDAD": 5066,
-//         "COMUNIDAD": "Enneo - 2601 Dalias Ayuntamiento",
-//         "ID_CONTADOR": 20168,
-//         "DESCRIPCION": "Produccion FTV Total",
-//         "primer_valor": 1062.00,
-//         "ultimo_valor": 1456.00,
-//         "LECTURA": 536
-//     },
-//     {
-//         "lectura_fecha": "2025-02",
-//         "ID_COMUNIDAD": 5066,
-//         "COMUNIDAD": "Enneo - 2601 Dalias Ayuntamiento",
-//         "ID_CONTADOR": 20168,
-//         "DESCRIPCION": "Produccion FTV Total",
-//         "primer_valor": 1500.00,
-//         "ultimo_valor": 2000.00,
-//         "LECTURA": 567
-//     },
-//     {
-//         "lectura_fecha": "2025-03",
-//         "ID_COMUNIDAD": 5066,
-//         "COMUNIDAD": "Enneo - 2601 Dalias Ayuntamiento",
-//         "ID_CONTADOR": 20168,
-//         "DESCRIPCION": "Produccion FTV Total",
-//         "primer_valor": 1200.00,
-//         "ultimo_valor": 1600.00,
-//         "LECTURA": 204
-//     }
-// ];
-
-
-
-    // // Función para obtener la última lectura disponible de cada mes
-    // const getLastMonthData = (data) => {
-    //     // Agrupar los datos por año y mes (usamos el formato "YYYY-MM")
-    //     const groupedByMonth = data.reduce((acc, item) => {
-    //         const monthKey = new Date(item.fecha).toISOString().slice(0, 7);  // Año-Mes en formato "YYYY-MM"
-    //         if (!acc[monthKey]) {
-    //             acc[monthKey] = [];
-    //         }
-    //         acc[monthKey].push(item);
-    //         return acc;
-    //     }, {});
-
-    //     // Obtener la última lectura de cada mes
-    //     const lastMonthData = Object.keys(groupedByMonth).map(month => {
-    //         const monthData = groupedByMonth[month];
-    //         const lastItem = monthData.reduce((max, item) => {
-    //             const itemDate = new Date(item.fecha);
-    //             return itemDate > new Date(max.fecha) ? item : max;  // Comparar fechas y obtener el más reciente
-    //         });
-    //         return lastItem;
-    //     });
-
-    //     return lastMonthData;
-    // };
-
-    // // Verificar si `lecturasFtv` es un objeto y convertirlo en un arreglo
-    // if (typeof lecturasFtv === 'object' && !Array.isArray(lecturasFtv)) {
-    //     // Convertir el objeto en un arreglo con los valores
-    //     const lecturasFtvArray = Object.values(lecturasFtv);
-
-    //     // Filtrar los datos de Producción FTV Total
-    //     dataFtvTotal = getLastMonthData(
-    //         lecturasFtvArray
-    //             .filter(item => item.DESCRIPCION === "Produccion FTV Total")  // Filtrar por descripción
-    //             .map(item => ({
-    //                 fecha: item.lectura_fecha,
-    //                 LECTURA: parseFloat(item.LECTURA)  // Convertir LECTURA a número
-    //             }))
-    //     );
-
-    //     console.log(dataFtvTotal);  // Verificar el resultado de los datos filtrados y mapeados
-    // } else {
-    //     console.error("lecturasFtv no tiene el formato esperado", lecturasFtv);  // Mensaje de error si el formato es incorrecto
-    // }
-
-    // // Verificar si dataFtvTotal está definido antes de acceder
-    // if (dataFtvTotal.length > 0) {
-    //     console.log("Máximo de la semana de Producción FTV Total:", dataFtvTotal);
-    // } else {
-    //     console.log("No se encontró información para la Producción FTV Total.");
-    // }
-
+    let dataFtvTotal = Object.values(lecturasFtv);
     const getLastDayData = (data) => {
         const lastDate = new Date(Math.max(...data.map(item => new Date(item.fecha))));
         return data.filter(item => new Date(item.fecha).toDateString() === lastDate.toDateString());
@@ -507,7 +409,6 @@ const updateLastReadingDate = (data) => {
 
 // Actualizar la fecha de la última lectura
 updateLastReadingDate(dataFtvHoy);
-
 
 // Crear gráfico para Producción FTV Hoy
 Highcharts.chart('produccionFtvHoy', {
