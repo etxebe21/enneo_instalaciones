@@ -295,243 +295,237 @@
     </body>
     
 
-<script>
-    // Datos de las lecturas reales pasados desde Laravel
-    const lecturas = @json($proyectosContadoresLecturas);
-    const lecturasFtv=@json($lecturasFtvMaxMonth);
-    let dataFtvTotal = Object.values(lecturasFtv);
-    const getLastDayData = (data) => {
-        const lastDate = new Date(Math.max(...data.map(item => new Date(item.fecha))));
-        return data.filter(item => new Date(item.fecha).toDateString() === lastDate.toDateString());
-    };
+    <script>
+        // Datos de las lecturas 
+        const lecturas = @json($proyectosContadoresLecturas);
+        const lecturasFtv=@json($lecturasFtvMaxMonth);
+       
+        let dataFtvTotal = Object.values(lecturasFtv);
+        const getLastDayData = (data) => {
+            const lastDate = new Date(Math.max(...data.map(item => new Date(item.fecha))));
+            return data.filter(item => new Date(item.fecha).toDateString() === lastDate.toDateString());
+        };
 
-    // Filtrar los datos de Producción FTV Hoy (último día)
-    const dataFtvHoy = getLastDayData(lecturas.filter(item => item.DESCRIPCION === "Produccion FTV Hoy").map(item => ({
-        fecha: item.lectura_fecha,
-        LECTURA: item.LECTURA
-    })));
+        // Filtrar los datos de Producción FTV Hoy (último día)
+        const dataFtvHoy = getLastDayData(lecturas.filter(item => item.DESCRIPCION === "Produccion FTV Hoy").map(item => ({
+            fecha: item.lectura_fecha,
+            LECTURA: item.LECTURA
+        })));
 
-    // Filtramos los datos por "DESCRIPCION" y guardamos tanto la fecha como la lectura
-    // const dataFtvHoy = lecturas.filter(item => item.DESCRIPCION === "Produccion FTV Hoy").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
-    // const dataFtvTotal = lecturas.filter(item => item.DESCRIPCION === "Produccion FTV Total").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
-    const dataRadiacion = lecturas.filter(item => item.DESCRIPCION === "Radiacion")
-    .map(item => ({ fecha: new Date(item.lectura_fecha), LECTURA: item.LECTURA }))
-    .sort((a, b) => a.fecha - b.fecha); // Ordenar por fecha de menor a mayor
-
-    const dataPotenciaFotovoltaica = lecturas.filter(item => item.DESCRIPCION === "Potencia Fotovoltaica")
+        // Filtramos los datos por "DESCRIPCION" y guardamos tanto la fecha como la lectura
+        const dataRadiacion = lecturas.filter(item => item.DESCRIPCION === "Radiacion")
         .map(item => ({ fecha: new Date(item.lectura_fecha), LECTURA: item.LECTURA }))
         .sort((a, b) => a.fecha - b.fecha); // Ordenar por fecha de menor a mayor
 
-    const dataPotenciaRed = lecturas.filter(item => item.DESCRIPCION === "Potencia Red")
-        .map(item => ({ fecha: new Date(item.lectura_fecha), LECTURA: item.LECTURA }))
-        .sort((a, b) => a.fecha - b.fecha); // Ordenar por fecha de menor a mayor
+        const dataPotenciaFotovoltaica = lecturas.filter(item => item.DESCRIPCION === "Potencia Fotovoltaica")
+            .map(item => ({ fecha: new Date(item.lectura_fecha), LECTURA: item.LECTURA }))
+            .sort((a, b) => a.fecha - b.fecha); // Ordenar por fecha de menor a mayor
 
-    const dataPotenciaCargas = lecturas.filter(item => item.DESCRIPCION === "Potencia Cargas")
-        .map(item => ({ fecha: new Date(item.lectura_fecha), LECTURA: item.LECTURA }))
-        .sort((a, b) => a.fecha - b.fecha); // Ordenar por fecha de menor a mayor
+        const dataPotenciaRed = lecturas.filter(item => item.DESCRIPCION === "Potencia Red")
+            .map(item => ({ fecha: new Date(item.lectura_fecha), LECTURA: item.LECTURA }))
+            .sort((a, b) => a.fecha - b.fecha); // Ordenar por fecha de menor a mayor
 
-    const dataToneladas = lecturas.filter(item => item.DESCRIPCION === "Toneladas CO2").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
-    const dataArboles = lecturas.filter(item => item.DESCRIPCION === "Arboles").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
+        const dataPotenciaCargas = lecturas.filter(item => item.DESCRIPCION === "Potencia Cargas")
+            .map(item => ({ fecha: new Date(item.lectura_fecha), LECTURA: item.LECTURA }))
+            .sort((a, b) => a.fecha - b.fecha); // Ordenar por fecha de menor a mayor
+
+        const dataToneladas = lecturas.filter(item => item.DESCRIPCION === "Toneladas CO2").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
+        const dataArboles = lecturas.filter(item => item.DESCRIPCION === "Arboles").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
 
 
-    // Función para formatear las fechas para que se muestren correctamente en el gráfico
-    const formatDate = (date) => {
+        // Función para formatear las fechas para que se muestren correctamente en el gráfico
+        const formatDate = (date) => {
+            const d = new Date(date);
+            return d.toLocaleDateString('es-ES', {
+                day: 'numeric',
+            });
+        };
+
+        const formatDateTime = (date) => {
         const d = new Date(date);
-        return d.toLocaleDateString('es-ES', {
+        const options = {
+            year: 'numeric',
+            month: 'numeric',
             day: 'numeric',
-        });
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour24: true // Esto garantiza que la hora esté en formato de 12 horas (AM/PM)
+        };
+        return d.toLocaleString('es-ES', options);
     };
 
-    const formatDateTime = (date) => {
-    const d = new Date(date);
-    const options = {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour24: true // Esto garantiza que la hora esté en formato de 12 horas (AM/PM)
+    const formatDateDay = (date) => {
+        const d = new Date(date);
+        const options = {
+            
+            hour: '2-digit',
+            minute: '2-digit',
+            hour24: true // Esto garantiza que la hora esté en formato de 12 horas (AM/PM)
+        };
+        return d.toLocaleString('es-ES', options);
     };
-    return d.toLocaleString('es-ES', options);
-};
 
-const formatDateDay = (date) => {
-    const d = new Date(date);
-    const options = {
-        
-        hour: '2-digit',
-        minute: '2-digit',
-        hour24: true // Esto garantiza que la hora esté en formato de 12 horas (AM/PM)
+    const formatDateMonth = (date) => {
+        const d = new Date(date);
+        const options = {
+            
+            month: 'numeric',
+            year: 'numeric'
+
+        };
+        return d.toLocaleString('es-ES', options);
     };
-    return d.toLocaleString('es-ES', options);
-};
 
-const formatDateMonth = (date) => {
-    const d = new Date(date);
-    const options = {
-        
-        month: 'numeric',
-        year: 'numeric'
-
+    // Función para actualizar solo el valor de la lectura en la interfaz
+    const updateLastReadingValue = (data, lecturaValorElementId) => {
+        const lastItem = data[data.length - 1];
+        if (lastItem) {
+            document.getElementById(lecturaValorElementId).innerText = lastItem.LECTURA;
+        } else {
+            document.getElementById(lecturaValorElementId).innerText = 'No disponible';
+        }
     };
-    return d.toLocaleString('es-ES', options);
-};
 
-   // Función para actualizar solo el valor de la lectura en la interfaz
-const updateLastReadingValue = (data, lecturaValorElementId) => {
-    const lastItem = data[data.length - 1];
-    if (lastItem) {
-        document.getElementById(lecturaValorElementId).innerText = lastItem.LECTURA;
-    } else {
-        document.getElementById(lecturaValorElementId).innerText = 'No disponible';
-    }
-};
+    // Actualizar solo el valor actual de las lecturas para cada tipo
+    updateLastReadingValue(dataFtvHoy, 'produccionFtvHoyLecturaValor');
+    updateLastReadingValue(dataRadiacion, 'radiacionLecturaValor');
+    updateLastReadingValue(dataFtvTotal, 'produccionFtvTotalLecturaValor');
+    updateLastReadingValue(dataPotenciaFotovoltaica, 'potenciaFotovoltaicaLecturaValor');
+    updateLastReadingValue(dataPotenciaRed, 'potenciaRedLecturaValor');
+    updateLastReadingValue(dataPotenciaCargas, 'potenciaCargasLecturaValor');
+    updateLastReadingValue(dataToneladas, 'toneladasValor');
+    updateLastReadingValue(dataArboles, 'arbolesValor');
 
-// Actualizar solo el valor actual de las lecturas para cada tipo
-updateLastReadingValue(dataFtvHoy, 'produccionFtvHoyLecturaValor');
-updateLastReadingValue(dataRadiacion, 'radiacionLecturaValor');
-updateLastReadingValue(dataFtvTotal, 'produccionFtvTotalLecturaValor');
-updateLastReadingValue(dataPotenciaFotovoltaica, 'potenciaFotovoltaicaLecturaValor');
-updateLastReadingValue(dataPotenciaRed, 'potenciaRedLecturaValor');
-updateLastReadingValue(dataPotenciaCargas, 'potenciaCargasLecturaValor');
-updateLastReadingValue(dataToneladas, 'toneladasValor');
-updateLastReadingValue(dataArboles, 'arbolesValor');
+    // Función para obtener la última fecha de las lecturas
+    const updateLastReadingDate = (data) => {
+        const lastItem = data[data.length - 1];
+        if (lastItem) {
+            const lastReadingDate = formatDateTime(lastItem.fecha);  // Formateamos la fecha
+            document.getElementById('ultimaLecturaFecha').innerText = `Últimos valores actualizados: ${lastReadingDate}`;
+        } else {
+            document.getElementById('ultimaLecturaFecha').innerText = 'Última Lectura: No disponible';
+        }
+    };
 
+    // Actualizar la fecha de la última lectura
+    updateLastReadingDate(dataFtvHoy);
 
-
-// Función para obtener la última fecha de las lecturas
-const updateLastReadingDate = (data) => {
-    const lastItem = data[data.length - 1];
-    if (lastItem) {
-        const lastReadingDate = formatDateTime(lastItem.fecha);  // Formateamos la fecha
-        document.getElementById('ultimaLecturaFecha').innerText = `Últimos valores actualizados: ${lastReadingDate}`;
-    } else {
-        document.getElementById('ultimaLecturaFecha').innerText = 'Última Lectura: No disponible';
-    }
-};
-
-// Actualizar la fecha de la última lectura
-updateLastReadingDate(dataFtvHoy);
-
-// Crear gráfico para Producción FTV Hoy
-Highcharts.chart('produccionFtvHoy', {
-    chart: {
-        type: 'column', height: 250 , backgroundColor: 'rgb(235, 229, 229)'
-    },
-    title: false,
-    xAxis: {
-        categories: dataFtvHoy.map(item => formatDateDay(item.fecha)),
-        labels: { rotation: -45 }
-    },
-    yAxis: { title: { text: 'kWh' } },
-    series: [{
-        name: 'Producción FTV Hoy',
-        data: dataFtvHoy.map(item => parseFloat(item.LECTURA)),
-        color: '#4BC0C0'
-    }],
-    legend: { enabled: false }
-});
-
-// Crear gráficos para otros datos de la misma manera
-Highcharts.chart('radiacion', {
-    chart: { type: 'column', height: 250 ,  backgroundColor: 'rgb(235, 229, 229)'},
-    title: false,
-    xAxis: { categories: dataRadiacion.map(item => formatDate(item.fecha)) },
-    yAxis: { 
-        title: { 
-            text: 'kWh' 
+    // Crear gráfico para Producción FTV Hoy
+    Highcharts.chart('produccionFtvHoy', {
+        chart: {
+            type: 'column', height: 250 , backgroundColor: 'rgb(235, 229, 229)'
         },
-    },
-    series: [{
-        name: 'Radiación',
-        data: dataRadiacion.map(item => parseFloat(item.LECTURA)),
-        color: '#FF6384'
-    }],
-    legend: { enabled: false }
-});
-
-Highcharts.chart('produccionFtvTotal', {
-    chart: { 
-        type: 'column', 
-        height: 250,  
-        backgroundColor: 'rgb(235, 229, 229)'  
-    },
-    title: { text: null }, // Eliminar el título si no lo necesitas
-    xAxis: { 
-        categories: dataFtvTotal.map(item => item.lectura_fecha.slice(0, 7)), // <-- SOLO "YYYY-MM"
-    },
-    yAxis: { 
-        title: { text: 'kWh' } 
-    },
-    series: [{
-        name: 'Producción FTV Total',
-        data: dataFtvTotal.map(item => parseFloat(item.LECTURA)), // Asegurar valores numéricos
-        color: '#9966FF'
-    }],
-    legend: { enabled: false }
-});
-
-
-
-Highcharts.chart('potenciaFotovoltaica', {
-    chart: { 
-        type: 'column', 
-        height: 250,  
-        backgroundColor: 'rgb(235, 229, 229)' 
-    },
-    title: false,
-    xAxis: { 
-        categories: dataPotenciaFotovoltaica.map(item => formatDate(item.fecha))
-    },
-    yAxis: { 
-        title: { 
-            text: 'kWh' 
+        title: false,
+        xAxis: {
+            categories: dataFtvHoy.map(item => formatDateDay(item.fecha)),
+            labels: { rotation: -45 }
         },
-    },
-    series: [{
-        name: 'Potencia Fotovoltaica',
-        data: dataPotenciaFotovoltaica.map(item => parseFloat(item.LECTURA)),
-        color: '#FF9F40'
-    }],
-    legend: { enabled: false }
-});
+        yAxis: { title: { text: 'kWh' } },
+        series: [{
+            name: 'Producción FTV Hoy',
+            data: dataFtvHoy.map(item => parseFloat(item.LECTURA)),
+            color: '#4BC0C0'
+        }],
+        legend: { enabled: false }
+    });
 
-
-Highcharts.chart('potenciaRed', {
-    chart: { type: 'column', height: 250,  backgroundColor: 'rgb(235, 229, 229)'  },
-    title: false,
-    xAxis: { categories: dataPotenciaRed.map(item => formatDate(item.fecha)) },
-    yAxis: { 
-        title: { 
-            text: 'kWh' 
+    // Crear gráficos para otros datos de la misma manera
+    Highcharts.chart('radiacion', {
+        chart: { type: 'column', height: 250 ,  backgroundColor: 'rgb(235, 229, 229)'},
+        title: false,
+        xAxis: { categories: dataRadiacion.map(item => formatDate(item.fecha)) },
+        yAxis: { 
+            title: { 
+                text: 'kWh' 
+            },
         },
-    },
-    series: [{
-        name: 'Potencia Red',
-        data: dataPotenciaRed.map(item => parseFloat(item.LECTURA)),
-        color: '#36A2EB'
-    }],
-    legend: { enabled: false }
-});
+        series: [{
+            name: 'Radiación',
+            data: dataRadiacion.map(item => parseFloat(item.LECTURA)),
+            color: '#FF6384'
+        }],
+        legend: { enabled: false }
+    });
 
-Highcharts.chart('potenciaCargas', {
-    chart: { type: 'column', height: 250,  backgroundColor: 'rgb(235, 229, 229)'  },
-    title: false,
-    xAxis: { categories: dataPotenciaCargas.map(item => formatDate(item.fecha)) },
-    yAxis: { 
-        title: { 
-            text: 'kWh' 
+    Highcharts.chart('produccionFtvTotal', {
+        chart: { 
+            type: 'column', 
+            height: 250,  
+            backgroundColor: 'rgb(235, 229, 229)'  
         },
-    },
-    series: [{
-        name: 'Potencia Cargas',
-        data: dataPotenciaCargas.map(item => parseFloat(item.LECTURA)),
-        color: '#FFCD56'
-    }],
-    legend: { enabled: false }
-});
-</script>
+        title: { text: null }, // Eliminar el título si no lo necesitas
+        xAxis: { 
+            categories: dataFtvTotal.map(item => item.lectura_fecha.slice(0, 7)), // <-- SOLO "YYYY-MM"
+        },
+        yAxis: { 
+            title: { text: 'kWh' } 
+        },
+        series: [{
+            name: 'Producción FTV Total',
+            data: dataFtvTotal.map(item => parseFloat(item.LECTURA)), // Asegurar valores numéricos
+            color: '#9966FF'
+        }],
+        legend: { enabled: false }
+    });
+
+    Highcharts.chart('potenciaFotovoltaica', {
+        chart: { 
+            type: 'column', 
+            height: 250,  
+            backgroundColor: 'rgb(235, 229, 229)' 
+        },
+        title: false,
+        xAxis: { 
+            categories: dataPotenciaFotovoltaica.map(item => formatDate(item.fecha))
+        },
+        yAxis: { 
+            title: { 
+                text: 'kWh' 
+            },
+        },
+        series: [{
+            name: 'Potencia Fotovoltaica',
+            data: dataPotenciaFotovoltaica.map(item => parseFloat(item.LECTURA)),
+            color: '#FF9F40'
+        }],
+        legend: { enabled: false }
+    });
+
+    Highcharts.chart('potenciaRed', {
+        chart: { type: 'column', height: 250,  backgroundColor: 'rgb(235, 229, 229)'  },
+        title: false,
+        xAxis: { categories: dataPotenciaRed.map(item => formatDate(item.fecha)) },
+        yAxis: { 
+            title: { 
+                text: 'kWh' 
+            },
+        },
+        series: [{
+            name: 'Potencia Red',
+            data: dataPotenciaRed.map(item => parseFloat(item.LECTURA)),
+            color: '#36A2EB'
+        }],
+        legend: { enabled: false }
+    });
+
+    Highcharts.chart('potenciaCargas', {
+        chart: { type: 'column', height: 250,  backgroundColor: 'rgb(235, 229, 229)'  },
+        title: false,
+        xAxis: { categories: dataPotenciaCargas.map(item => formatDate(item.fecha)) },
+        yAxis: { 
+            title: { 
+                text: 'kWh' 
+            },
+        },
+        series: [{
+            name: 'Potencia Cargas',
+            data: dataPotenciaCargas.map(item => parseFloat(item.LECTURA)),
+            color: '#FFCD56'
+        }],
+        legend: { enabled: false }
+    });
+    </script>
 
 </body>
 </html>

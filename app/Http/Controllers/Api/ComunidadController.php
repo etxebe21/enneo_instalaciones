@@ -9,29 +9,26 @@ use Illuminate\Http\Request;
 class ComunidadController extends Controller
 {
    
-
     public function getProyectosConContadores()
-{
-    // Hacemos una consulta a las tablas 'proyectos' y 'contadores' con un JOIN
-    $proyectosContadores = DB::table('proyectos')
-        ->join('contadores', 'proyectos.ID_COMUNIDAD', '=', 'contadores.ID_COMUNIDAD')
-        ->select(
-            'proyectos.ID_COMUNIDAD',  
-            'proyectos.COMUNIDAD',     
-            'contadores.ID_CONTADOR',  
-            'contadores.DESCRIPCION',   
-            'contadores.ULTIMA_LECTURA', 
-            'contadores.FECHA'          
-        )
-        ->whereBetween('proyectos.ID_COMUNIDAD', [4895, 5150])
-        ->get();
+    {
+        // Hacemos una consulta a las tablas 'proyectos' y 'contadores' con un JOIN
+        $proyectosContadores = DB::table('proyectos')
+            ->join('contadores', 'proyectos.ID_COMUNIDAD', '=', 'contadores.ID_COMUNIDAD')
+            ->select(
+                'proyectos.ID_COMUNIDAD',  
+                'proyectos.COMUNIDAD',     
+                'contadores.ID_CONTADOR',  
+                'contadores.DESCRIPCION',   
+                'contadores.ULTIMA_LECTURA', 
+                'contadores.FECHA'          
+            )
+            ->whereBetween('proyectos.ID_COMUNIDAD', [4895, 5150])
+            ->get();
 
-    // Retornamos los proyectos con sus contadores asociados en formato JSON
-    return response()->json($proyectosContadores);
-}
+        // Retornamos los proyectos con sus contadores asociados en formato JSON
+        return response()->json($proyectosContadores);
+    }
 
-
-   
     public function lecturasInstalaciones()
     {
         // Hacemos una consulta a las tablas 'proyectos', 'contadores' y 'lecturas_2025_03' con JOINs,
