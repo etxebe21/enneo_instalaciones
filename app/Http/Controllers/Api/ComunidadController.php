@@ -11,7 +11,6 @@ class ComunidadController extends Controller
    
     public function getProyectosConContadores()
     {
-        // Hacemos una consulta a las tablas 'proyectos' y 'contadores' con un JOIN
         $proyectosContadores = DB::table('proyectos')
             ->join('contadores', 'proyectos.ID_COMUNIDAD', '=', 'contadores.ID_COMUNIDAD')
             ->select(
@@ -29,29 +28,6 @@ class ComunidadController extends Controller
         return response()->json($proyectosContadores);
     }
 
-    public function lecturasInstalaciones()
-    {
-        // Hacemos una consulta a las tablas 'proyectos', 'contadores' y 'lecturas_2025_03' con JOINs,
-        // y filtramos por ID_COMUNIDAD entre 5066 y 5070
-        $proyectosContadoresLecturas = DB::table('proyectos')
-            ->join('contadores', 'proyectos.ID_COMUNIDAD', '=', 'contadores.ID_COMUNIDAD')
-            ->leftJoin('lecturas_2025_03', 'contadores.ID_CONTADOR', '=', 'lecturas_2025_03.ID_CONTADOR')
-            ->whereBetween('proyectos.ID_COMUNIDAD', [4895, 5150])
-            ->select(
-                'proyectos.ID_COMUNIDAD',  
-                'proyectos.COMUNIDAD',      
-                'contadores.ID_CONTADOR',   
-                'contadores.DESCRIPCION',   
-                'lecturas_2025_03.ID_LECTURA',  
-                'lecturas_2025_03.LECTURA',     
-                'lecturas_2025_03.FECHA as lectura_fecha'  
-            )
-            ->get();  // Aquí ya no envolvemos en JSON, solo obtenemos la colección de datos
-    
-        // Retornamos directamente la colección de datos, sin JSON
-        return $proyectosContadoresLecturas;
-    }
-
     public function lecturasFtv()
     {
         // Listado de tablas por cada mes
@@ -60,7 +36,6 @@ class ComunidadController extends Controller
         $lecturasFtvMaxMonth = collect(); // Colección vacía para almacenar los datos
     
         foreach ($tablas as $tabla) {
-            // Obtener lecturas de la tabla actual
             $lecturasFtvTotal = DB::table('proyectos')
                 ->join('contadores', 'proyectos.ID_COMUNIDAD', '=', 'contadores.ID_COMUNIDAD')
                 ->leftJoin($tabla, 'contadores.ID_CONTADOR', '=', "$tabla.ID_CONTADOR")
@@ -103,7 +78,7 @@ class ComunidadController extends Controller
                     ];
                 }
                 return null;
-            })->filter(); // Elimina valores nulos
+            })->filter(); 
     
             // Agregar resultados a la colección principal
             $lecturasFtvMaxMonth = $lecturasFtvMaxMonth->merge($resultadosMes);
@@ -114,20 +89,16 @@ class ComunidadController extends Controller
     
     public function index()
     {
-        // Llamamos al método 'lecturasInstalaciones' para obtener los datos
         $proyectosContadoresLecturas = $this->lecturasInstalaciones();
         $proyectosContadores = $this->getProyectosConContadores();
         $lecturasFtvMaxMonth = $this->lecturasFtv();
-        // dd($proyectosContadores);
-        // dd($lecturasFtvMaxMonth);
-    
+
         // Pasamos los datos a la vista 'welcome'
         return view('welcome', ['proyectosContadoresLecturas' => $proyectosContadoresLecturas, 'proyectosContadores' => $proyectosContadores, 'lecturasFtvMaxMonth'=>$lecturasFtvMaxMonth]);
     }
 
     public function show($id)
     {
-        // Consultar los proyectos y contadores relacionados con la comunidad específica
         $proyectosContadores = DB::table('proyectos')
             ->join('contadores', 'proyectos.ID_COMUNIDAD', '=', 'contadores.ID_COMUNIDAD')
             ->where('proyectos.ID_COMUNIDAD', $id)
@@ -140,12 +111,32 @@ class ComunidadController extends Controller
                 'contadores.FECHA'
             )
             ->get();
-        
-        // Obtener las lecturas de las instalaciones para la comunidad seleccionada
-        $proyectosContadoresLecturas = DB::table('proyectos')
+
+        // Obtener el último dato de cada 'DESCRIPCION' de contadores
+    $ultimoDatoPorDescripcion = DB::table('proyectos')
+    ->join('contadores', 'proyectos.ID_COMUNIDAD', '=', 'contadores.ID_COMUNIDAD')
+    ->leftJoin('lecturas_2025_03', 'contadores.ID_CONTADOR', '=', 'lecturas_2025_03.ID_CONTADOR')
+    ->where('proyectos.ID_COMUNIDAD', $id)
+    ->select(
+        'contadores.DESCRIPCION',
+        DB::raw('MAX(lecturas_2025_03.FECHA) as ultima_lectura_fecha')  // Obtenemos la última fecha de lectura
+    )
+    ->groupBy('contadores.DESCRIPCION')
+    ->get();
+
+    // Para cada descripción, obtener las lecturas de los últimos 7 días
+    $proyectosContadoresLecturas = collect();
+
+    foreach ($ultimoDatoPorDescripcion as $descripcion) {
+        $fechaLimite = \Carbon\Carbon::parse($descripcion->ultima_lectura_fecha)->subDays(7)->startOfDay();
+
+        // Obtener las lecturas de las instalaciones para la comunidad seleccionada en el rango de los últimos 7 días
+        $lecturas = DB::table('proyectos')
             ->join('contadores', 'proyectos.ID_COMUNIDAD', '=', 'contadores.ID_COMUNIDAD')
             ->leftJoin('lecturas_2025_03', 'contadores.ID_CONTADOR', '=', 'lecturas_2025_03.ID_CONTADOR')
             ->where('proyectos.ID_COMUNIDAD', $id)
+            ->where('contadores.DESCRIPCION', $descripcion->DESCRIPCION)
+            ->where('lecturas_2025_03.FECHA', '>=', $fechaLimite)  
             ->select(
                 'proyectos.ID_COMUNIDAD', 
                 'proyectos.COMUNIDAD', 
@@ -156,15 +147,17 @@ class ComunidadController extends Controller
                 'lecturas_2025_03.FECHA as lectura_fecha'
             )
             ->get();
-        
+
+        // Agregar las lecturas a la colección de resultados
+        $proyectosContadoresLecturas = $proyectosContadoresLecturas->merge($lecturas);
+    }
+            
         // Definir las tablas por mes (Añadir más meses si es necesario)
         $tablas = ['lecturas_2024_12', 'lecturas_2025_01', 'lecturas_2025_02', 'lecturas_2025_03']; 
         
-        $lecturasFtvMaxMonth = collect(); // Colección vacía para almacenar las lecturas procesadas
+        $lecturasFtvMaxMonth = collect(); // Colección vacía para almacenar las lecturas
     
-        // Recorrer las tablas para obtener las lecturas
         foreach ($tablas as $tabla) {
-            // Obtener las lecturas de la tabla actual
             $lecturasFtvTotal = DB::table('proyectos')
                 ->join('contadores', 'proyectos.ID_COMUNIDAD', '=', 'contadores.ID_COMUNIDAD')
                 ->leftJoin($tabla, 'contadores.ID_CONTADOR', '=', "$tabla.ID_CONTADOR")
@@ -207,14 +200,12 @@ class ComunidadController extends Controller
                     ];
                 }
                 return null;
-            })->filter(); // Eliminar valores nulos
+            })->filter();
     
             // Agregar los resultados a la colección principal
             $lecturasFtvMaxMonth = $lecturasFtvMaxMonth->merge($resultadosMes);
-
         }
     
-        // Pasar los datos a la vista
         return view('welcome', compact('proyectosContadores', 'proyectosContadoresLecturas', 'lecturasFtvMaxMonth'));
     }
          

@@ -235,7 +235,7 @@
                         Producción TOTAL
                     </div>
                     <div class="title">
-                        <span id="produccionFtvTotalLecturaValor"></span> kWh
+                        <span id="ultimaLecturaFTV"></span> kWh
                     </div>
                 </div>
                 <div id="produccionFtvTotal"></div>
@@ -245,7 +245,7 @@
             <div class="card">
                 <div class="top-section">
                     <div class="title">
-                        Potencia DIARIA
+                        Potencia FTV
                     </div>
                     <div class="title">
                         <span id="potenciaFotovoltaicaLecturaValor"></span> kW
@@ -332,15 +332,16 @@
         const dataToneladas = lecturas.filter(item => item.DESCRIPCION === "Toneladas CO2").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
         const dataArboles = lecturas.filter(item => item.DESCRIPCION === "Arboles").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
 
-
         // Función para formatear las fechas para que se muestren correctamente en el gráfico
         const formatDate = (date) => {
             const d = new Date(date);
-            return d.toLocaleDateString('es-ES', {
-                day: 'numeric',
-            });
-        };
+            const day = d.getDate();  // Obtiene el día
+            const month = d.getMonth() + 1;  // Obtiene el mes (recordar que los meses son 0-indexed)
 
+            // Devuelve la fecha con el formato "D-MM" (sin el cero delante del día)
+            return `${day}-${month.toString().padStart(2, '0')}`;
+        };
+       
         const formatDateTime = (date) => {
         const d = new Date(date);
         const options = {
@@ -355,16 +356,20 @@
         return d.toLocaleString('es-ES', options);
     };
 
-    const formatDateDay = (date) => {
+   // Función para formatear la fecha para mostrar la hora y minuto (en formato "HH:mm")
+    const formatDateMinute = (date) => {
         const d = new Date(date);
-        const options = {
-            
-            hour: '2-digit',
-            minute: '2-digit',
-            hour24: true // Esto garantiza que la hora esté en formato de 12 horas (AM/PM)
-        };
-        return d.toLocaleString('es-ES', options);
+        const hours = String(d.getHours()).padStart(2, '0');  
+        const minutes = String(d.getMinutes()).padStart(2, '0');  
+        return `${hours}:${minutes}`;  
     };
+
+    // Generar todas las combinaciones de hora y minuto (de 00:00 a 23:59)
+    const allTimes = Array.from({ length: 24 * 60 }, (_, i) => {
+        const hour = Math.floor(i / 60);  // Hora
+        const minute = i % 60;  // Minuto
+        return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`; 
+    });
 
     const formatDateMonth = (date) => {
         const d = new Date(date);
@@ -390,59 +395,85 @@
     // Actualizar solo el valor actual de las lecturas para cada tipo
     updateLastReadingValue(dataFtvHoy, 'produccionFtvHoyLecturaValor');
     updateLastReadingValue(dataRadiacion, 'radiacionLecturaValor');
-    updateLastReadingValue(dataFtvTotal, 'produccionFtvTotalLecturaValor');
     updateLastReadingValue(dataPotenciaFotovoltaica, 'potenciaFotovoltaicaLecturaValor');
     updateLastReadingValue(dataPotenciaRed, 'potenciaRedLecturaValor');
     updateLastReadingValue(dataPotenciaCargas, 'potenciaCargasLecturaValor');
     updateLastReadingValue(dataToneladas, 'toneladasValor');
     updateLastReadingValue(dataArboles, 'arbolesValor');
 
-    // Función para obtener la última fecha de las lecturas
+    // Función para obtener la última fecha de las lecturas acumuladas
     const updateLastReadingDate = (data) => {
-        const lastItem = data[data.length - 1];
-        if (lastItem) {
+        if (data && data.length > 0) {
+            // Sumar las lecturas de todos los meses
+            const totalReading = data.reduce((sum, item) => sum + parseFloat(item.LECTURA || 0), 0);
+            
+            // Obtener la última fecha (del último dato)
+            const lastItem = data[data.length - 1];
             const lastReadingDate = formatDateTime(lastItem.fecha);  // Formateamos la fecha
-            document.getElementById('ultimaLecturaFecha').innerText = `Últimos valores actualizados: ${lastReadingDate}`;
+
+            // Mostrar la fecha de la última lectura y la suma total
+            document.getElementById('ultimaLecturaFecha').innerText = 
+                // `Últimos valores actualizados: ${lastReadingDate} | Total acumulado: ${totalReading.toFixed(2)} kWh`;
+                `Últimos valores actualizados: ${lastReadingDate}`;
+                
+                // Mostrar la fecha de la última lectura y la suma total
+            document.getElementById('ultimaLecturaFTV').innerText = 
+                ` ${totalReading.toFixed(2)}` ;   
         } else {
             document.getElementById('ultimaLecturaFecha').innerText = 'Última Lectura: No disponible';
         }
     };
 
-    // Actualizar la fecha de la última lectura
+    // Actualizar la fecha de la última lectura y la suma acumulada
     updateLastReadingDate(dataFtvHoy);
 
     // Crear gráfico para Producción FTV Hoy
     Highcharts.chart('produccionFtvHoy', {
         chart: {
-            type: 'column', height: 250 , backgroundColor: 'rgb(235, 229, 229)'
+            type: 'column', 
+            height: 250, 
+            backgroundColor: 'rgb(235, 229, 229)'
         },
         title: false,
         xAxis: {
-            categories: dataFtvHoy.map(item => formatDateDay(item.fecha)),
+            categories: allTimes, 
             labels: { rotation: -45 }
         },
-        yAxis: { title: { text: 'kWh' } },
+        yAxis: {
+            title: { text: 'kWh' }
+        },
         series: [{
             name: 'Producción FTV Hoy',
-            data: dataFtvHoy.map(item => parseFloat(item.LECTURA)),
+            data: allTimes.map(time => {
+                // Buscar los datos para la hora y minuto actuales
+                const found = dataFtvHoy.find(item => formatDateMinute(item.fecha) === time);
+                // Si se encuentra un dato, lo usamos, si no, colocamos null
+                return found ? parseFloat(found.LECTURA) : null;
+            }),
             color: '#4BC0C0'
         }],
         legend: { enabled: false }
     });
-
-    // Crear gráficos para otros datos de la misma manera
+        // Crear el gráfico
     Highcharts.chart('radiacion', {
-        chart: { type: 'column', height: 250 ,  backgroundColor: 'rgb(235, 229, 229)'},
+        chart: { 
+            type: 'column', 
+            height: 250,  
+            backgroundColor: 'rgb(235, 229, 229)'
+        },
         title: false,
-        xAxis: { categories: dataRadiacion.map(item => formatDate(item.fecha)) },
+        xAxis: { 
+            categories: dataRadiacion.map(item => formatDate(item.fecha)),  // Mantenemos todas las fechas
+            labels: { 
+                rotation: -45,
+            }
+        },
         yAxis: { 
-            title: { 
-                text: 'kWh' 
-            },
+            title: { text: 'kWh' }
         },
         series: [{
             name: 'Radiación',
-            data: dataRadiacion.map(item => parseFloat(item.LECTURA)),
+            data: dataRadiacion.map(item => parseFloat(item.LECTURA)),  // Usamos todos los datos originales
             color: '#FF6384'
         }],
         legend: { enabled: false }
@@ -456,14 +487,27 @@
         },
         title: { text: null }, // Eliminar el título si no lo necesitas
         xAxis: { 
-            categories: dataFtvTotal.map(item => item.lectura_fecha.slice(0, 7)), // <-- SOLO "YYYY-MM"
+            categories: ['2024-12', '2025-01', '2025-02', '2025-03', '2025-04', '2025-05', '2025-06',
+                '2025-07', '2025-08', '2025-09', '2025-10', '2025-11', '2025-12'
+            ]
         },
         yAxis: { 
             title: { text: 'kWh' } 
         },
         series: [{
             name: 'Producción FTV Total',
-            data: dataFtvTotal.map(item => parseFloat(item.LECTURA)), // Asegurar valores numéricos
+            data: [
+                ...Array(13).fill(null) // Inicializar con null para los 13 meses
+            ].map((_, index) => {
+                // Definir el mes de la categoría actual
+                const month = ['2024-12', '2025-01', '2025-02', '2025-03', 
+                                '2025-04', '2025-05', '2025-06', '2025-07', '2025-08', '2025-09', 
+                                '2025-10', '2025-11', '2025-12'][index];
+
+                // Buscar el mes correspondiente en dataFtvTotal
+                const found = dataFtvTotal.find(item => item.lectura_fecha.slice(0, 7) === month);
+                return found ? parseFloat(found.LECTURA) : null;
+            }),
             color: '#9966FF'
         }],
         legend: { enabled: false }
