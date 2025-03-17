@@ -31,21 +31,22 @@
             grid-column: span 3;       /* Hace que el encabezado ocupe las 3 columnas */
             display: flex;
             justify-content: space-between;
-            width: 100%;
+            width: 115%;
             margin-bottom: 2%;   
             margin-top: 1%;
+            margin-left: -2%;
+
         }
     
         .header .comunidad {
-            font-size: 30px;
-            font-weight: bold;
+            font-size: 25px;
             color: #333; /* Un color de texto más oscuro para un contraste suave */
             background-color: rgb(235, 229, 229);
             padding: 5px 10px; /* Relleno de texto */
             border-radius: 12px;
             box-shadow: 0 10px 15px rgba(0, 0, 0.1, 0.2); /* Sombra suave y elegante */
             width: 29%;
-            height: 120%;
+            height: 115%;
             text-transform: uppercase; 
             display: flex;
             align-items: center;
@@ -56,7 +57,6 @@
             font-family: 'Roboto', sans-serif; 
         }
 
-            
         .card {
             background-color: rgb(235, 229, 229);
             padding: 13px;             /* Reducido el padding */
@@ -84,7 +84,6 @@
             padding-bottom: 5px; /* Espaciado debajo del título */
         }
 
-    
         .card .top-section {
             display: flex;
             justify-content: space-between;
@@ -190,7 +189,6 @@
             font-weight: bold; 
         }
         
-
     </style>
     
     <body>
@@ -198,8 +196,15 @@
             <!-- Header with Community Name -->
             <div class="header">
                 <div class="comunidad">
-                    {{ preg_replace('/^Enneo - \d+\s*/', '', $proyectosContadoresLecturas[0]->COMUNIDAD) }}
-                </div>
+                    @php
+                    $texto = preg_replace('/^Enneo - \d+\s*/', '', $proyectosContadoresLecturas[0]->COMUNIDAD);
+                    preg_match('/^(\S+)\s*(.*)$/', $texto, $matches);
+                    $primeraPalabra = $matches[1] ?? '';
+                    $restoDelTexto = $matches[2] ?? '';
+                @endphp
+                
+                <strong>{{ $primeraPalabra }}</strong>&nbsp;&nbsp;<span style="font-size: smaller;">{{ $restoDelTexto }}</span>
+            </div>
             </div>
     
             <!-- Producción FTV Hoy -->
