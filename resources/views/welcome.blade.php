@@ -13,18 +13,18 @@
             padding: 0;
             background-color: #aab8bf;            
             overflow: hidden; 
-            margin-left: 15px;
+            margin-left: 0.8%;
         }
     
         .container {
             display: grid;              
             grid-template-columns: repeat(3, 1fr); /* 3 columnas de tamaño igual */
-            gap: 40px;                  /* Espacio entre las columnas */
+            gap: 3%;                  /* Espacio entre las columnas */
             width: 100%;
             height: 100%;
-            padding: 30px;
+            padding: 3%;
             box-sizing: border-box;
-            margin-right: 20px;
+            margin-right: 2%;
         }
     
         .header {
@@ -32,12 +32,12 @@
             display: flex;
             justify-content: space-between;
             width: 100%;
-            margin-bottom: -10px;   
-            margin-top: -10px;
+            margin-bottom: 2%;   
+            margin-top: 1%;
         }
     
         .header .comunidad {
-            font-size: 24px;
+            font-size: 30px;
             font-weight: bold;
             color: #333; /* Un color de texto más oscuro para un contraste suave */
             background-color: rgb(235, 229, 229);
@@ -45,7 +45,7 @@
             border-radius: 12px;
             box-shadow: 0 10px 15px rgba(0, 0, 0.1, 0.2); /* Sombra suave y elegante */
             width: 29%;
-            height: 110%;
+            height: 120%;
             text-transform: uppercase; 
             display: flex;
             align-items: center;
@@ -61,14 +61,15 @@
             background-color: rgb(235, 229, 229);
             padding: 13px;             /* Reducido el padding */
             margin: 0px;
-            left: 20px;
+            margin-bottom: 5%;
+            left: 20%;
             border-radius: 15px;
             box-shadow: 0 10px 15px rgba(0.2, 0.2, 0.2, 0.5); /* Sombra suave y elegante */
             text-align: center;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            height: 280px;            /* Altura ajustada */
+            height: 81%;            /* Altura ajustada */
             width: 90%;               /* Ancho ajustado */
         }
     
@@ -114,16 +115,16 @@
 
         #ultimaLecturaFecha {
             position: fixed;            /* Fija la posición en la pantalla */
-            bottom: 80px;               /* Alinea 10px desde el fondo */
-            left: 41px;                /* Alinea 10px desde la derecha */
+            bottom: 12%;               /* Alinea 10px desde el fondo */
+            left: 3.5%;                /* Alinea 10px desde la derecha */
             font-size: 18px;            /* Ajusta el tamaño de la fuente */
             color: #333;                /* Color del texto */
             background-color: rgb(235, 229, 229);
             padding: 5px 10px;          /* Relleno de texto */
             border-radius: 5px;         /* Bordes redondeados */
             box-shadow: 0 10px 15px rgba(0, 0, 0.1, 0.2); /* Sombra suave y elegante */
-            width: 465px;
-            height: 30px;
+            width: 27%;
+            height: 3%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -132,28 +133,31 @@
         }
 
         #imagen {
-            position: fixed;            
-            bottom: 30px;               /* Alinea 30px desde el fondo */
-            transform: translateX(50%); /* Ajusta el elemento para que quede completamente centrado */
-            font-size: 22px;            /* Ajusta el tamaño de la fuente */   
-            padding: 5px 10px;          /* Relleno de texto */
-            width: 500px;               /* Ancho de la imagen */
-            height: 28px;               /* Altura de la imagen */
-            align-items: center;        /* Alinea los elementos dentro (si es necesario) */
+            position: fixed;
+            bottom: 2.5%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 22px;
+            padding: 5px 10px;
+            width: 50%;
+            height: 4%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         #arboles {
             position: fixed;            /* Fija la posición en la pantalla */
-            bottom: 80px;               /* Alinea 10px desde el fondo */
-            right: 55px;                /* Alinea 10px desde la derecha */
+            bottom: 12%;  
+            right: 4.5%;                /* Alinea 10px desde la derecha */
             font-size: 18px;            /* Ajusta el tamaño de la fuente */
             color: #333;                /* Color del texto */
             background-color: rgb(235, 229, 229);
             padding: 5px 10px;          /* Relleno de texto */
             border-radius: 5px;         /* Bordes redondeados */
             box-shadow: 0 10px 15px rgba(0, 0, 0.1, 0.2); /* Sombra suave y elegante */
-            width: 210px;
-            height: 30px;
+            width: 12%;
+            height: 3%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -163,16 +167,16 @@
 
         #toneladas {
             position: fixed;            /* Fija la posición en la pantalla */
-            bottom: 80px;               /* Alinea 10px desde el fondo */
-            right: 305px;                /* Alinea 10px desde la derecha */
+            bottom: 12%;  ;               /* Alinea 10px desde el fondo */
+            right: 19%;                /* Alinea 10px desde la derecha */
             font-size: 18px;            /* Ajusta el tamaño de la fuente */
             color: #333;                /* Color del texto */
             background-color: rgb(235, 229, 229);
             padding: 5px 10px;          /* Relleno de texto */
             border-radius: 5px;         /* Bordes redondeados */
             box-shadow: 0 10px 15px rgba(0, 0, 0.1, 0.2); /* Sombra suave y elegante */
-            width: 210px;
-            height: 30px;
+            width: 12%;
+            height: 3%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -182,8 +186,8 @@
 
         #toneladas span,
         #arboles span {
-            margin-right: 8px; /* Ajusta el valor según el espacio deseado */
-            font-weight: bold; /* Para resaltar el valor si es necesario */
+            margin-right: 8px; 
+            font-weight: bold; 
         }
         
 

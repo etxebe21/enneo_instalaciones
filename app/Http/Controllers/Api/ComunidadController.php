@@ -16,12 +16,12 @@ class ComunidadController extends Controller
     $proyectosContadores = DB::table('proyectos')
         ->join('contadores', 'proyectos.ID_COMUNIDAD', '=', 'contadores.ID_COMUNIDAD')
         ->select(
-            'proyectos.ID_COMUNIDAD',  // Seleccionamos ID_COMUNIDAD de la tabla 'proyectos'
-            'proyectos.COMUNIDAD',      // Seleccionamos COMUNIDAD de la tabla 'proyectos'
-            'contadores.ID_CONTADOR',   // Seleccionamos ID_CONTADOR de la tabla 'contadores'
-            'contadores.DESCRIPCION',   // Seleccionamos DESCRIPCION de la tabla 'contadores'
-            'contadores.ULTIMA_LECTURA', // Seleccionamos ULTIMA_LECTURA de la tabla 'contadores'
-            'contadores.FECHA'          // Seleccionamos FECHA de la tabla 'contadores'
+            'proyectos.ID_COMUNIDAD',  
+            'proyectos.COMUNIDAD',     
+            'contadores.ID_CONTADOR',  
+            'contadores.DESCRIPCION',   
+            'contadores.ULTIMA_LECTURA', 
+            'contadores.FECHA'          
         )
         ->whereBetween('proyectos.ID_COMUNIDAD', [4895, 5150])
         ->get();
@@ -41,13 +41,13 @@ class ComunidadController extends Controller
             ->leftJoin('lecturas_2025_03', 'contadores.ID_CONTADOR', '=', 'lecturas_2025_03.ID_CONTADOR')
             ->whereBetween('proyectos.ID_COMUNIDAD', [4895, 5150])
             ->select(
-                'proyectos.ID_COMUNIDAD',  // Seleccionamos ID_COMUNIDAD de la tabla 'proyectos'
-                'proyectos.COMUNIDAD',      // Seleccionamos COMUNIDAD de la tabla 'proyectos'
-                'contadores.ID_CONTADOR',   // Seleccionamos ID_CONTADOR de la tabla 'contadores'
-                'contadores.DESCRIPCION',   // Seleccionamos DESCRIPCION de la tabla 'contadores'
-                'lecturas_2025_03.ID_LECTURA',  // Seleccionamos ID_LECTURA de la tabla 'lecturas_2025_03'
-                'lecturas_2025_03.LECTURA',     // Seleccionamos LECTURA de la tabla 'lecturas_2025_03'
-                'lecturas_2025_03.FECHA as lectura_fecha'  // Seleccionamos FECHA de la tabla 'lecturas_2025_03' con alias
+                'proyectos.ID_COMUNIDAD',  
+                'proyectos.COMUNIDAD',      
+                'contadores.ID_CONTADOR',   
+                'contadores.DESCRIPCION',   
+                'lecturas_2025_03.ID_LECTURA',  
+                'lecturas_2025_03.LECTURA',     
+                'lecturas_2025_03.FECHA as lectura_fecha'  
             )
             ->get();  // Aquí ya no envolvemos en JSON, solo obtenemos la colección de datos
     
@@ -58,7 +58,7 @@ class ComunidadController extends Controller
     public function lecturasFtv()
     {
         // Listado de tablas por cada mes
-        $tablas = ['lecturas_2024_12', 'lecturas_2025_01', 'lecturas_2025_02', 'lecturas_2025_03']; // Agrega más si es necesario
+        $tablas = ['lecturas_2024_12', 'lecturas_2025_01', 'lecturas_2025_02', 'lecturas_2025_03']; 
     
         $lecturasFtvMaxMonth = collect(); // Colección vacía para almacenar los datos
     
