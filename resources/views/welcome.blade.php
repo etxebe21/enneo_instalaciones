@@ -432,6 +432,24 @@
     // Actualizar la fecha de la última lectura y la suma acumulada
     updateLastReadingDate(dataFtvHoy);
 
+    // Función para actualizar los datos
+    function actualizarDatos() {
+        
+        updateLastReadingValue(dataFtvHoy, 'produccionFtvHoyLecturaValor');
+        updateLastReadingValue(dataRadiacion, 'radiacionLecturaValor');
+        updateLastReadingValue(dataPotenciaFotovoltaica, 'potenciaFotovoltaicaLecturaValor');
+        updateLastReadingValue(dataPotenciaRed, 'potenciaRedLecturaValor');
+        updateLastReadingValue(dataPotenciaCargas, 'potenciaCargasLecturaValor');
+        updateLastReadingValue(dataToneladas, 'toneladasValor');
+        updateLastReadingValue(dataArboles, 'arbolesValor');
+        updateLastReadingDate(dataFtvHoy);
+
+        console.log("Datos actualizados:", new Date().toLocaleString());
+    }
+
+    // Configurar la actualización automática cada 30 minutos 
+    setInterval(actualizarDatos, 30 * 60 * 1000); 
+
     // Crear gráfico para Producción FTV Hoy
     Highcharts.chart('produccionFtvHoy', {
         chart: {
