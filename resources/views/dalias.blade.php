@@ -32,8 +32,8 @@
             display: flex;
             justify-content: space-between;
             width: 115%;
-            margin-bottom: 3%;   
-            margin-top: 0%;
+            margin-bottom: 6%;   
+            margin-top: 3%;
             margin-left: -2%;
 
         }
@@ -139,8 +139,8 @@
 
         #ultimaLecturaFecha {
             position: fixed;            /* Fija la posición en la pantalla */
-            top: 7%;               /* Alinea 10px desde el fondo */
-            right: 5%;                /* Alinea 10px desde la derecha */
+            margin-top: 3%;               /* Alinea 10px desde el fondo */
+            right: 6%;                /* Alinea 10px desde la derecha */
             font-size: 18px;            /* Ajusta el tamaño de la fuente */
             color: #333;                /* Color del texto */
             background-color: rgb(235, 228, 228);
