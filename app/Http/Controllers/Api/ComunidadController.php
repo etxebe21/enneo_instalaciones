@@ -206,7 +206,7 @@ class ComunidadController extends Controller
             $lecturasFtvMaxMonth = $lecturasFtvMaxMonth->merge($resultadosMes);
         }
     
-        return view('welcome', compact('proyectosContadores', 'proyectosContadoresLecturas', 'lecturasFtvMaxMonth'));
+        return view('dalias', compact('proyectosContadores', 'proyectosContadoresLecturas', 'lecturasFtvMaxMonth'));
     }
          
 }
