@@ -43,4 +43,31 @@ class ComunidadController extends Controller
         // Pasamos los datos a la vista 'dalias'
         return view('dalias', ['proyectosContadores' => $proyectosContadores]);
     }
+
+    public function indexA($id)
+{
+    // Obtener los datos del proyecto para la comunidad
+    $proyectosContadores = DB::table('proyectos')
+        ->join('contadores', 'proyectos.ID_COMUNIDAD', '=', 'contadores.ID_COMUNIDAD')
+        ->select(
+            'proyectos.ID_COMUNIDAD',  
+            'proyectos.COMUNIDAD',     
+            'contadores.ID_CONTADOR',  
+            'contadores.DESCRIPCION',   
+            'contadores.ULTIMA_LECTURA', 
+            'contadores.FECHA'          
+        )
+        ->where('proyectos.ID_COMUNIDAD', $id)
+        ->get();
+
+    // Verifica si tienes datos
+    if ($proyectosContadores->isEmpty()) {
+        // Si no hay datos, responde con un error JSON
+        return response()->json(['error' => 'No se encontraron datos para la comunidad'], 404);
+    }
+
+    // Devuelve los datos en formato JSON
+    return response()->json($proyectosContadores);
+}
+
 }

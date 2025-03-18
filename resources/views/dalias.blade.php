@@ -309,7 +309,6 @@
             <div id="imagen">
                 <img src="{{ asset('almeria.png') }}" alt="Almería">
             </div>   
-
         </div>
     </body>
     
@@ -317,7 +316,8 @@
     <script>
         const proyectosContadores = @json($proyectosContadores);
         console.log(proyectosContadores);
-
+        const ID_COMUNIDAD = @json($proyectosContadores[0]->ID_COMUNIDAD);
+        console.log(ID_COMUNIDAD);
         const dataRadiacion = proyectosContadores.find(item => item.DESCRIPCION === 'Radiacion');
         const dataFtvTotal = proyectosContadores.find(item => item.DESCRIPCION === 'Produccion FTV Total');
         const dataPotenciaFotovoltaica = proyectosContadores.find(item => item.DESCRIPCION === 'Potencia Fotovoltaica');
@@ -346,7 +346,7 @@
             }
         }
 
-        // Inicializar los valores de lectura
+       // Inicializar los valores de lectura
         updateLastReadingValue(dataRadiacion, 'radiacionLecturaValor');
         updateLastReadingValue(dataFtvTotal, 'ultimaLecturaFTV');
         updateLastReadingValue(dataPotenciaFotovoltaica, 'potenciaFotovoltaicaLecturaValor');
@@ -354,29 +354,49 @@
         updateLastReadingValue(dataPotenciaCargas, 'potenciaCargasLecturaValor');
         updateLastReadingValue(dataToneladas, 'toneladasValor');
         updateLastReadingValue(dataArboles, 'arbolesValor');
-
-        // Actualizar la fecha de la última lectura
         updateLastReadingDate();
 
-        // Configurar la actualización automática cada 5 minutos 
+        // Configurar la actualización automática cada 5 minutos
         setInterval(actualizarDatos, 5 * 60 * 1000);
 
-        // Función para actualizar los datos cada 5 minutos
         function actualizarDatos() {
-            fetch('/ruta-a-los-datos-actualizados')
-                .then(response => response.json())
-                .then(data => {
-                    updateLastReadingValue(data.radiacion, 'radiacionLecturaValor');
-                    updateLastReadingValue(data.potenciaFotovoltaica, 'potenciaFotovoltaicaLecturaValor');
-                    updateLastReadingValue(data.potenciaRed, 'potenciaRedLecturaValor');
-                    updateLastReadingValue(data.potenciaCargas, 'potenciaCargasLecturaValor');
-                    updateLastReadingValue(data.toneladas, 'toneladasValor');
-                    updateLastReadingValue(data.arboles, 'arbolesValor');
-                    console.log("Datos actualizados:", new Date().toLocaleString());
-                })
-                .catch(error => console.error("Error al obtener los datos:", error));
-        }
+            console.log("Iniciando actualización de datos...");
 
+            let comunidadId = ID_COMUNIDAD;
+            let url = `/comunidad/${comunidadId}/actualizado`;
+
+            fetch(url)
+                .then(response => response.json())  // Convertir la respuesta a JSON
+                .then(data => {
+                    console.log("Datos actualizados:", data, new Date().toLocaleString());
+
+                    // Reemplazar proyectosContadores con los nuevos datos
+                    proyectosContadores.length = 0; // Vaciar el array sin perder la referencia
+                    proyectosContadores.push(...data); // Agregar los nuevos valores
+
+                    // Actualizar las variables con los nuevos datos
+                    const dataRadiacion = proyectosContadores.find(item => item.DESCRIPCION === 'Radiacion');
+                    const dataFtvTotal = proyectosContadores.find(item => item.DESCRIPCION === 'Produccion FTV Total');
+                    const dataPotenciaFotovoltaica = proyectosContadores.find(item => item.DESCRIPCION === 'Potencia Fotovoltaica');
+                    const dataPotenciaRed = proyectosContadores.find(item => item.DESCRIPCION === 'Potencia Red');
+                    const dataPotenciaCargas = proyectosContadores.find(item => item.DESCRIPCION === 'Potencia Cargas');
+                    const dataToneladas = proyectosContadores.find(item => item.DESCRIPCION === 'Toneladas CO2');
+                    const dataArboles = proyectosContadores.find(item => item.DESCRIPCION === 'Arboles');
+
+                    // Actualizar los valores en la página
+                    updateLastReadingValue(dataRadiacion, 'radiacionLecturaValor');
+                    updateLastReadingValue(dataFtvTotal, 'ultimaLecturaFTV');
+                    updateLastReadingValue(dataPotenciaFotovoltaica, 'potenciaFotovoltaicaLecturaValor');
+                    updateLastReadingValue(dataPotenciaRed, 'potenciaRedLecturaValor');
+                    updateLastReadingValue(dataPotenciaCargas, 'potenciaCargasLecturaValor');
+                    updateLastReadingValue(dataToneladas, 'toneladasValor');
+                    updateLastReadingValue(dataArboles, 'arbolesValor');
+                    updateLastReadingDate();
+                })
+                .catch(error => {
+                    console.error("Error al obtener los datos:", error);
+                });
+        }
 
     </script>
 </body>
