@@ -13,7 +13,7 @@
             padding: 0;
             background-color: #aab8bf;            
             overflow: hidden; 
-            margin-left: 0.8%;
+            margin-left: 1.8%;
         }
     
         .container {
@@ -222,7 +222,7 @@
             <div class="header">
                 <div class="comunidad">
                     @php
-                    $texto = preg_replace('/^Enneo - \d+\s*/', '', $proyectosContadoresLecturas[0]->COMUNIDAD);
+                    $texto = preg_replace('/^Enneo - \d+\s*/', '', $proyectosContadores[0]->COMUNIDAD);
                     preg_match('/^(\S+)\s*(.*)$/', $texto, $matches);
                     $primeraPalabra = $matches[1] ?? '';
                     $restoDelTexto = $matches[2] ?? '';
@@ -315,154 +315,68 @@
     
 
     <script>
-        // Datos de las lecturas 
-        const lecturas = @json($proyectosContadoresLecturas);
-        const lecturasFtv=@json($lecturasFtvMaxMonth);
-       
-        let dataFtvTotal = Object.values(lecturasFtv);
-        const getLastDayData = (data) => {
-            const lastDate = new Date(Math.max(...data.map(item => new Date(item.fecha))));
-            return data.filter(item => new Date(item.fecha).toDateString() === lastDate.toDateString());
-        };
+        const proyectosContadores = @json($proyectosContadores);
+        console.log(proyectosContadores);
 
-        // Filtrar los datos de Producción FTV Hoy (último día)
-        const dataFtvHoy = getLastDayData(lecturas.filter(item => item.DESCRIPCION === "Produccion FTV Hoy").map(item => ({
-            fecha: item.lectura_fecha,
-            LECTURA: item.LECTURA
-        })));
+        const dataRadiacion = proyectosContadores.find(item => item.DESCRIPCION === 'Radiacion');
+        const dataFtvTotal = proyectosContadores.find(item => item.DESCRIPCION === 'Produccion FTV Total');
+        const dataPotenciaFotovoltaica = proyectosContadores.find(item => item.DESCRIPCION === 'Potencia Fotovoltaica');
+        const dataPotenciaRed = proyectosContadores.find(item => item.DESCRIPCION === 'Potencia Red');
+        const dataPotenciaCargas = proyectosContadores.find(item => item.DESCRIPCION === 'Potencia Cargas');
+        const dataToneladas = proyectosContadores.find(item => item.DESCRIPCION === 'Toneladas CO2');
+        const dataArboles = proyectosContadores.find(item => item.DESCRIPCION === 'Arboles');
 
-        // Filtramos los datos por "DESCRIPCION" y guardamos tanto la fecha como la lectura
-        const dataRadiacion = lecturas.filter(item => item.DESCRIPCION === "Radiacion")
-        .map(item => ({ fecha: new Date(item.lectura_fecha), LECTURA: item.LECTURA }))
-        .sort((a, b) => a.fecha - b.fecha); // Ordenar por fecha de menor a mayor
-
-        const dataPotenciaFotovoltaica = lecturas.filter(item => item.DESCRIPCION === "Potencia Fotovoltaica")
-            .map(item => ({ fecha: new Date(item.lectura_fecha), LECTURA: item.LECTURA }))
-            .sort((a, b) => a.fecha - b.fecha); // Ordenar por fecha de menor a mayor
-
-        const dataPotenciaRed = lecturas.filter(item => item.DESCRIPCION === "Potencia Red")
-            .map(item => ({ fecha: new Date(item.lectura_fecha), LECTURA: item.LECTURA }))
-            .sort((a, b) => a.fecha - b.fecha); // Ordenar por fecha de menor a mayor
-
-        const dataPotenciaCargas = lecturas.filter(item => item.DESCRIPCION === "Potencia Cargas")
-            .map(item => ({ fecha: new Date(item.lectura_fecha), LECTURA: item.LECTURA }))
-            .sort((a, b) => a.fecha - b.fecha); // Ordenar por fecha de menor a mayor
-
-        const dataToneladas = lecturas.filter(item => item.DESCRIPCION === "Toneladas CO2").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
-        const dataArboles = lecturas.filter(item => item.DESCRIPCION === "Arboles").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
-
-        // Función para formatear las fechas para que se muestren correctamente en el gráfico
-        const formatDate = (date) => {
-            const d = new Date(date);
-            const day = d.getDate();  // Obtiene el día
-            const month = d.getMonth() + 1;  // Obtiene el mes (recordar que los meses son 0-indexed)
-
-            // Devuelve la fecha con el formato "D-MM" (sin el cero delante del día)
-            return `${day}-${month.toString().padStart(2, '0')}`;
-        };
-       
-        const formatDateTime = (date) => {
-        const d = new Date(date);
-        const options = {
-            year: 'numeric',
-            month: 'numeric',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour24: true // Esto garantiza que la hora esté en formato de 12 horas (AM/PM)
-        };
-        return d.toLocaleString('es-ES', options);
-    };
-
-   // Función para formatear la fecha para mostrar la hora y minuto (en formato "HH:mm")
-    const formatDateMinute = (date) => {
-        const d = new Date(date);
-        const hours = String(d.getHours()).padStart(2, '0');  
-        const minutes = String(d.getMinutes()).padStart(2, '0');  
-        return `${hours}:${minutes}`;  
-    };
-
-    // Generar todas las combinaciones de hora y minuto (de 00:00 a 23:59)
-    const allTimes = Array.from({ length: 24 * 60 }, (_, i) => {
-        const hour = Math.floor(i / 60);  // Hora
-        const minute = i % 60;  // Minuto
-        return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`; 
-    });
-
-    const formatDateMonth = (date) => {
-        const d = new Date(date);
-        const options = {
-            
-            month: 'numeric',
-            year: 'numeric'
-
-        };
-        return d.toLocaleString('es-ES', options);
-    };
-
-    // Función para actualizar solo el valor de la lectura en la interfaz
-    const updateLastReadingValue = (data, lecturaValorElementId) => {
-        const lastItem = data[data.length - 1];
-        if (lastItem) {
-            document.getElementById(lecturaValorElementId).innerText = lastItem.LECTURA;
-        } else {
-            document.getElementById(lecturaValorElementId).innerText = 'No disponible';
+        // Función para actualizar los valores de lectura
+        function updateLastReadingValue(data, elementId) {
+            const valueElement = document.getElementById(elementId);
+            if (data && valueElement) {
+                valueElement.innerText = data.ULTIMA_LECTURA || "No disponible";
+            }
         }
-    };
 
-    // Actualizar solo el valor actual de las lecturas para cada tipo
-    // updateLastReadingValue(dataFtvHoy, 'produccionFtvHoyLecturaValor');
-    updateLastReadingValue(dataRadiacion, 'radiacionLecturaValor');
-    updateLastReadingValue(dataPotenciaFotovoltaica, 'potenciaFotovoltaicaLecturaValor');
-    updateLastReadingValue(dataPotenciaRed, 'potenciaRedLecturaValor');
-    updateLastReadingValue(dataPotenciaCargas, 'potenciaCargasLecturaValor');
-    updateLastReadingValue(dataToneladas, 'toneladasValor');
-    updateLastReadingValue(dataArboles, 'arbolesValor');
-
-    // Función para obtener la última fecha de las lecturas acumuladas
-    const updateLastReadingDate = (data) => {
-        if (data && data.length > 0) {
-            // Sumar las lecturas de todos los meses
-            const totalReading = data.reduce((sum, item) => sum + parseFloat(item.LECTURA || 0), 0);
-            
-            // Obtener la última fecha (del último dato)
-            const lastItem = data[data.length - 1];
-            const lastReadingDate = formatDateTime(lastItem.fecha);  // Formateamos la fecha
-
-            // Mostrar la fecha de la última lectura y la suma total
-            document.getElementById('ultimaLecturaFecha').innerText = 
-                // `Últimos valores actualizados: ${lastReadingDate} | Total acumulado: ${totalReading.toFixed(2)} kWh`;
-                `Últimos valores actualizados: ${lastReadingDate}`;
-                
-                // Mostrar la fecha de la última lectura y la suma total
-            document.getElementById('ultimaLecturaFTV').innerText = 
-                ` ${totalReading.toFixed(2)}` ;   
-        } else {
-            document.getElementById('ultimaLecturaFecha').innerText = 'Última Lectura: No disponible';
+        // Actualizar la fecha de la última lectura usando solo dataFtvTotal
+        function updateLastReadingDate() {
+            const dateElement = document.getElementById('ultimaLecturaFecha');
+            if (dataFtvTotal && dataFtvTotal.FECHA) {
+                const formattedDate = new Date(dataFtvTotal.FECHA).toLocaleString(); // Formateamos la fecha
+                dateElement.innerText = `Última lectura: ${formattedDate}`;
+                console.log("Fecha de la última lectura:", formattedDate);
+            } else {
+                dateElement.innerText = "Última lectura: No disponible";
+            }
         }
-    };
 
-    // // Actualizar la fecha de la última lectura y la suma acumulada
-    updateLastReadingDate(dataFtvHoy);
-
-    // Función para actualizar los datos
-    function actualizarDatos() {
-        
-        updateLastReadingValue(dataFtvHoy, 'produccionFtvHoyLecturaValor');
+        // Inicializar los valores de lectura
         updateLastReadingValue(dataRadiacion, 'radiacionLecturaValor');
+        updateLastReadingValue(dataFtvTotal, 'ultimaLecturaFTV');
         updateLastReadingValue(dataPotenciaFotovoltaica, 'potenciaFotovoltaicaLecturaValor');
         updateLastReadingValue(dataPotenciaRed, 'potenciaRedLecturaValor');
         updateLastReadingValue(dataPotenciaCargas, 'potenciaCargasLecturaValor');
         updateLastReadingValue(dataToneladas, 'toneladasValor');
         updateLastReadingValue(dataArboles, 'arbolesValor');
-        updateLastReadingDate(dataFtvHoy);
 
-        console.log("Datos actualizados:", new Date().toLocaleString());
-    }
+        // Actualizar la fecha de la última lectura
+        updateLastReadingDate();
 
-    // Configurar la actualización automática cada 30 minutos 
-    setInterval(actualizarDatos, 30 * 60 * 1000); 
+        // Configurar la actualización automática cada 5 minutos 
+        setInterval(actualizarDatos, 5 * 60 * 1000);
+
+        // Función para actualizar los datos cada 5 minutos
+        function actualizarDatos() {
+            fetch('/ruta-a-los-datos-actualizados')
+                .then(response => response.json())
+                .then(data => {
+                    updateLastReadingValue(data.radiacion, 'radiacionLecturaValor');
+                    updateLastReadingValue(data.potenciaFotovoltaica, 'potenciaFotovoltaicaLecturaValor');
+                    updateLastReadingValue(data.potenciaRed, 'potenciaRedLecturaValor');
+                    updateLastReadingValue(data.potenciaCargas, 'potenciaCargasLecturaValor');
+                    updateLastReadingValue(data.toneladas, 'toneladasValor');
+                    updateLastReadingValue(data.arboles, 'arbolesValor');
+                    console.log("Datos actualizados:", new Date().toLocaleString());
+                })
+                .catch(error => console.error("Error al obtener los datos:", error));
+        }
+
 
     </script>
 </body>
