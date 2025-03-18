@@ -9,117 +9,6 @@ use Illuminate\Http\Request;
 class ComunidadController extends Controller
 {
    
-    public function getInstalacionesProyecto($ID_PROYECTO ){
-
-        $response = array();
-        $instalaciones = DB::table('instalaciones')
-                     ->join('instalaciones_proyecto', 'instalaciones.ID_INSTALACION', 'instalaciones_proyecto.ID_INSTALACION')
-                     ->where('ID_PROYECTO', $ID_PROYECTO)
-                     ->get();
-        foreach($instalaciones as $instalacion){
-            $nombre =$this->parseDiablo($instalacion->DESCRIPCION);
-            array_push($response, $nombre);
-        }
-        return $response;
-    }
-
-    public function getReferenciaDatosInstalacion($ID_INSTALACION){
-        $response =  array();
-        $referencias = DB::table('instalaciones_referencias_datos')->where('ID_INSTALACION', $ID_INSTALACION)->get();
-        if($referencias){
-            foreach($referencias as $referencia){
-                array_push($response, array(
-                    'ID_INSTALACION'=>$referencia->ID_INSTALACION,
-                    'ID_REFERENCIA'=>$referencia->ID_REFERENCIA,
-                    'DESCRIPCION_REFERENCIA'=>$referencia->DESCRIPCION_REFERENCIA
-                ));
-            }
-        }else{
-            $response =  false;
-        }
-        return $response;
-    }
-
-    public function lecturasFtvEnneo($ID_PROYECTO)
-    {
-        // Obtener las instalaciones del proyecto
-        $instalaciones = $this->getInstalacionesProyecto($ID_PROYECTO);
-    
-        // Obtener referencias de datos (ID_REFERENCIA será ID_CONTADOR)
-        $id_contadores = [];
-        foreach ($instalaciones as $instalacion) {
-            $referencias = $this->getReferenciaDatosInstalacion($instalacion);
-            if ($referencias) {
-                foreach ($referencias as $ref) {
-                    $id_contadores[] = $ref['ID_REFERENCIA']; // ID_REFERENCIA será el nuevo ID_CONTADOR
-                }
-            }
-        }
-    
-        // Si no hay ID_CONTADORES, retornamos vacío
-        if (empty($id_contadores)) {
-            return [];
-        }
-    
-        // Listado de tablas por cada mes
-        $tablas = ['lecturas_2024_12', 'lecturas_2025_01', 'lecturas_2025_02', 'lecturas_2025_03']; 
-    
-        $lecturasFtvMaxMonth = collect(); // Colección vacía para almacenar los datos
-    
-        foreach ($tablas as $tabla) {
-            $lecturasFtvTotal = DB::connection('mysql_monitorizacion') 
-                ->table('proyectos')
-                ->join('contadores', 'proyectos.ID_COMUNIDAD', '=', 'contadores.ID_COMUNIDAD')
-                ->leftJoin($tabla, 'contadores.ID_CONTADOR', '=', "$tabla.ID_CONTADOR")
-                ->whereBetween('proyectos.ID_COMUNIDAD', [4895, 5150])
-                ->whereIn('contadores.ID_CONTADOR', $id_contadores) // Filtrar por los ID_CONTADORES obtenidos
-                ->select(
-                    'proyectos.ID_COMUNIDAD',
-                    'proyectos.COMUNIDAD',
-                    'contadores.ID_CONTADOR',
-                    'contadores.DESCRIPCION',
-                    "$tabla.LECTURA as LECTURA",
-                    "$tabla.FECHA as lectura_fecha"
-                )
-                ->orderBy("$tabla.FECHA", 'asc')
-                ->get();
-    
-            // Agrupar por mes
-            $lecturasFtvTotalGrouped = $lecturasFtvTotal->groupBy(function ($date) {
-                return \Carbon\Carbon::parse($date->lectura_fecha)->format('Y-m');
-            });
-    
-            // Obtener primer y último valor de cada mes
-            $resultadosMes = $lecturasFtvTotalGrouped->map(function ($group) {
-                if ($group->count() >= 2) {
-                    $group = $group->sortBy('lectura_fecha'); // Ordenar por fecha ascendente
-    
-                    $primer_valor = (float) $group->first()->LECTURA;
-                    $ultimo_valor = (float) $group->last()->LECTURA;
-                    $consumo = $ultimo_valor - $primer_valor;
-    
-                    return [
-                        "lectura_fecha" => $group->first()->lectura_fecha,
-                        "ID_COMUNIDAD" => $group->first()->ID_COMUNIDAD,
-                        "COMUNIDAD" => $group->first()->COMUNIDAD,
-                        "ID_CONTADOR" => $group->first()->ID_CONTADOR,
-                        "DESCRIPCION" => $group->first()->DESCRIPCION,
-                        "primer_valor" => $primer_valor,
-                        "ultimo_valor" => $ultimo_valor,
-                        "LECTURA" => $consumo
-                    ];
-                }
-                return null;
-            })->filter(); 
-    
-            // Agregar resultados a la colección principal
-            $lecturasFtvMaxMonth = $lecturasFtvMaxMonth->merge($resultadosMes);
-        }
-    
-        return $lecturasFtvMaxMonth->values(); // Devolver valores en formato de array
-    }
-    
-
     public function getProyectosConContadores()
     {
         $proyectosContadores = DB::table('proyectos')
@@ -200,7 +89,7 @@ class ComunidadController extends Controller
     
     public function index()
     {
-        // $proyectosContadoresLecturas = $this->lecturasInstalaciones();
+        $proyectosContadoresLecturas = $this->lecturasInstalaciones();
         $proyectosContadores = $this->getProyectosConContadores();
         $lecturasFtvMaxMonth = $this->lecturasFtv();
 
@@ -208,7 +97,7 @@ class ComunidadController extends Controller
         return view('welcome', ['proyectosContadoresLecturas' => $proyectosContadoresLecturas, 'proyectosContadores' => $proyectosContadores, 'lecturasFtvMaxMonth'=>$lecturasFtvMaxMonth]);
     }
 
-    public function showPanel($id)
+    public function show($id)
     {
         $proyectosContadores = DB::table('proyectos')
             ->join('contadores', 'proyectos.ID_COMUNIDAD', '=', 'contadores.ID_COMUNIDAD')
@@ -261,14 +150,6 @@ class ComunidadController extends Controller
 
         // Agregar las lecturas a la colección de resultados
         $proyectosContadoresLecturas = $proyectosContadoresLecturas->merge($lecturas);
-        $comunidad =  $proyectosContadoresLecturas[0]->COMUNIDAD ;
-        // Usar una expresión regular para extraer los datos
-        if (preg_match('/^\w+\s-\s(\d+)\s(\w+)\s(.+)$/', $comunidad, $matches)) {
-            $contador = $matches[1];      // 2601
-            $poblacion = $matches[2];     // Dalias
-
-            // Extraer la parte final quitando la primera palabra después del número
-            $instalacion = preg_replace('/^\w+\s/', '', $matches[3]);
     }
             
         // Definir las tablas por mes (Añadir más meses si es necesario)
@@ -325,8 +206,7 @@ class ComunidadController extends Controller
             $lecturasFtvMaxMonth = $lecturasFtvMaxMonth->merge($resultadosMes);
         }
     
-        return view('welcome', compact('proyectosContadores', 'proyectosContadoresLecturas', 'lecturasFtvMaxMonth', 'contador', 'poblacion', 'instalacion'));
+        return view('welcome', compact('proyectosContadores', 'proyectosContadoresLecturas', 'lecturasFtvMaxMonth'));
     }
          
-    }
 }
