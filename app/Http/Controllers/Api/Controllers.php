@@ -115,11 +115,11 @@ class Controllers extends Controller
     // Obtener el último dato de cada 'DESCRIPCION' de contadores
     $ultimoDatoPorDescripcion = DB::table('proyectos')
     ->join('contadores', 'proyectos.ID_COMUNIDAD', '=', 'contadores.ID_COMUNIDAD')
-    ->leftJoin('lecturas_2025_03', 'contadores.ID_CONTADOR', '=', 'lecturas_2025_03.ID_CONTADOR')
+    ->leftJoin('lecturas', 'contadores.ID_CONTADOR', '=', 'lecturas.ID_CONTADOR')
     ->where('proyectos.ID_COMUNIDAD', $id)
     ->select(
         'contadores.DESCRIPCION',
-        DB::raw('MAX(lecturas_2025_03.FECHA) as ultima_lectura_fecha'),  // Última fecha de lectura de lecturas_2025_03
+        DB::raw('MAX(lecturas.FECHA) as ultima_lectura_fecha'),  // Última fecha de lectura de lecturas
     )
     ->groupBy('contadores.DESCRIPCION')
     ->get();
@@ -134,18 +134,18 @@ class Controllers extends Controller
         // Obtener las lecturas de las instalaciones para la comunidad seleccionada en el rango de los últimos 7 días
         $lecturas = DB::table('proyectos')
             ->join('contadores', 'proyectos.ID_COMUNIDAD', '=', 'contadores.ID_COMUNIDAD')
-            ->leftJoin('lecturas_2025_03', 'contadores.ID_CONTADOR', '=', 'lecturas_2025_03.ID_CONTADOR')
+            ->leftJoin('lecturas', 'contadores.ID_CONTADOR', '=', 'lecturas.ID_CONTADOR')
             ->where('proyectos.ID_COMUNIDAD', $id)
             ->where('contadores.DESCRIPCION', $descripcion->DESCRIPCION)
-            ->where('lecturas_2025_03.FECHA', '>=', $fechaLimite)  
+            ->where('lecturas.FECHA', '>=', $fechaLimite)  
             ->select(
                 'proyectos.ID_COMUNIDAD', 
                 'proyectos.COMUNIDAD', 
                 'contadores.ID_CONTADOR', 
                 'contadores.DESCRIPCION', 
-                'lecturas_2025_03.ID_LECTURA',
-                'lecturas_2025_03.LECTURA',
-                'lecturas_2025_03.FECHA as lectura_fecha'
+                'lecturas.ID_LECTURA',
+                'lecturas.LECTURA',
+                'lecturas.FECHA as lectura_fecha'
             )
             ->get();
 
