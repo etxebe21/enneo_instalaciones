@@ -213,6 +213,152 @@
             margin-right: 8px; 
             font-weight: bold; 
         }
+/* 
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #aab8bf;
+    overflow-y: auto;
+    height: 100vh;
+}
+
+/* 📌 HEADER FIJO ARRIBA 
+ .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: rgb(235, 228, 228);
+    padding: 10px 0;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.header .comunidad {
+    font-size: 25px;
+    color: #333;
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: bold;
+    letter-spacing: 0.6px;
+    font-family: 'Roboto', sans-serif;
+}
+
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3%;
+    width: 100%;
+    padding: 3%;
+    box-sizing: border-box;
+    margin-top: 70px; 
+}
+
+
+.card {
+    background-color: rgb(235, 228, 228);
+    padding: 13px;
+    border-radius: 15px;
+    box-shadow: 0 10px 15px rgba(0.2, 0.2, 0.2, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 90%;
+    max-width: 350px; 
+}
+
+.card .title {
+    font-size: 25px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.card .valor {
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 15px;
+    color: #4d4c4c;
+} 
+
+.ultima-lectura-card {
+    background-color: rgb(235, 228, 228);
+    padding: 13px;
+    border-radius: 15px;
+    box-shadow: 0 10px 15px rgba(0.2, 0.2, 0.2, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#imagen {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 500px;
+    max-height: 20vh;
+    text-align: center;
+    background-color: white;
+    padding: 10px 0;
+    box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.1);
+}
+
+#imagen img {
+    width: 100%;
+    height: auto;
+    max-height: 20vh;
+    object-fit: contain;
+}
+
+/* 📌 ESTILO PARA MÓVILES 
+@media screen and (max-width: 768px) {
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        gap: 20px;
+        padding-bottom: 80px;
+        margin-top: 70px; 
+    }
+
+    .card {
+        width: 85%;
+        max-width: 320px; 
+    }
+
+    .card .title {
+        font-size: 22px;
+    }
+
+    .card .valor {
+        font-size: 20px;
+    }
+
+    #imagen {
+        max-width: 100%;
+        max-height: 12vh;
+    }
+
+    #imagen img {
+        max-height: 12vh;
+    }
+} */ 
+
         
     </style>
     
