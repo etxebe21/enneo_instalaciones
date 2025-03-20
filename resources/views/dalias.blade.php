@@ -193,7 +193,7 @@
             position: fixed;            /* Fija la posición en la pantalla */
             bottom: 12%;  ;               /* Alinea 10px desde el fondo */
             right: 19%;                /* Alinea 10px desde la derecha */
-            font-size: 18px;            /* Ajusta el tamaño de la fuente */
+            font-size: 17px;            /* Ajusta el tamaño de la fuente */
             color: #333;                /* Color del texto */
             background-color: rgb(235, 229, 229);
             padding: 5px 10px;          /* Relleno de texto */
@@ -346,6 +346,19 @@
             }
         }
 
+     // Función para actualizar los valores de lectura
+        function updateLastReadingValueArboles(data, elementId) {
+            const valueElement = document.getElementById(elementId);
+            if (data && valueElement) {
+                // Asegurarse de que 'ULTIMA_LECTURA' existe y eliminar los decimales
+                const lectura = Math.floor(data.ULTIMA_LECTURA); // Redondea hacia abajo
+
+                // Actualizar el contenido del elemento con el valor sin decimales
+                valueElement.innerText = lectura || "No disponible";
+            }
+        }
+
+
        // Inicializar los valores de lectura
         updateLastReadingValue(dataRadiacion, 'radiacionLecturaValor');
         updateLastReadingValue(dataFtvTotal, 'ultimaLecturaFTV');
@@ -353,7 +366,7 @@
         updateLastReadingValue(dataPotenciaRed, 'potenciaRedLecturaValor');
         updateLastReadingValue(dataPotenciaCargas, 'potenciaCargasLecturaValor');
         updateLastReadingValue(dataToneladas, 'toneladasValor');
-        updateLastReadingValue(dataArboles, 'arbolesValor');
+        updateLastReadingValueArboles(dataArboles, 'arbolesValor');
         updateLastReadingDate();
 
         // Configurar la actualización automática cada 5 minutos
@@ -382,7 +395,6 @@
                     const dataPotenciaCargas = proyectosContadores.find(item => item.DESCRIPCION === 'Potencia Cargas');
                     const dataToneladas = proyectosContadores.find(item => item.DESCRIPCION === 'Toneladas CO2');
                     const dataArboles = proyectosContadores.find(item => item.DESCRIPCION === 'Arboles');
-
                     // Actualizar los valores en la página
                     updateLastReadingValue(dataRadiacion, 'radiacionLecturaValor');
                     updateLastReadingValue(dataFtvTotal, 'ultimaLecturaFTV');

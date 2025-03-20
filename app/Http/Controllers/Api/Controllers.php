@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
-class ComunidadController extends Controller
+class Controllers extends Controller
 {
    
     public function getProyectosConContadores()
@@ -115,11 +115,11 @@ class ComunidadController extends Controller
     // Obtener el último dato de cada 'DESCRIPCION' de contadores
     $ultimoDatoPorDescripcion = DB::table('proyectos')
     ->join('contadores', 'proyectos.ID_COMUNIDAD', '=', 'contadores.ID_COMUNIDAD')
-    ->leftJoin('lecturas', 'contadores.ID_CONTADOR', '=', 'lecturas.ID_CONTADOR')
+    ->leftJoin('lecturas_2025_03', 'contadores.ID_CONTADOR', '=', 'lecturas_2025_03.ID_CONTADOR')
     ->where('proyectos.ID_COMUNIDAD', $id)
     ->select(
         'contadores.DESCRIPCION',
-        DB::raw('MAX(lecturas.FECHA) as ultima_lectura_fecha'),  // Última fecha de lectura de lecturas_2025_03
+        DB::raw('MAX(lecturas_2025_03.FECHA) as ultima_lectura_fecha'),  // Última fecha de lectura de lecturas_2025_03
     )
     ->groupBy('contadores.DESCRIPCION')
     ->get();
@@ -134,18 +134,18 @@ class ComunidadController extends Controller
         // Obtener las lecturas de las instalaciones para la comunidad seleccionada en el rango de los últimos 7 días
         $lecturas = DB::table('proyectos')
             ->join('contadores', 'proyectos.ID_COMUNIDAD', '=', 'contadores.ID_COMUNIDAD')
-            ->leftJoin('lecturas', 'contadores.ID_CONTADOR', '=', 'lecturas.ID_CONTADOR')
+            ->leftJoin('lecturas_2025_03', 'contadores.ID_CONTADOR', '=', 'lecturas_2025_03.ID_CONTADOR')
             ->where('proyectos.ID_COMUNIDAD', $id)
             ->where('contadores.DESCRIPCION', $descripcion->DESCRIPCION)
-            ->where('lecturas.FECHA', '>=', $fechaLimite)  
+            ->where('lecturas_2025_03.FECHA', '>=', $fechaLimite)  
             ->select(
                 'proyectos.ID_COMUNIDAD', 
                 'proyectos.COMUNIDAD', 
                 'contadores.ID_CONTADOR', 
                 'contadores.DESCRIPCION', 
-                'lecturas.ID_LECTURA',
-                'lecturas.LECTURA',
-                'lecturas.FECHA as lectura_fecha'
+                'lecturas_2025_03.ID_LECTURA',
+                'lecturas_2025_03.LECTURA',
+                'lecturas_2025_03.FECHA as lectura_fecha'
             )
             ->get();
 
@@ -206,8 +206,7 @@ class ComunidadController extends Controller
             // Agregar los resultados a la colección principal
             $lecturasFtvMaxMonth = $lecturasFtvMaxMonth->merge($resultadosMes);
         }
-    
-        return view('dalias', compact('proyectosContadores', 'proyectosContadoresLecturas', 'lecturasFtvMaxMonth'));
+        // dd($proyectosContadoresLecturas, $proyectosContadores, $lecturasFtvMaxMonth);
+        return view('welcome', compact('proyectosContadores', 'proyectosContadoresLecturas', 'lecturasFtvMaxMonth'));
     }
-         
 }

@@ -335,7 +335,11 @@
             .sort((a, b) => a.fecha - b.fecha); // Ordenar por fecha de menor a mayor
 
         const dataToneladas = lecturas.filter(item => item.DESCRIPCION === "Toneladas CO2").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
-        const dataArboles = lecturas.filter(item => item.DESCRIPCION === "Arboles").map(item => ({ fecha: item.lectura_fecha, LECTURA: item.LECTURA }));
+        const dataArboles = lecturas.filter(item => item.DESCRIPCION === "Arboles")
+            .map(item => ({
+                fecha: item.lectura_fecha,
+                LECTURA: Math.floor(item.LECTURA)  // Redondea hacia abajo, eliminando decimales
+            }));
 
         // Función para formatear las fechas para que se muestren correctamente en el gráfico
         const formatDate = (date) => {
