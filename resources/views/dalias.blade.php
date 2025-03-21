@@ -226,11 +226,12 @@
 
     .header {
         position: fixed;
-        top: -2%; /* Ajustar para que se quede en la parte superior */
+        top: 0.5%; /* Ajustar para que se quede en la parte superior */
         left: 0;
         width: 110%;
+        height: 3.5%;
         background-color: rgb(235, 228, 228);
-        padding: 10px 0;
+        padding: 7px 0;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -238,9 +239,12 @@
     }
 
     .header .comunidad {
-        font-size: 22px;
+        font-size: 21px;
         font-weight: bold;
         text-transform: uppercase;
+        background-color: transparent;
+        border:none;
+        box-shadow: none;
     }
 
     .container {
@@ -249,7 +253,7 @@
         align-items: center;
         width: 100%;
         gap: 5px; /* Reducir el espacio entre las tarjetas */
-        margin-top: 60px; /* Dejar espacio suficiente para el header fijo */
+        margin-top: 25%; /* Dejar espacio suficiente para el header fijo */
         padding-bottom: 60px;
         
     }
@@ -273,7 +277,7 @@
     }
     #imagen {
     
-        bottom: -7%;
+        top: -7%;
         width: 100%; /* El footer ocupa todo el ancho */
         height: 15vh; /* Mantener la altura del footer */
         display: flex;
@@ -284,7 +288,7 @@
 
     #imagen img {
         width: 100%; /* La imagen ocupa todo el ancho */
-        height: 130%; /* La imagen se ajusta también en altura */
+        height: 150%; /* La imagen se ajusta también en altura */
         object-fit: contain; /* Asegura que la imagen se vea completa sin recorte */
     }
     #ultimaLecturaFecha {
@@ -294,8 +298,7 @@
         border-radius: 12px;
         box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
         text-align: center;
-        bottom: -2%;
-        margin-bottom: 10%;
+        bottom: 0%;
     }
 }
 
