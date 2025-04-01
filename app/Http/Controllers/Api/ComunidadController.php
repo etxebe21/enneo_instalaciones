@@ -41,7 +41,7 @@ class ComunidadController extends Controller
         $proyectosContadores = $this->getProyectosConContadores($id);
         
         // Pasamos los datos a la vista 'dalias'
-        return view('dalias', ['proyectosContadores' => $proyectosContadores]);
+        return view('prueba', ['proyectosContadores' => $proyectosContadores]);
     }
 
     public function indexA($id)
