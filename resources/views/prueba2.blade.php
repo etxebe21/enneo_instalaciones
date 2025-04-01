@@ -79,7 +79,9 @@
         .card .title {
             font-size: 33px; /* Tamaño más grande para destacarlo */
             font-weight: 600; /* Peso de fuente intermedio para mayor elegancia */
-            margin-bottom: 5px; /* Separación adecuada entre el título y el contenido */
+            margin-bottom: 5%;
+            margin-top: 0%;
+            /* Separación adecuada entre el título y el contenido */
             color: #333; /* Un color de texto más oscuro para un contraste suave */
             letter-spacing: 0.6px; /* Espaciado entre las letras para dar una sensación de amplitud */
             font-family: 'Roboto', sans-serif; /* Fuente moderna y legible */
@@ -102,21 +104,6 @@
             justify-content: center;
             text-align: center; /* Asegura que el texto dentro también esté centrado */
             white-space: nowrap; 
-        }
-
-        .card .valor {
-            font-size: 30px; /* Tamaño más grande para destacarlo */
-            font-weight: 600; /* Peso de fuente intermedio para mayor elegancia */
-            margin-top: 15px; /* Separación adecuada entre el título y el contenido */
-            color: #4d4c4c; /* Un color de texto más oscuro para un contraste suave */
-            /* text-transform: uppercase;  */
-            letter-spacing: 0.6px; /* Espaciado entre las letras para dar una sensación de amplitud */
-            font-family: 'Roboto', sans-serif; /* Fuente moderna y legible */
-            padding-bottom: 5px; /* Espaciado debajo del título */
-            align-items: center;
-            justify-content: center;
-            text-align: center; /* Asegura que el texto dentro también esté centrado */
-            white-space: nowrap;   
         }
 
         .card .nuevo {
@@ -163,12 +150,6 @@
             font-size: 29px;
             font-weight: 600;
             color: black;
-        }
-        .card .co2 .medida {
-            font-size: 22px;
-            font-weight: 600;
-            color: black; /* Asegura que el texto sea negro */
-            margin: 0; /* Evita espacios innecesarios */
         }
         .card .top-section {
             display: flex;
@@ -273,6 +254,39 @@
         #arboles span {
             margin-right: 8px; 
             font-weight: bold; 
+        }
+
+        .datos-container {
+            display: flex;
+            justify-content: space-between; /* Divide en dos partes */
+            width: 100%; /* Asegura que ocupe todo el ancho */
+            margin-top: 2%;
+        }
+
+        .dato {
+            width: 80%; /* Cada dato ocupa la mitad */
+            text-align: center;
+            font-size: 31px;
+            font: bold; 
+        }
+
+        .subtitulo {
+            font-size: 15px;
+            font-weight: bold;
+            color: #4d4c4c;
+            margin-bottom: 5px;
+        }
+
+        .valor-container {
+            margin-top: 8%;
+            display: inline-flex;
+            font-weight: bold;
+            align-items: center; /* Alinea los elementos verticalmente */
+            gap: 5px; /* Espacio entre el número y la unidad */
+        }
+
+        .medida {
+            margin: 0; /* Elimina márgenes que puedan generar saltos de línea */
         }
 
       
@@ -425,36 +439,63 @@
             </div>
             </div>
 
-            <!-- PRODUCCION FTV -->
+           <!-- PRODUCCION FTV diaria -->
             <div class="card">
                 <div class="top-section">
                     <div class="title">
                         Producción FTV 
                     </div>
-                   
                 </div>
-                <div class="nuevo">
-                    FTV momentánea: <span class="span" id="potenciaFotovoltaicaLecturaValor"></span><p class="medida">kW</p>
-                </div>   
-                <div class="nuevo">
-                  Acumulada Hoy: <span class="span" id="hoyFTV"></span><p class="medida">kW</p>
-                </div>          
+
+                <!-- Contenedor FLEX para dividir en dos columnas -->
+                <div class="datos-container">
+                    <div class="dato">
+                        <div class="subtitulo">Momentánea</div>
+                        <div class="valor-container">
+                            <span class="span" id="potenciaFotovoltaicaLecturaValor"></span>
+                            <p class="medida">kW</p>
+                        </div>                        
+                    </div>
+                    <div class="dato">
+                        <div class="subtitulo">Acumulada hoy</div>
+                        <div class="valor-container">
+                            <span class="span" id="hoyFTV"></span>
+                            <p class="medida">kW</p>
+                        </div>
+                    </div>
+                    
+                </div>
             </div>
     
-            <!-- Producción FTV Total -->
-            <div class="card">
+
+             <!-- PRODUCCION FTV -->
+             <div class="card">
                 <div class="top-section">
                     <div class="title">
                         Balance TOTAL
                     </div>
                 </div>
-                <div class="nuevo">
-                    Producción FTV : <span class="span" id="ultimaLecturaFTV"></span><p class="medida">kW</p>
-                </div>  
-                <div class="nuevo">
-                    Consumo Total: <span class="span" id="ultimaLecturaFTV"></span><p class="medida">kW</p>
-                </div>            
+
+                <!-- Contenedor FLEX para dividir en dos columnas -->
+                <div class="datos-container">
+                    <div class="dato">
+                        <div class="subtitulo">Producción FTV Total:</div>
+                        <div class="valor-container">
+                            <span class="span" id="ultimaLecturaFTV"></span>
+                            <p class="medida">kW</p>
+                        </div>                        
+                    </div>
+                    <div class="dato">
+                        <div class="subtitulo">Consumo Total:</div>
+                        <div class="valor-container">
+                            <span class="span" id="ultimaLecturaFTV"></span>
+                            <p class="medida">kW</p>
+                        </div>
+                    </div>
+                    
+                </div>
             </div>
+ 
     
             <!-- Potencia Fotovoltaica -->
             <div class="card">
@@ -493,18 +534,28 @@
                 </div>            
             </div>
 
-           <!-- Producción FTV Hoy -->
+            <!-- PRODUCCION FTV -->
             <div class="card">
                 <div class="top-section">
                     <div class="medio">
                         Beneficios Medioambientales
                     </div>
                 </div>
-                <div class="co2">
-                    CO2 Evitadas:  <span class="span" id="toneladasValor"></span> <p class="medida"> (t)</p>
-                </div>
-                <div class="co2">
-                    Árboles salvados:  <span class="span" id="arbolesValor"></span> 
+
+                <!-- Contenedor FLEX para dividir en dos columnas -->
+                <div class="datos-container">
+                    <div class="dato">
+                        <div class="subtitulo">CO2 Evitado:</div>
+                        <div class="valor-container">
+                            <span class="span" id="toneladasValor"></span><p class="medida"> t</p>
+                        </div>                        
+                    </div>
+                    <div class="dato">
+                        <div class="subtitulo">Árboles salvados:</div>
+                        <div class="valor-container">
+                            <span class="span" id="arbolesValor"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
