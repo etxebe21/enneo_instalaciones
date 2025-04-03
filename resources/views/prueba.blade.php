@@ -312,7 +312,21 @@
             display: none;
         }
 
-      
+        a {
+            text-decoration: none; /* Elimina el subrayado */
+            color: inherit; /* Hereda el color del texto del contenedor (no cambia el color del enlace) */
+        }
+
+        a:hover {
+            text-decoration: none; /* Elimina el subrayado al pasar el ratón */
+            color: inherit; /* Asegura que el color del enlace no cambie al pasar el ratón */
+        }
+
+        a:focus {
+            outline: none; /* Elimina el borde azul al hacer clic */
+        }
+
+
 /* 📌 ESTILO PARA MÓVILES  */
 
 @media screen and (max-width: 768px) {
@@ -501,6 +515,21 @@
         object-fit: contain;
         display: block;
     }
+
+    a {
+        text-decoration: none; /* Elimina el subrayado */
+        color: inherit; /* Hereda el color del texto del contenedor (no cambia el color del enlace) */
+    }
+
+    a:hover {
+        text-decoration: none; /* Elimina el subrayado al pasar el ratón */
+        color: inherit; /* Asegura que el color del enlace no cambie al pasar el ratón */
+    }
+
+    a:focus {
+        outline: none; /* Elimina el borde azul al hacer clic */
+    }
+
 }
  
     </style>
@@ -531,85 +560,93 @@
                 <img src="{{ asset('logo.png') }}" alt="LogoMovil" />
             </div>
 
-            <!-- PRODUCCION FTV -->
-            <div class="card">
-                <div class="top-section">
-                    <div class="title">
-                        PRODUCCIÓN FTV 
-                    </div>
-                   
-                </div>
-                <div class="nuevo">
-                    FTV momentánea: <span class="span" id="potenciaFotovoltaicaLecturaValor"></span><p class="medida">kW</p>
-                </div>   
-                        
+           <!-- PRODUCCION FTV -->
+<div class="card">
+    <a href="{{ route('grafica', ['id' => $id, 'tipo' => 'ftv']) }}">
+        <div class="top-section">
+            <div class="title">
+                PRODUCCIÓN FTV 
             </div>
-    
-            <!-- Producción FTV Total -->
-            <div class="card">
-                <div class="top-section">
-                    <div class="medio">
-                        PRODUCCIÓN ENERGÉTICA                    
-                    </div>
-                </div>
-                <div class="nuevo">
-                    Producción HOY: <span class="span" id="hoyFTV"></span><p class="medida">kW</p>
-                </div> 
-                <div class="nuevo">
-                    Producción TOTAL : <span class="span" id="ultimaLecturaFTV"></span><p class="medida">kW</p>
-                </div>             
-            </div>
-    
-            <!-- Potencia Fotovoltaica -->
-            <div class="card">
-                <div class="top-section">
-                    <div class="title">
-                        POTENCIA RED
-                    </div>
-                </div>
-                <div class="nuevo">
-                    Potencia Red: <span class="span" id="potenciaRedLecturaValor"></span> <p class="medida"> kW</p>
-                </div>            
-            </div>
-    
-            <!-- Potencia Cargas -->
-            <div class="card">
-                <div class="top-section">
-                    <div class="medio">
-                        CONSUMO DE INSTALACIÓN                    
-                    </div>
-                </div>
-                <div class="nuevo">
-                    Potencia Cargas: <span class="span" id="potenciaCargasLecturaValor"></span> <p class="medida"> kW</p>
-                </div>           
-            </div>
+        </div>
+        <div class="nuevo">
+            FTV momentánea: <span class="span" id="potenciaFotovoltaicaLecturaValor"></span><p class="medida">kW</p>
+        </div>   
+    </a>
+</div>
 
-            <!-- Radiación -->
-            <div class="card">
-                <div class="top-section">
-                    <div class="medio">
-                        RADIACIÓN SOLAR
-                    </div>
-                </div>
-                <div class="nuevo">
-                    Radiación: <span class="span" id="radiacionLecturaValor"></span> <p class="medida"> W/m2</p>
-                </div>            
+<!-- Producción FTV Total -->
+<div class="card">
+    <a href="{{ route('grafica', ['id' => $id, 'tipo' => 'total']) }}">
+    <div class="top-section">
+            <div class="medio">
+                PRODUCCIÓN ENERGÉTICA                    
             </div>
+        </div>
+        <div class="nuevo">
+            Producción HOY: <span class="span" id="hoyFTV"></span><p class="medida">kW</p>
+        </div> 
+        <div class="nuevo">
+            Producción TOTAL : <span class="span" id="ultimaLecturaFTV"></span><p class="medida">kW</p>
+        </div>             
+    </a>
+</div>
 
-           <!-- Producción FTV Hoy -->
-            <div class="card">
-                <div class="top-section">
-                    <div class="medio">
-                        CO2 EVITADO                    
-                    </div>
-                </div>
-                <div class="co2">
-                    CO2 Evitado:  <span class="span" id="toneladasValor"></span> <p class="medida"> (t)</p>
-                </div>
-                {{-- <div class="co2">
-                    Árboles salvados:  <span class="span" id="arbolesValor"></span> 
-                </div> --}}
+<!-- Potencia Fotovoltaica -->
+<div class="card">
+    <a href="{{ route('grafica', ['id' => $id, 'tipo' => 'red']) }}">
+        <div class="top-section">
+            <div class="title">
+                POTENCIA RED
             </div>
+        </div>
+        <div class="nuevo">
+            Potencia Red: <span class="span" id="potenciaRedLecturaValor"></span> <p class="medida"> kW</p>
+        </div>            
+    </a>
+</div>
+
+<!-- Potencia Cargas -->
+<div class="card">
+    <a href="{{ route('grafica', ['id' => $id, 'tipo' => 'cargas']) }}">
+        <div class="top-section">
+            <div class="medio">
+                CONSUMO DE INSTALACIÓN                    
+            </div>
+        </div>
+        <div class="nuevo">
+            Potencia Cargas: <span class="span" id="potenciaCargasLecturaValor"></span> <p class="medida"> kW</p>
+        </div>           
+    </a>
+</div>
+
+<!-- Radiación -->
+<div class="card">
+    <a href="{{ route('grafica', ['id' => $id, 'tipo' => 'radiacion']) }}">
+        <div class="top-section">
+            <div class="medio">
+                RADIACIÓN SOLAR
+            </div>
+        </div>
+        <div class="nuevo">
+            Radiación: <span class="span" id="radiacionLecturaValor"></span> <p class="medida"> W/m2</p>
+        </div>            
+    </a>
+</div>
+
+<!-- CO2 Evitado -->
+<div class="card">
+    <a href="{{ route('grafica', ['id' => $id, 'tipo' => 'co2']) }}">
+        <div class="top-section">
+            <div class="medio">
+                CO2 EVITADO                    
+            </div>
+        </div>
+        <div class="co2">
+            CO2 Evitado:  <span class="span" id="toneladasValor"></span> <p class="medida"> (t)</p>
+        </div>
+    </a>
+</div>
+
 
             <!-- LOGO MOVIL -->
             <div class="cardLogoBottom">

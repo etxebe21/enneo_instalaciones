@@ -8,6 +8,30 @@ use Illuminate\Http\Request;
 
 class Controllers extends Controller
 {
+
+    public function mostrarGrafica($tipo)
+    {
+        $datos = $this->obtenerDatosGrafica($tipo);
+
+        return view('welcome', ['tipo' => $tipo, 'datos' => $datos]);
+    }
+
+    // Simulación de la función para obtener los datos (aquí deberías usar tus propios métodos de obtención)
+    private function obtenerDatosGrafica($tipo)
+    {
+        switch ($tipo) {
+            case 'ftv':
+                return [/* datos de producción FTV */];
+            case 'ftv_total':
+                return [/* datos de producción total */];
+            case 'radiacion':
+                return [/* datos de radiación */];
+            case 'co2':
+                return [/* datos de CO2 evitado */];
+            default:
+                return [];
+        }
+    }
    
     public function getProyectosConContadores()
     {
@@ -97,7 +121,7 @@ class Controllers extends Controller
         return view('welcome', ['proyectosContadoresLecturas' => $proyectosContadoresLecturas, 'proyectosContadores' => $proyectosContadores, 'lecturasFtvMaxMonth'=>$lecturasFtvMaxMonth]);
     }
 
-    public function show($id)
+    public function show($id, $tipo)
     {
         $proyectosContadores = DB::table('proyectos')
             ->join('contadores', 'proyectos.ID_COMUNIDAD', '=', 'contadores.ID_COMUNIDAD')
@@ -207,6 +231,120 @@ class Controllers extends Controller
             $lecturasFtvMaxMonth = $lecturasFtvMaxMonth->merge($resultadosMes);
         }
         // dd($proyectosContadoresLecturas, $proyectosContadores, $lecturasFtvMaxMonth);
-        return view('welcome', compact('proyectosContadores', 'proyectosContadoresLecturas', 'lecturasFtvMaxMonth'));
+        return view('welcome', compact('proyectosContadores', 'proyectosContadoresLecturas', 'lecturasFtvMaxMonth', 'id', 'tipo'));
+    }
+
+    // Método para mostrar la vista con los proyectos de la comunidad
+    public function indexprueba($id = null)
+    {
+        $proyectosContadores = DB::table('proyectos')
+        ->join('contadores', 'proyectos.ID_COMUNIDAD', '=', 'contadores.ID_COMUNIDAD')
+        ->where('proyectos.ID_COMUNIDAD', $id)
+        ->select(
+            'proyectos.ID_COMUNIDAD', 
+            'proyectos.COMUNIDAD', 
+            'contadores.ID_CONTADOR',
+            'contadores.DESCRIPCION',
+            'contadores.ULTIMA_LECTURA',
+            'contadores.FECHA'
+        )
+        ->get();
+
+// Obtener el último dato de cada 'DESCRIPCION' de contadores
+$ultimoDatoPorDescripcion = DB::table('proyectos')
+->join('contadores', 'proyectos.ID_COMUNIDAD', '=', 'contadores.ID_COMUNIDAD')
+->leftJoin('lecturas', 'contadores.ID_CONTADOR', '=', 'lecturas.ID_CONTADOR')
+->where('proyectos.ID_COMUNIDAD', $id)
+->select(
+    'contadores.DESCRIPCION',
+    DB::raw('MAX(lecturas.FECHA) as ultima_lectura_fecha'),  // Última fecha de lectura de lecturas
+)
+->groupBy('contadores.DESCRIPCION')
+->get();
+
+$id= $id;
+// Para cada descripción, obtener las lecturas de los últimos 7 días
+$proyectosContadoresLecturas = collect();
+
+foreach ($ultimoDatoPorDescripcion as $descripcion) {
+    $fechaLimite = \Carbon\Carbon::parse($descripcion->ultima_lectura_fecha)->subDays(7)->startOfDay();
+
+    // Obtener las lecturas de las instalaciones para la comunidad seleccionada en el rango de los últimos 7 días
+    $lecturas = DB::table('proyectos')
+        ->join('contadores', 'proyectos.ID_COMUNIDAD', '=', 'contadores.ID_COMUNIDAD')
+        ->leftJoin('lecturas', 'contadores.ID_CONTADOR', '=', 'lecturas.ID_CONTADOR')
+        ->where('proyectos.ID_COMUNIDAD', $id)
+        ->where('contadores.DESCRIPCION', $descripcion->DESCRIPCION)
+        ->where('lecturas.FECHA', '>=', $fechaLimite)  
+        ->select(
+            'proyectos.ID_COMUNIDAD', 
+            'proyectos.COMUNIDAD', 
+            'contadores.ID_CONTADOR', 
+            'contadores.DESCRIPCION', 
+            'lecturas.ID_LECTURA',
+            'lecturas.LECTURA',
+            'lecturas.FECHA as lectura_fecha'
+        )
+        ->get();
+
+    // Agregar las lecturas a la colección de resultados
+    $proyectosContadoresLecturas = $proyectosContadoresLecturas->merge($lecturas);
+}
+        
+    // Definir las tablas por mes (Añadir más meses si es necesario)
+    $tablas = ['lecturas_2024_12', 'lecturas_2025_01', 'lecturas_2025_02', 'lecturas_2025_03']; 
+    
+    $lecturasFtvMaxMonth = collect(); // Colección vacía para almacenar las lecturas
+
+    foreach ($tablas as $tabla) {
+        $lecturasFtvTotal = DB::table('proyectos')
+            ->join('contadores', 'proyectos.ID_COMUNIDAD', '=', 'contadores.ID_COMUNIDAD')
+            ->leftJoin($tabla, 'contadores.ID_CONTADOR', '=', "$tabla.ID_CONTADOR")
+            ->where('proyectos.ID_COMUNIDAD', $id)
+            ->where('contadores.DESCRIPCION', 'Produccion FTV Total')
+            ->select(
+                'proyectos.ID_COMUNIDAD',
+                'proyectos.COMUNIDAD',
+                'contadores.ID_CONTADOR',
+                'contadores.DESCRIPCION',
+                "$tabla.LECTURA as LECTURA",
+                "$tabla.FECHA as lectura_fecha"
+            )
+            ->orderBy("$tabla.FECHA", 'asc')
+            ->get();
+        
+        // Agrupar por mes utilizando Carbon
+        $lecturasFtvTotalGrouped = $lecturasFtvTotal->groupBy(function ($date) {
+            return \Carbon\Carbon::parse($date->lectura_fecha)->format('Y-m'); // Agrupando por año-mes
+        });
+
+        // Obtener primer y último valor de cada mes
+        $resultadosMes = $lecturasFtvTotalGrouped->map(function ($group) {
+            if ($group->count() >= 2) {
+                $group = $group->sortBy('lectura_fecha'); // Ordenar por fecha ascendente
+
+                $primer_valor = (float) $group->first()->LECTURA;
+                $ultimo_valor = (float) $group->last()->LECTURA;
+                $consumo = $ultimo_valor - $primer_valor;
+
+                return [
+                    "lectura_fecha" => $group->first()->lectura_fecha,
+                    "ID_COMUNIDAD" => $group->first()->ID_COMUNIDAD,
+                    "COMUNIDAD" => $group->first()->COMUNIDAD,
+                    "ID_CONTADOR" => $group->first()->ID_CONTADOR,
+                    "DESCRIPCION" => $group->first()->DESCRIPCION,
+                    "primer_valor" => $primer_valor,
+                    "ultimo_valor" => $ultimo_valor,
+                    "LECTURA" => $consumo
+                ];
+            }
+            return null;
+        })->filter();
+
+        // Agregar los resultados a la colección principal
+        $lecturasFtvMaxMonth = $lecturasFtvMaxMonth->merge($resultadosMes);
+    }
+    // dd($proyectosContadoresLecturas, $proyectosContadores, $lecturasFtvMaxMonth);
+    return view('prueba', compact('proyectosContadores', 'proyectosContadoresLecturas', 'lecturasFtvMaxMonth', 'id'));
     }
 }
