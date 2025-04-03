@@ -15,7 +15,7 @@
             padding: 0;
             background-color: #aab8bf;            
             overflow: hidden; 
-            margin-left: 0.8%;
+            margin-left: 2%;
         }
     
         .container {
@@ -64,7 +64,7 @@
             margin: 0px;
             margin-top: 3%;
             margin-bottom: 5%;
-            left: 30%;
+            left: 33%;
             border-radius: 15px;
             box-shadow: 0 10px 15px rgba(0.2, 0.2, 0.2, 0.5); /* Sombra suave y elegante */
             text-align: center;
@@ -201,6 +201,9 @@
         .cardLogoBottom {
             display: none;
         }
+        #btnVolver {color: transparent;
+        background: transparent;
+    border: transparent}
         /* #ultimaLecturaFechaM{ display: none;} */
 @media (max-width: 768px) {
     body {
@@ -353,19 +356,19 @@
         display: block;
     }
     #btnVolver {
-    position: fixed;
-    bottom: 10px;
-    left: 10px;
-    background-color: #ebb502;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    transition: background 0.3s;
-}
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+        background-color: #ebb502;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        transition: background 0.3s;
+    }
 
 #btnVolver:hover {
     background-color: #f96604;
