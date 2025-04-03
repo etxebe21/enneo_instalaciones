@@ -35,7 +35,8 @@
             margin-bottom: 6%;   
             margin-top: 3%;
             margin-left: -2%;
-
+            align-items: center; /* Alinea verticalmente */
+            gap: 15px; /* Espacio entre el texto y el logo */
         }
     
         .header .comunidad {
@@ -276,6 +277,26 @@
         }
 
       
+        #logo {
+            position: fixed;            /* Fija la posición en la pantalla */
+            margin-top: 1.5%;               /* Alinea 10px desde el fondo */
+            right: 55%;                /* Alinea 10px desde la derecha */
+            font-size: 18px;            /* Ajusta el tamaño de la fuente */
+            color: #333;                /* Color del texto */
+            background-color: rgb(235, 228, 228);
+            padding: 5px 10px;          /* Relleno de texto */
+            border-radius: 5px;         /* Bordes redondeados */
+            box-shadow: 0 10px 15px rgba(0, 0, 0.1, 0.2); /* Sombra suave y elegante */
+            width: 10%;
+            height: 10%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center; /* Asegura que el texto dentro también esté centrado */
+            white-space: nowrap; 
+        }
+
+      
 /* 📌 ESTILO PARA MÓVILES  */
 
 @media screen and (max-width: 768px) {
@@ -415,81 +436,83 @@
             <div class="header">
                 <div class="comunidad">
                     @php
-                    $texto = preg_replace('/^Enneo - \d+\s*/', '', $proyectosContadores[0]->COMUNIDAD);
-                    preg_match('/^(\S+)\s*(.*)$/', $texto, $matches);
-                    $primeraPalabra = $matches[1] ?? '';
-                    $restoDelTexto = $matches[2] ?? '';
-                @endphp
+                        $texto = preg_replace('/^Enneo - \d+\s*/', '', $proyectosContadores[0]->COMUNIDAD);
+                        preg_match('/^(\S+)\s*(.*)$/', $texto, $matches);
+                        $primeraPalabra = $matches[1] ?? '';
+                        $restoDelTexto = $matches[2] ?? '';
+                    @endphp
+                    
+                    <strong>{{ $primeraPalabra }}</strong>&nbsp;&nbsp;<span style="font-size: smaller;">{{ $restoDelTexto }}</span>
+                </div>
                 
-                <strong>{{ $primeraPalabra }}</strong>&nbsp;&nbsp;<span style="font-size: smaller;">{{ $restoDelTexto }}</span>
             </div>
+
+            <div id="logo" class="logo">
+                <img src="{{ asset('logo.png') }}" alt="Logo" class="logo" />
             </div>
 
             <!-- PRODUCCION FTV -->
             <div class="card">
                 <div class="top-section">
                     <div class="title">
-                        Producción FTV 
+                        PRODUCCIÓN FTV 
                     </div>
                    
                 </div>
                 <div class="nuevo">
                     FTV momentánea: <span class="span" id="potenciaFotovoltaicaLecturaValor"></span><p class="medida">kW</p>
                 </div>   
-                <div class="nuevo">
-                  Acumulada Hoy: <span class="span" id="hoyFTV"></span><p class="medida">kW</p>
-                </div>          
+                        
             </div>
     
             <!-- Producción FTV Total -->
             <div class="card">
                 <div class="top-section">
-                    <div class="title">
-                        Balance TOTAL
+                    <div class="medio">
+                        PRODUCCIÓN ENERGÉTICA                    
                     </div>
                 </div>
                 <div class="nuevo">
-                    Producción FTV : <span class="span" id="ultimaLecturaFTV"></span><p class="medida">kW</p>
-                </div>  
+                    Producción HOY: <span class="span" id="hoyFTV"></span><p class="medida">kW</p>
+                </div> 
                 <div class="nuevo">
-                    Consumo Total: <span class="span" id="ultimaLecturaFTV"></span><p class="medida">kW</p>
-                </div>            
+                    Producción TOTAL : <span class="span" id="ultimaLecturaFTV"></span><p class="medida">kW</p>
+                </div>             
             </div>
     
             <!-- Potencia Fotovoltaica -->
             <div class="card">
                 <div class="top-section">
                     <div class="title">
-                        Potencia RED
+                        POTENCIA RED
                     </div>
                 </div>
                 <div class="nuevo">
-                    <span class="span" id="potenciaRedLecturaValor"></span> <p class="medida"> kW</p>
+                    Potencia Red: <span class="span" id="potenciaRedLecturaValor"></span> <p class="medida"> kW</p>
                 </div>            
             </div>
     
             <!-- Potencia Cargas -->
             <div class="card">
                 <div class="top-section">
-                    <div class="title">
-                        Potencia de Cargas
+                    <div class="medio">
+                        CONSUMO DE INSTALACIÓN                    
                     </div>
-                    
                 </div>
                 <div class="nuevo">
-                    <span class="span" id="potenciaCargasLecturaValor"></span> <p class="medida"> kW</p>
+                    Potencia Cargas: <span class="span" id="potenciaCargasLecturaValor"></span> <p class="medida"> kW</p>
                 </div>           
             </div>
 
             <!-- Radiación -->
             <div class="card">
                 <div class="top-section">
-                    <div class="title">
-                        Radiación SOLAR
+                    <div class="medio">
+                        RADIACIÓN SOLAR
                     </div>
                 </div>
                 <div class="nuevo">
-                    <span class="span" id="radiacionLecturaValor"></span> <p class="medida"> W/m2</p>
+                    Radiación: <span class="span" id="radiacionLecturaValor"></span> <p class="medida"> W/m2</p>
                 </div>            
             </div>
 
@@ -497,15 +520,15 @@
             <div class="card">
                 <div class="top-section">
                     <div class="medio">
-                        Beneficios Medioambientales
+                        CO2 EVITADO                    
                     </div>
                 </div>
                 <div class="co2">
-                    CO2 Evitadas:  <span class="span" id="toneladasValor"></span> <p class="medida"> (t)</p>
+                    CO2 Evitado:  <span class="span" id="toneladasValor"></span> <p class="medida"> (t)</p>
                 </div>
-                <div class="co2">
+                {{-- <div class="co2">
                     Árboles salvados:  <span class="span" id="arbolesValor"></span> 
-                </div>
+                </div> --}}
             </div>
 
             <div id="ultimaLecturaFecha"></div>
