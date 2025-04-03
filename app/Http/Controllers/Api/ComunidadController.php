@@ -21,7 +21,7 @@ class ComunidadController extends Controller
                 'contadores.ULTIMA_LECTURA', 
                 'contadores.FECHA'          
             )
-            ->whereBetween('proyectos.ID_COMUNIDAD', [5066, 5070]); // Este filtro puede ser modificado si necesitas
+            ->whereBetween('proyectos.ID_COMUNIDAD', [4895, 5150]); // Este filtro puede ser modificado si necesitas
 
         // Si se pasa un ID, filtrar por ese ID
         if ($id) {

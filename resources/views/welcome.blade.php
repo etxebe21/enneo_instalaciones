@@ -6,6 +6,8 @@
     <title>INSTALACIONES FOTOVOLTAICAS</title>
     <!-- Cargar Highcharts para gráficos -->
     <script src="https://code.highcharts.com/highcharts.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -18,13 +20,12 @@
     
         .container {
             display: grid;              
-            grid-template-columns: repeat(3, 1fr); /* 3 columnas de tamaño igual */
+            grid-template-columns: repeat(1, 1fr); /* 3 columnas de tamaño igual */
             gap: 3%;                  /* Espacio entre las columnas */
             width: 100%;
             height: 100%;
             padding: 3%;
             box-sizing: border-box;
-            margin-right: 2%;
         }
     
         .header {
@@ -61,16 +62,18 @@
             background-color: rgb(235, 229, 229);
             padding: 13px;             /* Reducido el padding */
             margin: 0px;
+            margin-top: 3%;
             margin-bottom: 5%;
-            left: 20%;
+            left: 30%;
             border-radius: 15px;
             box-shadow: 0 10px 15px rgba(0.2, 0.2, 0.2, 0.5); /* Sombra suave y elegante */
             text-align: center;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            height: 81%;            /* Altura ajustada */
-            width: 90%;               /* Ancho ajustado */
+            height: 120%;            /* Altura ajustada */
+            width: 100%;     
+                     /* Ancho ajustado */
         }
     
         .card .title {
@@ -114,8 +117,8 @@
 
         #ultimaLecturaFecha {
             position: fixed;            /* Fija la posición en la pantalla */
-            bottom: 12%;               /* Alinea 10px desde el fondo */
-            left: 3.5%;                /* Alinea 10px desde la derecha */
+            top: 10%;               /* Alinea 10px desde el fondo */
+            right: 5%;                /* Alinea 10px desde la derecha */
             font-size: 18px;            /* Ajusta el tamaño de la fuente */
             color: #333;                /* Color del texto */
             background-color: rgb(235, 229, 229);
@@ -133,12 +136,12 @@
 
         #imagen {
             position: fixed;
-            bottom: 2.5%;
+            bottom: 5%;
             left: 50%;
             transform: translateX(-50%);
             font-size: 22px;
             padding: 5px 10px;
-            width: 50%;
+            width: 100%;
             height: 4%;
             display: flex;
             align-items: center;
@@ -188,6 +191,189 @@
             margin-right: 8px; 
             font-weight: bold; 
         }
+
+        #logoMovil {
+            display: none;
+        }
+        .cardLogo {
+            display: none;
+        }
+        .cardLogoBottom {
+            display: none;
+        }
+        /* #ultimaLecturaFechaM{ display: none;} */
+@media (max-width: 768px) {
+    body {
+        overflow-y: auto; /* Permitir scroll en móvil */
+        margin: 0;
+        padding: 0;
+    }
+
+    .header {
+        position: fixed;
+        top: 2.5%; /* Ajustar para que se quede en la parte superior */
+        left: 0;
+        width: 110%;
+        height: 3.5%;
+        background-color: rgb(235, 228, 228);
+        padding: 7px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .header .comunidad {
+        font-size: 21px;
+        font-weight: bold;
+        text-transform: uppercase;
+        background-color: transparent;
+        border:none;
+        box-shadow: none;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        gap: 5px; /* Reducir el espacio entre las tarjetas */
+        margin-top: 25%; /* Dejar espacio suficiente para el header fijo */
+        padding-bottom: 60px;
+        
+    }
+
+    .card {
+        width: 80%;
+        background-color: rgb(235, 228, 228);
+        border-radius: 12px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        margin-top: 10%; /* Reducir la separación entre las tarjetas */
+        margin-bottom: 10%; /* Reducir la separación entre las tarjetas */
+        margin-left:-2%;
+    }
+   
+    .card .title {
+        font-size: 20px;
+    }
+
+    .card .medio {
+        font-size: 15px;
+    }
+
+    .card .valor {
+        font-size: 18px;
+    }
+    
+    #imagen {
+        top: -6.5%;
+        width: 100%; /* El footer ocupa todo el ancho */
+        height: 15vh; /* Mantener la altura del footer */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000; /* Asegurarse de que la imagen esté encima de otros elementos */
+    }
+
+    #imagen img {
+        width: 100%; /* La imagen ocupa todo el ancho */
+        height: 25%; /* La imagen se ajusta también en altura */
+        /* object-fit: contain; Asegura que la imagen se vea completa sin recorte */
+     }
+     
+    #ultimaLecturaFecha {
+        width: 100%;
+        left: -2%;
+        background-color: rgb(235, 228, 228);
+        border-radius: 12px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        bottom: 30%;
+    }
+/*    #ultimaLecturaFecha{ display: none;} */
+    /* Logo posicionado encima y a la izquierda */
+    #logo {
+    display: none;
+    }
+    /* Ajusta la imagen dentro del logo */
+    .cardLogo {
+        /* background-color: rgba(235, 228, 228, 0.8); Más transparente */
+        padding: 13px;             /* Reducido el padding */
+            margin: 0px;
+            margin-bottom: 2%;
+            margin-top: -10%;
+            left: 20%;
+            /* border-radius: 15px; */
+            /* box-shadow: 0 10px 15px rgba(0.2, 0.2, 0.2, 0.5); Sombra suave y elegante */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 20%;            /* Altura ajustada */
+            width: 80%; 
+            align-items: center;
+            justify-content: center;
+            text-align: center; 
+            white-space: nowrap;      
+        }  
+
+        .cardLogoBottom {
+        background-color: rgba(235, 228, 228, 0.7); /* Más transparente */
+        padding: 13px;             /* Reducido el padding */
+            margin: 0px;
+            margin-bottom: 7%;
+            margin-top: 2%;
+            left: 20%;
+            border-radius: 15px;
+            box-shadow: 0 10px 15px rgba(0.2, 0.2, 0.2, 0.5); /* Sombra suave y elegante */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 20%;            /* Altura ajustada */
+            width: 80%; 
+            align-items: center;
+            justify-content: center;
+            text-align: center; 
+            white-space: nowrap;      
+        } 
+        
+        
+     /* Ajusta el tamaño de la imagen */
+     .cardLogo img {
+        width: 65%;
+        height: auto;
+        object-fit: contain;
+        display: block;
+    }
+    /* Ajusta el tamaño de la imagen */
+    .cardLogoBottom img {
+        width: 60%;
+        height: auto;
+        object-fit: contain;
+        display: block;
+    }
+    #btnVolver {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    background-color: #ebb502;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s;
+}
+
+#btnVolver:hover {
+    background-color: #f96604;
+}
+
+
+}
+
         
     </style>
     
@@ -209,19 +395,6 @@
     
             <!-- Condicionales para cada tipo -->
             @if($tipo == 'total')
-                {{-- <!-- Producción FTV Hoy -->
-                <div class="card">
-                    <div class="top-section">
-                        <div class="title">
-                            Producción DIARIA
-                        </div>
-                        <div class="title">
-                            <span id="produccionFtvHoyLecturaValor"></span> kWh
-                        </div>
-                    </div>
-                    <div id="produccionFtvHoy"></div>
-                </div> --}}
-
                 <!-- Producción FTV Total -->
                 <div class="card">
                     <div class="top-section">
@@ -234,18 +407,31 @@
                     </div>
                     <div id="produccionFtvTotal"></div>
                 </div>
+                   <!-- Producción FTV Hoy -->
+                   <div class="card">
+                    <div class="top-section">
+                        <div class="title">
+                            Producción DIARIA
+                        </div>
+                        <div class="title">
+                            <span id="produccionFtvHoyLecturaValor"></span> kWh
+                        </div>
+                    </div>
+                    <div id="produccionFtvHoy"></div>
+                </div>
             @elseif($tipo == 'radiacion')
                 <!-- Radiación -->
                 <div class="card">
                     <div class="top-section">
                         <div class="title">
-                            Radiación DIARIA
+                            RADIACIÓN
                         </div>
                         <div class="title">
                             <span id="radiacionLecturaValor"></span> W/m2
                         </div>
                     </div>
                     <div id="radiacion"></div>
+
                 </div>
           
                 
@@ -254,7 +440,7 @@
                 <div class="card">
                     <div class="top-section">
                         <div class="title">
-                            Potencia FTV
+                            Producción FTV
                         </div>
                         <div class="title">
                             <span id="potenciaFotovoltaicaLecturaValor"></span> kW
@@ -280,7 +466,7 @@
                 <div class="card">
                     <div class="top-section">
                         <div class="title">
-                            Potencia de Cargas
+                            Potencia Cargas
                         </div>
                         <div class="title">
                             <span id="potenciaCargasLecturaValor"></span> kW
@@ -291,16 +477,23 @@
             @endif
     
             <!-- Información adicional -->
-            <div id="ultimaLecturaFecha"></div>
-            <div id="toneladas">
+            <div id="ultimaLecturaFecha" class="ultimaLecturaFecha"></div>
+            {{-- <div id="toneladas">
                 <span id="toneladasValor">  </span>Ton/CO2 Evitadas
             </div>
             <div id="arboles">
                 <span id="arbolesValor">  </span>Árboles salvados
-            </div>
+            </div> --}}
             <div id="imagen">
                 <img src="{{ asset('almeria.png') }}" alt="Almería">
             </div>
+            <!-- LOGO MOVIL -->
+            <div class="cardLogoBottom">
+                <img src="{{ asset('logo.png') }}" alt="LogoMovil" />
+            </div>
+            <button id="btnVolver" onclick="window.history.back()">
+                <i class="fas fa-arrow-left"></i> 
+            </button>
         </div>
     </body>
     
@@ -483,23 +676,24 @@ const updateLastReadingDate = (data) => {
         const ultimaLecturaFechaElement = document.getElementById('ultimaLecturaFecha');
         const ultimaLecturaFTVElement = document.getElementById('ultimaLecturaFTV');
 
-        if (ultimaLecturaFechaElement && ultimaLecturaFTVElement) {
+        if (ultimaLecturaFechaElement && ultimaLecturaFTVElement ) {
             // Mostrar la fecha de la última lectura
-            ultimaLecturaFechaElement.innerText = `Últimos valores actualizados: ${lastReadingDate}`;
-            
+            ultimaLecturaFechaElement.innerText = `Últimos valores actualizados: ${lastReadingDate}`;            
             // Mostrar el total acumulado de lecturas
-            ultimaLecturaFTVElement.innerText = `Total acumulado: ${totalReading.toFixed(2)} kWh`;
+            ultimaLecturaFTVElement.innerText = `${totalReading.toFixed(2)} `;
         } else {
             console.error('Los elementos de la fecha o el total no fueron encontrados.');
         }
     } else {
         // Si no hay datos, mostrar un mensaje de error o "No disponible"
         const ultimaLecturaFechaElement = document.getElementById('ultimaLecturaFecha');
+
         const ultimaLecturaFTVElement = document.getElementById('ultimaLecturaFTV');
         
         if (ultimaLecturaFechaElement) {
             ultimaLecturaFechaElement.innerText = 'Última Lectura: No disponible';
         }
+       
         if (ultimaLecturaFTVElement) {
             ultimaLecturaFTVElement.innerText = 'Total acumulado: No disponible';
         }
@@ -521,7 +715,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Crear gráfico para Producción FTV Hoy
         if (document.getElementById('produccionFtvHoy')) {
             Highcharts.chart('produccionFtvHoy', {
-                chart: { type: 'column', height: 250, backgroundColor: 'rgb(235, 229, 229)' },
+                chart: { type: 'column', height: 320, backgroundColor: 'rgb(235, 229, 229)' },
                 title: false,
                 xAxis: { categories: allTimes, labels: { rotation: -45 } },
                 yAxis: { title: { text: 'kWh' } },
@@ -540,9 +734,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Crear gráfico para Radiación
         if (document.getElementById('radiacion')) {
             Highcharts.chart('radiacion', {
-                chart: { type: 'column', height: 250, backgroundColor: 'rgb(235, 229, 229)' },
+                chart: { type: 'column', height: 320, backgroundColor: 'rgb(235, 229, 229)' },
                 title: false,
-                xAxis: { categories: dataRadiacion.map(item => formatDate(item.fecha)), labels: { rotation: -45 } },
+                xAxis: { categories: dataRadiacion.map(item => formatDateMinute(item.fecha)), labels: { rotation: -45 } },
                 yAxis: { title: { text: 'kWh' } },
                 series: [{
                     name: 'Radiación',
@@ -556,7 +750,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Crear gráfico para Producción FTV Total
         if (document.getElementById('produccionFtvTotal')) {
             Highcharts.chart('produccionFtvTotal', {
-                chart: { type: 'column', height: 250, backgroundColor: 'rgb(235, 229, 229)' },
+                chart: { type: 'column', height: 320, backgroundColor: 'rgb(235, 229, 229)' },
                 title: { text: null },
                 xAxis: { categories: ['2024-12', '2025-01', '2025-02', '2025-03', '2025-04', '2025-05', '2025-06', '2025-07', '2025-08', '2025-09', '2025-10', '2025-11', '2025-12'] },
                 yAxis: { title: { text: 'kWh' } },
@@ -576,9 +770,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Crear gráficos restantes (Potencia Fotovoltaica, Potencia Red, Potencia Cargas)
         if (document.getElementById('potenciaFotovoltaica')) {
             Highcharts.chart('potenciaFotovoltaica', {
-                chart: { type: 'column', height: 250, backgroundColor: 'rgb(235, 229, 229)' },
+                chart: { type: 'column', height: 320, backgroundColor: 'rgb(235, 229, 229)' },
                 title: false,
-                xAxis: { categories: dataPotenciaFotovoltaica.map(item => formatDate(item.fecha)) },
+                xAxis: { categories: dataPotenciaFotovoltaica.map(item => formatDateMinute(item.fecha)) },
                 yAxis: { title: { text: 'kWh' } },
                 series: [{
                     name: 'Potencia Fotovoltaica',
@@ -591,9 +785,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (document.getElementById('potenciaRed')) {
             Highcharts.chart('potenciaRed', {
-                chart: { type: 'column', height: 250, backgroundColor: 'rgb(235, 229, 229)' },
+                chart: { type: 'column', height: 320, backgroundColor: 'rgb(235, 229, 229)' },
                 title: false,
-                xAxis: { categories: dataPotenciaRed.map(item => formatDate(item.fecha)) },
+                xAxis: { categories: dataPotenciaRed.map(item => formatDateMinute(item.fecha)) },
                 yAxis: { title: { text: 'kWh' } },
                 series: [{
                     name: 'Potencia Red',
@@ -606,9 +800,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (document.getElementById('potenciaCargas')) {
             Highcharts.chart('potenciaCargas', {
-                chart: { type: 'column', height: 250, backgroundColor: 'rgb(235, 229, 229)' },
+                chart: { type: 'column', height: 320, backgroundColor: 'rgb(235, 229, 229)' },
                 title: false,
-                xAxis: { categories: dataPotenciaCargas.map(item => formatDate(item.fecha)) },
+                xAxis: { categories: dataPotenciaCargas.map(item => formatDateMinute(item.fecha)) },
                 yAxis: { title: { text: 'kWh' } },
                 series: [{
                     name: 'Potencia Cargas',
@@ -619,154 +813,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
-
-    // Llamamos a la función para crear todos los gráficos
     createGraphs();
 });
 
-
-    // // Crear gráfico para Producción FTV Hoy
-    // Highcharts.chart('produccionFtvHoy', {
-    //     chart: {
-    //         type: 'column', 
-    //         height: 250, 
-    //         backgroundColor: 'rgb(235, 229, 229)'
-    //     },
-    //     title: false,
-    //     xAxis: {
-    //         categories: allTimes, 
-    //         labels: { rotation: -45 }
-    //     },
-    //     yAxis: {
-    //         title: { text: 'kWh' }
-    //     },
-    //     series: [{
-    //         name: 'Producción FTV Hoy',
-    //         data: allTimes.map(time => {
-    //             // Buscar los datos para la hora y minuto actuales
-    //             const found = dataFtvHoy.find(item => formatDateMinute(item.fecha) === time);
-    //             // Si se encuentra un dato, lo usamos, si no, colocamos null
-    //             return found ? parseFloat(found.LECTURA) : null;
-    //         }),
-    //         color: '#4BC0C0'
-    //     }],
-    //     legend: { enabled: false }
-    // });
-    //     // Crear el gráfico
-    // Highcharts.chart('radiacion', {
-    //     chart: { 
-    //         type: 'column', 
-    //         height: 250,  
-    //         backgroundColor: 'rgb(235, 229, 229)'
-    //     },
-    //     title: false,
-    //     xAxis: { 
-    //         categories: dataRadiacion.map(item => formatDate(item.fecha)),  // Mantenemos todas las fechas
-    //         labels: { 
-    //             rotation: -45,
-    //         }
-    //     },
-    //     yAxis: { 
-    //         title: { text: 'kWh' }
-    //     },
-    //     series: [{
-    //         name: 'Radiación',
-    //         data: dataRadiacion.map(item => parseFloat(item.LECTURA)),  // Usamos todos los datos originales
-    //         color: '#FF6384'
-    //     }],
-    //     legend: { enabled: false }
-    // });
-
-    // Highcharts.chart('produccionFtvTotal', {
-    //     chart: { 
-    //         type: 'column', 
-    //         height: 250,  
-    //         backgroundColor: 'rgb(235, 229, 229)'  
-    //     },
-    //     title: { text: null }, // Eliminar el título si no lo necesitas
-    //     xAxis: { 
-    //         categories: ['2024-12', '2025-01', '2025-02', '2025-03', '2025-04', '2025-05', '2025-06',
-    //             '2025-07', '2025-08', '2025-09', '2025-10', '2025-11', '2025-12'
-    //         ]
-    //     },
-    //     yAxis: { 
-    //         title: { text: 'kWh' } 
-    //     },
-    //     series: [{
-    //         name: 'Producción FTV Total',
-    //         data: [
-    //             ...Array(13).fill(null) // Inicializar con null para los 13 meses
-    //         ].map((_, index) => {
-    //             // Definir el mes de la categoría actual
-    //             const month = ['2024-12', '2025-01', '2025-02', '2025-03', 
-    //                             '2025-04', '2025-05', '2025-06', '2025-07', '2025-08', '2025-09', 
-    //                             '2025-10', '2025-11', '2025-12'][index];
-
-    //             // Buscar el mes correspondiente en dataFtvTotal
-    //             const found = dataFtvTotal.find(item => item.lectura_fecha.slice(0, 7) === month);
-    //             return found ? parseFloat(found.LECTURA) : null;
-    //         }),
-    //         color: '#9966FF'
-    //     }],
-    //     legend: { enabled: false }
-    // });
-
-    // Highcharts.chart('potenciaFotovoltaica', {
-    //     chart: { 
-    //         type: 'column', 
-    //         height: 250,  
-    //         backgroundColor: 'rgb(235, 229, 229)' 
-    //     },
-    //     title: false,
-    //     xAxis: { 
-    //         categories: dataPotenciaFotovoltaica.map(item => formatDate(item.fecha))
-    //     },
-    //     yAxis: { 
-    //         title: { 
-    //             text: 'kWh' 
-    //         },
-    //     },
-    //     series: [{
-    //         name: 'Potencia Fotovoltaica',
-    //         data: dataPotenciaFotovoltaica.map(item => parseFloat(item.LECTURA)),
-    //         color: '#FF9F40'
-    //     }],
-    //     legend: { enabled: false }
-    // });
-
-    // Highcharts.chart('potenciaRed', {
-    //     chart: { type: 'column', height: 250,  backgroundColor: 'rgb(235, 229, 229)'  },
-    //     title: false,
-    //     xAxis: { categories: dataPotenciaRed.map(item => formatDate(item.fecha)) },
-    //     yAxis: { 
-    //         title: { 
-    //             text: 'kWh' 
-    //         },
-    //     },
-    //     series: [{
-    //         name: 'Potencia Red',
-    //         data: dataPotenciaRed.map(item => parseFloat(item.LECTURA)),
-    //         color: '#36A2EB'
-    //     }],
-    //     legend: { enabled: false }
-    // });
-
-    // Highcharts.chart('potenciaCargas', {
-    //     chart: { type: 'column', height: 250,  backgroundColor: 'rgb(235, 229, 229)'  },
-    //     title: false,
-    //     xAxis: { categories: dataPotenciaCargas.map(item => formatDate(item.fecha)) },
-    //     yAxis: { 
-    //         title: { 
-    //             text: 'kWh' 
-    //         },
-    //     },
-    //     series: [{
-    //         name: 'Potencia Cargas',
-    //         data: dataPotenciaCargas.map(item => parseFloat(item.LECTURA)),
-    //         color: '#FFCD56'
-    //     }],
-    //     legend: { enabled: false }
-    // });
     </script>
 
 </body>

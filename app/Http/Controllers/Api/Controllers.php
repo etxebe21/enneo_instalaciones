@@ -9,30 +9,6 @@ use Illuminate\Http\Request;
 class Controllers extends Controller
 {
 
-    public function mostrarGrafica($tipo)
-    {
-        $datos = $this->obtenerDatosGrafica($tipo);
-
-        return view('welcome', ['tipo' => $tipo, 'datos' => $datos]);
-    }
-
-    // Simulación de la función para obtener los datos (aquí deberías usar tus propios métodos de obtención)
-    private function obtenerDatosGrafica($tipo)
-    {
-        switch ($tipo) {
-            case 'ftv':
-                return [/* datos de producción FTV */];
-            case 'ftv_total':
-                return [/* datos de producción total */];
-            case 'radiacion':
-                return [/* datos de radiación */];
-            case 'co2':
-                return [/* datos de CO2 evitado */];
-            default:
-                return [];
-        }
-    }
-   
     public function getProyectosConContadores()
     {
         $proyectosContadores = DB::table('proyectos')

@@ -769,7 +769,7 @@ function actualizarDatos() {
 cargarDatosIniciales();
 
 // Configurar la actualización automática cada 5 minutos (o el intervalo que necesites)
-setInterval(actualizarDatos, 0.5 * 60 * 1000);
+setInterval(actualizarDatos, 5 * 60 * 1000);
 
 
     </script>
