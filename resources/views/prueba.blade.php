@@ -278,22 +278,38 @@
 
       
         #logo {
-            position: fixed;            /* Fija la posición en la pantalla */
-            margin-top: 1.5%;               /* Alinea 10px desde el fondo */
-            right: 55%;                /* Alinea 10px desde la derecha */
-            font-size: 18px;            /* Ajusta el tamaño de la fuente */
-            color: #333;                /* Color del texto */
-            background-color: rgb(235, 228, 228);
-            padding: 5px 10px;          /* Relleno de texto */
-            border-radius: 5px;         /* Bordes redondeados */
-            box-shadow: 0 10px 15px rgba(0, 0, 0.1, 0.2); /* Sombra suave y elegante */
-            width: 10%;
-            height: 10%;
+            position: fixed;         
+            margin-top: -1%;        
+            left: 48.5%;
+            transform: translateX(-50%); /* Centra el logo correctamente */
+            width: 30%;
+            height: auto; /* Ajusta la altura automáticamente según el ancho */
+            max-width: 300px; /* Limita el tamaño máximo */
             display: flex;
             align-items: center;
             justify-content: center;
-            text-align: center; /* Asegura que el texto dentro también esté centrado */
-            white-space: nowrap; 
+            text-align: center;
+            background-color: rgb(235, 228, 228);
+            padding: 5px 10px;
+            border-radius: 15px;
+            box-shadow: 0 10px 15px rgba(0.2, 0.2, 0.2, 0.5); 
+        }
+
+        /* Asegura que la imagen encaje bien */
+        #logo img {
+            width: 100%;
+            height: auto;
+            object-fit: contain; /* Evita que la imagen se distorsione */
+        }
+
+        #logoMovil {
+            display: none;
+        }
+        .cardLogo {
+            display: none;
+        }
+        .cardLogoBottom {
+            display: none;
         }
 
       
@@ -308,7 +324,7 @@
 
     .header {
         position: fixed;
-        top: 0.5%; /* Ajustar para que se quede en la parte superior */
+        top: 1.5%; /* Ajustar para que se quede en la parte superior */
         left: 0;
         width: 110%;
         height: 3.5%;
@@ -402,8 +418,7 @@
         white-space: nowrap; /* Mantiene en una línea */
     }
     #imagen {
-    
-        top: -7%;
+        top: -6.5%;
         width: 100%; /* El footer ocupa todo el ancho */
         height: 15vh; /* Mantener la altura del footer */
         display: flex;
@@ -414,8 +429,8 @@
 
     #imagen img {
         width: 100%; /* La imagen ocupa todo el ancho */
-        height: 150%; /* La imagen se ajusta también en altura */
-        object-fit: contain; /* Asegura que la imagen se vea completa sin recorte */
+        height: 25%; /* La imagen se ajusta también en altura */
+        /* object-fit: contain; Asegura que la imagen se vea completa sin recorte */
     }
     #ultimaLecturaFecha {
         width: 100%;
@@ -425,6 +440,66 @@
         box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
         text-align: center;
         bottom: 0%;
+    }
+    /* Logo posicionado encima y a la izquierda */
+    #logo {
+    display: none;
+    }
+    /* Ajusta la imagen dentro del logo */
+    .cardLogo {
+        /* background-color: rgba(235, 228, 228, 0.8); Más transparente */
+        padding: 13px;             /* Reducido el padding */
+            margin: 0px;
+            margin-bottom: 2%;
+            margin-top: -10%;
+            left: 20%;
+            /* border-radius: 15px; */
+            /* box-shadow: 0 10px 15px rgba(0.2, 0.2, 0.2, 0.5); Sombra suave y elegante */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 20%;            /* Altura ajustada */
+            width: 80%; 
+            align-items: center;
+            justify-content: center;
+            text-align: center; 
+            white-space: nowrap;      
+        }  
+
+        .cardLogoBottom {
+        background-color: rgba(235, 228, 228, 0.7); /* Más transparente */
+        padding: 13px;             /* Reducido el padding */
+            margin: 0px;
+            margin-bottom: 7%;
+            margin-top: 2%;
+            left: 20%;
+            border-radius: 15px;
+            box-shadow: 0 10px 15px rgba(0.2, 0.2, 0.2, 0.5); /* Sombra suave y elegante */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 20%;            /* Altura ajustada */
+            width: 80%; 
+            align-items: center;
+            justify-content: center;
+            text-align: center; 
+            white-space: nowrap;      
+        } 
+        
+        
+     /* Ajusta el tamaño de la imagen */
+     .cardLogo img {
+        width: 65%;
+        height: auto;
+        object-fit: contain;
+        display: block;
+    }
+    /* Ajusta el tamaño de la imagen */
+    .cardLogoBottom img {
+        width: 60%;
+        height: auto;
+        object-fit: contain;
+        display: block;
     }
 }
  
@@ -449,6 +524,11 @@
 
             <div id="logo" class="logo">
                 <img src="{{ asset('logo.png') }}" alt="Logo" class="logo" />
+            </div>
+
+           <!-- LOGO MOVIL -->
+            <div class="cardLogo">
+                <img src="{{ asset('logo.png') }}" alt="LogoMovil" />
             </div>
 
             <!-- PRODUCCION FTV -->
@@ -529,6 +609,11 @@
                 {{-- <div class="co2">
                     Árboles salvados:  <span class="span" id="arbolesValor"></span> 
                 </div> --}}
+            </div>
+
+            <!-- LOGO MOVIL -->
+            <div class="cardLogoBottom">
+                <img src="{{ asset('logo.png') }}" alt="LogoMovil" />
             </div>
 
             <div id="ultimaLecturaFecha"></div>
