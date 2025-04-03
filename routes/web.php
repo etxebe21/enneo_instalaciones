@@ -8,7 +8,7 @@ Route::get('/', [ComunidadController::class, 'index']);
 Route::get('/comunidad/{id}', [Controllers::class, 'indexprueba']);
 Route::get('/comunidad/{id}/actualizado', [ComunidadController::class, 'indexA']);
 Route::get('/comunidad-grafica/{id}/{tipo}', [Controllers::class, 'show'])->name('grafica');
-Route::get('/comunidad/{id}/actualizado', [Controllers::class, 'showA']);
+Route::get('/comunidad-grafica/{id}/actualizado', [Controllers::class, 'showA']);
 
 // Otras rutas API para obtener los datos de proyectos, contadores y lecturas
 Route::get('proyectos-contadores', [ComunidadController::class, 'getProyectosConContadores']);

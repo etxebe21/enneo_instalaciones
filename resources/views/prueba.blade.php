@@ -675,92 +675,102 @@
         const dataToneladas = proyectosContadores.find(item => item.DESCRIPCION === 'Toneladas CO2');
         const dataArboles = proyectosContadores.find(item => item.DESCRIPCION === 'Arboles');
 
-        // Función para actualizar los valores de lectura
-        function updateLastReadingValue(data, elementId) {
-            const valueElement = document.getElementById(elementId);
-            if (data && valueElement) {
-                valueElement.innerText = data.ULTIMA_LECTURA || "No disponible";
-            }
-        }
+       // Función que actualiza los valores de lectura
+function updateLastReadingValue(data, elementId) {
+    const valueElement = document.getElementById(elementId);
+    if (data && valueElement) {
+        valueElement.innerText = data.ULTIMA_LECTURA || "No disponible";
+    }
+}
 
-        // Actualizar la fecha de la última lectura usando solo dataFtvTotal
-        function updateLastReadingDate() {
-            const dateElement = document.getElementById('ultimaLecturaFecha');
-            if (dataFtvTotal && dataFtvTotal.FECHA) {
-                const formattedDate = new Date(dataFtvTotal.FECHA).toLocaleString(); // Formateamos la fecha
-                dateElement.innerText = `Última lectura: ${formattedDate}`;
-                console.log("Fecha de la última lectura:", formattedDate);
+// Función para actualizar la fecha de la última lectura
+function updateLastReadingDate() {
+    const dateElement = document.getElementById('ultimaLecturaFecha');
+    if (dataFtvTotal && dataFtvTotal.FECHA) {
+        const formattedDate = new Date(dataFtvTotal.FECHA).toLocaleString(); // Formateamos la fecha
+        dateElement.innerText = `Última lectura: ${formattedDate}`;
+    } else {
+        dateElement.innerText = "Última lectura: No disponible";
+    }
+}
+
+// Función que actualiza los valores de lectura de árboles (redondeo de decimales)
+function updateLastReadingValueArboles(data, elementId) {
+    const valueElement = document.getElementById(elementId);
+    if (data && valueElement) {
+        const lectura = Math.floor(data.ULTIMA_LECTURA); // Redondear hacia abajo
+        valueElement.innerText = lectura || "No disponible";
+    }
+}
+
+// Cargar los datos iniciales de la página
+function cargarDatosIniciales() {
+    // Cargar los valores iniciales
+    updateLastReadingValue(dataRadiacion, 'radiacionLecturaValor');
+    updateLastReadingValue(dataFtvTotal, 'ultimaLecturaFTV');
+    updateLastReadingValue(dataFtvHoy, 'hoyFTV');
+    updateLastReadingValue(dataPotenciaFotovoltaica, 'potenciaFotovoltaicaLecturaValor');
+    updateLastReadingValue(dataPotenciaRed, 'potenciaRedLecturaValor');
+    updateLastReadingValue(dataPotenciaCargas, 'potenciaCargasLecturaValor');
+    updateLastReadingValue(dataToneladas, 'toneladasValor');
+    updateLastReadingValueArboles(dataArboles, 'arbolesValor');
+    updateLastReadingDate();
+}
+
+// Actualizar los datos de manera continua
+function actualizarDatos() {
+    console.log("Iniciando actualización de datos...");
+
+    let comunidadId = ID_COMUNIDAD;
+    let url = `/comunidad/${comunidadId}/actualizado`;
+
+    // Realizar la solicitud para obtener los datos actualizados
+    fetch(url)
+        .then(response => response.json())  // Convierte la respuesta a JSON
+        .then(data => {
+            console.log('Datos recibidos:', data); // Verifica los datos aquí
+
+            // Verifica si los datos son un array antes de realizar la propagación
+            if (Array.isArray(data)) {
+                // Reemplazar el array de proyectosContadores con los nuevos datos
+                proyectosContadores.length = 0; // Vaciar el array sin perder la referencia
+                proyectosContadores.push(...data); // Agregar los nuevos valores
+
+                // Actualizar las variables con los nuevos datos
+                const dataRadiacion = proyectosContadores.find(item => item.DESCRIPCION === 'Radiacion');
+                const dataFtvTotal = proyectosContadores.find(item => item.DESCRIPCION === 'Produccion FTV Total');
+                const dataFtvHoy = proyectosContadores.find(item => item.DESCRIPCION === 'Produccion FTV Hoy');
+                const dataPotenciaFotovoltaica = proyectosContadores.find(item => item.DESCRIPCION === 'Potencia Fotovoltaica');
+                const dataPotenciaRed = proyectosContadores.find(item => item.DESCRIPCION === 'Potencia Red');
+                const dataPotenciaCargas = proyectosContadores.find(item => item.DESCRIPCION === 'Potencia Cargas');
+                const dataToneladas = proyectosContadores.find(item => item.DESCRIPCION === 'Toneladas CO2');
+                const dataArboles = proyectosContadores.find(item => item.DESCRIPCION === 'Arboles');
+
+                // Actualizar la interfaz con los nuevos valores
+                updateLastReadingValue(dataRadiacion, 'radiacionLecturaValor');
+                updateLastReadingValue(dataFtvTotal, 'ultimaLecturaFTV');
+                updateLastReadingValue(dataFtvHoy, 'hoyFTV');
+                updateLastReadingValue(dataPotenciaFotovoltaica, 'potenciaFotovoltaicaLecturaValor');
+                updateLastReadingValue(dataPotenciaRed, 'potenciaRedLecturaValor');
+                updateLastReadingValue(dataPotenciaCargas, 'potenciaCargasLecturaValor');
+                updateLastReadingValue(dataToneladas, 'toneladasValor');
+                updateLastReadingValueArboles(dataArboles, 'arbolesValor');
+                updateLastReadingDate();
             } else {
-                dateElement.innerText = "Última lectura: No disponible";
+                throw new Error("Los datos recibidos no son un array válido");
             }
-        }
+        })
+        .catch(error => {
+            console.error("Error al obtener los datos:", error);
+        });
+}
 
-     // Función para actualizar los valores de lectura
-        function updateLastReadingValueArboles(data, elementId) {
-            const valueElement = document.getElementById(elementId);
-            if (data && valueElement) {
-                // Asegurarse de que 'ULTIMA_LECTURA' existe y eliminar los decimales
-                const lectura = Math.floor(data.ULTIMA_LECTURA); // Redondea hacia abajo
+// Inicializar los datos cuando se carga la página
+cargarDatosIniciales();
 
-                // Actualizar el contenido del elemento con el valor sin decimales
-                valueElement.innerText = lectura || "No disponible";
-            }
-        }
+// Configurar la actualización automática cada 5 minutos (o el intervalo que necesites)
+setInterval(actualizarDatos, 0.5 * 60 * 1000);
 
-
-       // Inicializar los valores de lectura
-        updateLastReadingValue(dataRadiacion, 'radiacionLecturaValor');
-        updateLastReadingValue(dataFtvTotal, 'ultimaLecturaFTV');
-        updateLastReadingValue(dataFtvHoy, 'hoyFTV');
-        updateLastReadingValue(dataPotenciaFotovoltaica, 'potenciaFotovoltaicaLecturaValor');
-        updateLastReadingValue(dataPotenciaRed, 'potenciaRedLecturaValor');
-        updateLastReadingValue(dataPotenciaCargas, 'potenciaCargasLecturaValor');
-        updateLastReadingValue(dataToneladas, 'toneladasValor');
-        updateLastReadingValueArboles(dataArboles, 'arbolesValor');
-        updateLastReadingDate();
-
-        // Configurar la actualización automática cada 5 minutos
-        setInterval(actualizarDatos, 5 * 60 * 1000);
-
-        function actualizarDatos() {
-            console.log("Iniciando actualización de datos...");
-
-            let comunidadId = ID_COMUNIDAD;
-            let url = `/comunidad/${comunidadId}/actualizado`;
-
-            fetch(url)
-                .then(response => response.json())  // Convertir la respuesta a JSON
-                .then(data => {
-                    console.log("Datos actualizados:", data, new Date().toLocaleString());
-
-                    // Reemplazar proyectosContadores con los nuevos datos
-                    proyectosContadores.length = 0; // Vaciar el array sin perder la referencia
-                    proyectosContadores.push(...data); // Agregar los nuevos valores
-
-                    // Actualizar las variables con los nuevos datos
-                    const dataRadiacion = proyectosContadores.find(item => item.DESCRIPCION === 'Radiacion');
-                    const dataFtvTotal = proyectosContadores.find(item => item.DESCRIPCION === 'Produccion FTV Total');
-                    const dataFtvHoy = proyectosContadores.find(item => item.DESCRIPCION === 'Produccion FTV Hoy');
-                    const dataPotenciaFotovoltaica = proyectosContadores.find(item => item.DESCRIPCION === 'Potencia Fotovoltaica');
-                    const dataPotenciaRed = proyectosContadores.find(item => item.DESCRIPCION === 'Potencia Red');
-                    const dataPotenciaCargas = proyectosContadores.find(item => item.DESCRIPCION === 'Potencia Cargas');
-                    const dataToneladas = proyectosContadores.find(item => item.DESCRIPCION === 'Toneladas CO2');
-                    const dataArboles = proyectosContadores.find(item => item.DESCRIPCION === 'Arboles');
-                    // Actualizar los valores en la página
-                    updateLastReadingValue(dataRadiacion, 'radiacionLecturaValor');
-                    updateLastReadingValue(dataFtvTotal, 'ultimaLecturaFTV');
-                    updateLastReadingValue(dataFtvHoy, 'hoyFTV');
-                    updateLastReadingValue(dataPotenciaFotovoltaica, 'potenciaFotovoltaicaLecturaValor');
-                    updateLastReadingValue(dataPotenciaRed, 'potenciaRedLecturaValor');
-                    updateLastReadingValue(dataPotenciaCargas, 'potenciaCargasLecturaValor');
-                    updateLastReadingValue(dataToneladas, 'toneladasValor');
-                    updateLastReadingValue(dataArboles, 'arbolesValor');
-                    updateLastReadingDate();
-                })
-                .catch(error => {
-                    console.error("Error al obtener los datos:", error);
-                });
-        }
 
     </script>
 </body>
