@@ -279,12 +279,12 @@
       
         #logo {
             position: fixed;         
-            margin-top: -1%;        
-            left: 48.5%;
+            margin-top: -0%;        
+            left: 49%;
             transform: translateX(-50%); /* Centra el logo correctamente */
             width: 30%;
             height: auto; /* Ajusta la altura automáticamente según el ancho */
-            max-width: 300px; /* Limita el tamaño máximo */
+            max-width: 250px; /* Limita el tamaño máximo */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -299,7 +299,7 @@
         #logo img {
             width: 100%;
             height: auto;
-            object-fit: contain; /* Evita que la imagen se distorsione */
+            object-fit: contain; 
         }
 
         #logoMovil {
@@ -338,11 +338,12 @@
 
     .header {
         position: fixed;
-        top: 1.5%; /* Ajustar para que se quede en la parte superior */
+        top: 2%; /* Ajustar para que se quede en la parte superior */
         left: 0;
         width: 110%;
         height: 3.5%;
         background-color: rgb(235, 228, 228);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
         padding: 7px 0;
         display: flex;
         justify-content: center;
@@ -371,22 +372,42 @@
     }
 
     .card {
-        width: 80%;
-        background-color: rgb(235, 228, 228);
-        border-radius: 12px;
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-        text-align: center;
-        margin-bottom: 8%; /* Reducir la separación entre las tarjetas */
-        margin-left:-2%;
-    }
+    width: 80%;
+    background-color: rgb(235, 228, 228);
+    border-radius: 12px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    margin-bottom: 8%; /* Reducir la separación entre las tarjetas */
+    margin-left: -2%;
+    display: flex; /* Usamos flex para centrar el contenido */
+    flex-direction: column; /* Aseguramos que el contenido sea apilado */
+    justify-content: center; /* Centrado vertical */
+    align-items: center; /* Centrado horizontal */
+    padding: 15px; /* Agregado padding para que no quede todo pegado */
+}
 
-    .card .title {
-        font-size: 20px;
-    }
+.card .top-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%; /* Asegura que ocupe todo el ancho disponible */
+}
 
-    .card .medio {
-        font-size: 15px;
-    }
+.card .title,
+.card .medio {
+    font-size: 5vw; /* Tamaño relativo al ancho de pantalla */
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+    letter-spacing: 0.5px;
+    font-family: 'Roboto', sans-serif;
+    padding-bottom: 5px;
+    text-align: center; /* Asegura que el texto esté centrado */
+    word-wrap: break-word; /* Evita que el texto se desborde */
+    margin-left: 0; /* Quita el margen izquierdo para centrar mejor */
+    max-width: 90%; /* Evita que el texto se desborde fuera del cuadro */
+    overflow-wrap: break-word; /* Para que el texto se rompa si es demasiado largo */
+}
 
     .card .valor {
         font-size: 18px;
@@ -463,43 +484,42 @@
     .cardLogo {
         /* background-color: rgba(235, 228, 228, 0.8); Más transparente */
         padding: 13px;             /* Reducido el padding */
-            margin: 0px;
-            margin-bottom: 2%;
-            margin-top: -10%;
-            left: 20%;
-            /* border-radius: 15px; */
-            /* box-shadow: 0 10px 15px rgba(0.2, 0.2, 0.2, 0.5); Sombra suave y elegante */
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 20%;            /* Altura ajustada */
-            width: 80%; 
-            align-items: center;
-            justify-content: center;
-            text-align: center; 
-            white-space: nowrap;      
-        }  
+        margin: 0px;
+        margin-bottom: 2%;
+        margin-top: -10%;
+        left: 20%;
+        /* border-radius: 15px; */
+        /* box-shadow: 0 10px 15px rgba(0.2, 0.2, 0.2, 0.5); Sombra suave y elegante */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 20%;            /* Altura ajustada */
+        width: 80%; 
+        align-items: center;
+        justify-content: center;
+        text-align: center; 
+        white-space: nowrap;      
+    }  
 
-        .cardLogoBottom {
+    .cardLogoBottom {
         background-color: rgba(235, 228, 228, 0.7); /* Más transparente */
         padding: 13px;             /* Reducido el padding */
-            margin: 0px;
-            margin-bottom: 7%;
-            margin-top: 2%;
-            left: 20%;
-            border-radius: 15px;
-            box-shadow: 0 10px 15px rgba(0.2, 0.2, 0.2, 0.5); /* Sombra suave y elegante */
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 20%;            /* Altura ajustada */
-            width: 80%; 
-            align-items: center;
-            justify-content: center;
-            text-align: center; 
-            white-space: nowrap;      
-        } 
-        
+        margin: 0px;
+        margin-bottom: 7%;
+        margin-top: 2%;
+        left: 20%;
+        border-radius: 15px;
+        box-shadow: 0 10px 15px rgba(0.2, 0.2, 0.2, 0.5); /* Sombra suave y elegante */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 20%;            /* Altura ajustada */
+        width: 80%; 
+        align-items: center;
+        justify-content: center;
+        text-align: center; 
+        white-space: nowrap;      
+    } 
         
      /* Ajusta el tamaño de la imagen */
      .cardLogo img {
@@ -530,8 +550,27 @@
         outline: none; /* Elimina el borde azul al hacer clic */
     }
 
+    /* Ajuste fino para pantallas pequeñas */
+    @media (max-width: 480px) {
+        .card .title,
+    .card .medio {
+        font-size: 5vw; /* Tamaño relativo al ancho de pantalla */
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #333;
+        letter-spacing: 0.5px;
+        font-family: 'Roboto', sans-serif;
+        padding-bottom: 5px;
+        text-align: center; /* Asegura que el texto esté centrado */
+        word-wrap: break-word; /* Evita que el texto se desborde */
+        margin-left: 0; /* Quita el margen izquierdo para centrar mejor */
+        max-width: 90%; /* Evita que el texto se desborde fuera del cuadro */
+        overflow-wrap: break-word; /* Para que el texto se rompa si es demasiado largo */
+    }
+
+
+    }
 }
- 
     </style>
     
     <body>
@@ -561,92 +600,91 @@
             </div>
 
            <!-- PRODUCCION FTV -->
-<div class="card">
-    <a href="{{ route('grafica', ['id' => $id, 'tipo' => 'ftv']) }}">
-        <div class="top-section">
-            <div class="title">
-                PRODUCCIÓN FTV 
+            <div class="card">
+                <a href="{{ route('grafica', ['id' => $id, 'tipo' => 'ftv']) }}">
+                    <div class="top-section">
+                        <div class="title">
+                            PRODUCCIÓN FTV 
+                        </div>
+                    </div>
+                    <div class="nuevo">
+                        FTV momentánea: <span class="span" id="potenciaFotovoltaicaLecturaValor"></span><p class="medida">kW</p>
+                    </div>   
+                </a>
             </div>
-        </div>
-        <div class="nuevo">
-            FTV momentánea: <span class="span" id="potenciaFotovoltaicaLecturaValor"></span><p class="medida">kW</p>
-        </div>   
-    </a>
-</div>
 
-<!-- Producción FTV Total -->
-<div class="card">
-    <a href="{{ route('grafica', ['id' => $id, 'tipo' => 'total']) }}">
-    <div class="top-section">
-            <div class="medio">
-                PRODUCCIÓN ENERGÉTICA                    
+            <!-- Producción FTV Total -->
+            <div class="card">
+                <a href="{{ route('grafica', ['id' => $id, 'tipo' => 'total']) }}">
+                <div class="top-section">
+                        <div class="medio">
+                            PRODUCCIÓN ENERGÉTICA                    
+                        </div>
+                    </div>
+                    <div class="nuevo">
+                        Producción HOY: <span class="span" id="hoyFTV"></span><p class="medida">kWh</p>
+                    </div> 
+                    <div class="nuevo">
+                        Producción TOTAL : <span class="span" id="ultimaLecturaFTV"></span><p class="medida">kWh</p>
+                    </div>             
+                </a>
             </div>
-        </div>
-        <div class="nuevo">
-            Producción HOY: <span class="span" id="hoyFTV"></span><p class="medida">kW</p>
-        </div> 
-        <div class="nuevo">
-            Producción TOTAL : <span class="span" id="ultimaLecturaFTV"></span><p class="medida">kW</p>
-        </div>             
-    </a>
-</div>
 
-<!-- Potencia Fotovoltaica -->
-<div class="card">
-    <a href="{{ route('grafica', ['id' => $id, 'tipo' => 'red']) }}">
-        <div class="top-section">
-            <div class="title">
-                POTENCIA RED
+            <!-- Potencia Fotovoltaica -->
+            <div class="card">
+                <a href="{{ route('grafica', ['id' => $id, 'tipo' => 'red']) }}">
+                    <div class="top-section">
+                        <div class="title">
+                            POTENCIA RED
+                        </div>
+                    </div>
+                    <div class="nuevo">
+                        Potencia Red: <span class="span" id="potenciaRedLecturaValor"></span> <p class="medida"> kW</p>
+                    </div>            
+                </a>
             </div>
-        </div>
-        <div class="nuevo">
-            Potencia Red: <span class="span" id="potenciaRedLecturaValor"></span> <p class="medida"> kW</p>
-        </div>            
-    </a>
-</div>
 
-<!-- Potencia Cargas -->
-<div class="card">
-    <a href="{{ route('grafica', ['id' => $id, 'tipo' => 'cargas']) }}">
-        <div class="top-section">
-            <div class="medio">
-                CONSUMO DE INSTALACIÓN                    
+            <!-- Potencia Cargas -->
+            <div class="card">
+                <a href="{{ route('grafica', ['id' => $id, 'tipo' => 'cargas']) }}">
+                    <div class="top-section">
+                        <div class="medio">
+                            CONSUMO DE INSTALACIÓN                    
+                        </div>
+                    </div>
+                    <div class="nuevo">
+                        Potencia Cargas: <span class="span" id="potenciaCargasLecturaValor"></span> <p class="medida"> kW</p>
+                    </div>           
+                </a>
             </div>
-        </div>
-        <div class="nuevo">
-            Potencia Cargas: <span class="span" id="potenciaCargasLecturaValor"></span> <p class="medida"> kW</p>
-        </div>           
-    </a>
-</div>
 
-<!-- Radiación -->
-<div class="card">
-    <a href="{{ route('grafica', ['id' => $id, 'tipo' => 'radiacion']) }}">
-        <div class="top-section">
-            <div class="medio">
-                RADIACIÓN SOLAR
+            <!-- Radiación -->
+            <div class="card">
+                <a href="{{ route('grafica', ['id' => $id, 'tipo' => 'radiacion']) }}">
+                    <div class="top-section">
+                        <div class="medio">
+                            RADIACIÓN SOLAR
+                        </div>
+                    </div>
+                    <div class="nuevo">
+                        Radiación: <span class="span" id="radiacionLecturaValor"></span> <p class="medida"> W/m2</p>
+                    </div>            
+                </a>
             </div>
-        </div>
-        <div class="nuevo">
-            Radiación: <span class="span" id="radiacionLecturaValor"></span> <p class="medida"> W/m2</p>
-        </div>            
-    </a>
-</div>
 
-<!-- CO2 Evitado -->
-<div class="card">
-    <a href="{{ route('grafica', ['id' => $id, 'tipo' => 'co2']) }}">
-        <div class="top-section">
-            <div class="medio">
-                CO2 EVITADO                    
+            <!-- CO2 Evitado -->
+            <div class="card">
+                <a href="{{ route('grafica', ['id' => $id, 'tipo' => 'co2']) }}">
+                    <div class="top-section">
+                        <div class="medio">
+                            CO2 EVITADO                    
+                        </div>
+                    </div>
+                    <div class="co2">
+                        CO2 Evitado:  <span class="span" id="toneladasValor"></span> <p class="medida"> t</p>
+                    </div>
+                </a>
             </div>
-        </div>
-        <div class="co2">
-            CO2 Evitado:  <span class="span" id="toneladasValor"></span> <p class="medida"> (t)</p>
-        </div>
-    </a>
-</div>
-
 
             <!-- LOGO MOVIL -->
             <div class="cardLogoBottom">
@@ -666,112 +704,115 @@
         console.log(proyectosContadores);
         const ID_COMUNIDAD = @json($proyectosContadores[0]->ID_COMUNIDAD);
         console.log(ID_COMUNIDAD);
-        const dataRadiacion = proyectosContadores.find(item => item.DESCRIPCION === 'Radiacion');
-        const dataFtvTotal = proyectosContadores.find(item => item.DESCRIPCION === 'Produccion FTV Total');
-        const dataFtvHoy = proyectosContadores.find(item => item.DESCRIPCION === 'Produccion FTV Hoy');
-        const dataPotenciaFotovoltaica = proyectosContadores.find(item => item.DESCRIPCION === 'Potencia Fotovoltaica');
-        const dataPotenciaRed = proyectosContadores.find(item => item.DESCRIPCION === 'Potencia Red');
-        const dataPotenciaCargas = proyectosContadores.find(item => item.DESCRIPCION === 'Potencia Cargas');
-        const dataToneladas = proyectosContadores.find(item => item.DESCRIPCION === 'Toneladas CO2');
-        const dataArboles = proyectosContadores.find(item => item.DESCRIPCION === 'Arboles');
 
-       // Función que actualiza los valores de lectura
-function updateLastReadingValue(data, elementId) {
-    const valueElement = document.getElementById(elementId);
-    if (data && valueElement) {
-        valueElement.innerText = data.ULTIMA_LECTURA || "No disponible";
+        let dataRadiacion, dataFtvTotal, dataFtvHoy, dataPotenciaFotovoltaica, dataPotenciaRed, dataPotenciaCargas, dataToneladas, dataArboles;
+
+        // Función que actualiza los valores de lectura
+    function updateLastReadingValue(data, elementId) {
+        const valueElement = document.getElementById(elementId);
+        if (data && valueElement) {
+            valueElement.innerText = data.ULTIMA_LECTURA || "No disponible";
+        }
     }
-}
 
-// Función para actualizar la fecha de la última lectura
-function updateLastReadingDate() {
-    const dateElement = document.getElementById('ultimaLecturaFecha');
-    if (dataFtvTotal && dataFtvTotal.FECHA) {
-        const formattedDate = new Date(dataFtvTotal.FECHA).toLocaleString(); // Formateamos la fecha
-        dateElement.innerText = `Última lectura: ${formattedDate}`;
-    } else {
-        dateElement.innerText = "Última lectura: No disponible";
+    // Función para actualizar la fecha de la última lectura
+    function updateLastReadingDate() {
+        const dateElement = document.getElementById('ultimaLecturaFecha');
+        if (dataFtvTotal && dataFtvTotal.FECHA) {
+            const formattedDate = new Date(dataFtvTotal.FECHA).toLocaleString(); // Formateamos la fecha
+            dateElement.innerText = `Última lectura: ${formattedDate}`;
+        } else {
+            dateElement.innerText = "Última lectura: No disponible";
+        }
     }
-}
 
-// Función que actualiza los valores de lectura de árboles (redondeo de decimales)
-function updateLastReadingValueArboles(data, elementId) {
-    const valueElement = document.getElementById(elementId);
-    if (data && valueElement) {
-        const lectura = Math.floor(data.ULTIMA_LECTURA); // Redondear hacia abajo
-        valueElement.innerText = lectura || "No disponible";
+    // Función que actualiza los valores de lectura de árboles (redondeo de decimales)
+    function updateLastReadingValueArboles(data, elementId) {
+        const valueElement = document.getElementById(elementId);
+        if (data && valueElement) {
+            const lectura = Math.floor(data.ULTIMA_LECTURA); // Redondear hacia abajo
+            valueElement.innerText = lectura || "No disponible";
+        }
     }
-}
 
-// Cargar los datos iniciales de la página
-function cargarDatosIniciales() {
-    // Cargar los valores iniciales
-    updateLastReadingValue(dataRadiacion, 'radiacionLecturaValor');
-    updateLastReadingValue(dataFtvTotal, 'ultimaLecturaFTV');
-    updateLastReadingValue(dataFtvHoy, 'hoyFTV');
-    updateLastReadingValue(dataPotenciaFotovoltaica, 'potenciaFotovoltaicaLecturaValor');
-    updateLastReadingValue(dataPotenciaRed, 'potenciaRedLecturaValor');
-    updateLastReadingValue(dataPotenciaCargas, 'potenciaCargasLecturaValor');
-    updateLastReadingValue(dataToneladas, 'toneladasValor');
-    updateLastReadingValueArboles(dataArboles, 'arbolesValor');
-    updateLastReadingDate();
-}
+    // Cargar los datos iniciales de la página
+    function cargarDatosIniciales() {
 
-// Actualizar los datos de manera continua
-function actualizarDatos() {
-    console.log("Iniciando actualización de datos...");
+        dataRadiacion = proyectosContadores.find(item => item.DESCRIPCION === 'Radiacion');
+        dataFtvTotal = proyectosContadores.find(item => item.DESCRIPCION === 'Produccion FTV Total');
+        dataFtvHoy = proyectosContadores.find(item => item.DESCRIPCION === 'Produccion FTV Hoy');
+        dataPotenciaFotovoltaica = proyectosContadores.find(item => item.DESCRIPCION === 'Potencia Fotovoltaica');
+        dataPotenciaRed = proyectosContadores.find(item => item.DESCRIPCION === 'Potencia Red');
+        dataPotenciaCargas = proyectosContadores.find(item => item.DESCRIPCION === 'Potencia Cargas');
+        dataToneladas = proyectosContadores.find(item => item.DESCRIPCION === 'Toneladas CO2');
+        dataArboles = proyectosContadores.find(item => item.DESCRIPCION === 'Arboles');
+        // Cargar los valores iniciales
+        updateLastReadingValue(dataRadiacion, 'radiacionLecturaValor');
+        updateLastReadingValue(dataFtvTotal, 'ultimaLecturaFTV');
+        updateLastReadingValue(dataFtvHoy, 'hoyFTV');
+        updateLastReadingValue(dataPotenciaFotovoltaica, 'potenciaFotovoltaicaLecturaValor');
+        updateLastReadingValue(dataPotenciaRed, 'potenciaRedLecturaValor');
+        updateLastReadingValue(dataPotenciaCargas, 'potenciaCargasLecturaValor');
+        updateLastReadingValue(dataToneladas, 'toneladasValor');
+        updateLastReadingValueArboles(dataArboles, 'arbolesValor');
+        updateLastReadingDate();
+    }
 
-    let comunidadId = ID_COMUNIDAD;
-    let url = `/comunidad/${comunidadId}/actualizado`;
+    // Actualizar los datos de manera continua
+    function actualizarDatos() {
+        console.log("Iniciando actualización de datos...");
 
-    // Realizar la solicitud para obtener los datos actualizados
-    fetch(url)
-        .then(response => response.json())  // Convierte la respuesta a JSON
-        .then(data => {
-            console.log('Datos recibidos:', data); // Verifica los datos aquí
+        let comunidadId = ID_COMUNIDAD;
+        let url = `/comunidad/${comunidadId}/actualizado`;
 
-            // Verifica si los datos son un array antes de realizar la propagación
-            if (Array.isArray(data)) {
-                // Reemplazar el array de proyectosContadores con los nuevos datos
-                proyectosContadores.length = 0; // Vaciar el array sin perder la referencia
-                proyectosContadores.push(...data); // Agregar los nuevos valores
+        // Realizar la solicitud para obtener los datos actualizados
+        fetch(url)
+            .then(response => response.json())  // Convierte la respuesta a JSON
+            .then(data => {
+                console.log('Datos recibidos:', data); 
 
-                // Actualizar las variables con los nuevos datos
-                const dataRadiacion = proyectosContadores.find(item => item.DESCRIPCION === 'Radiacion');
-                const dataFtvTotal = proyectosContadores.find(item => item.DESCRIPCION === 'Produccion FTV Total');
-                const dataFtvHoy = proyectosContadores.find(item => item.DESCRIPCION === 'Produccion FTV Hoy');
-                const dataPotenciaFotovoltaica = proyectosContadores.find(item => item.DESCRIPCION === 'Potencia Fotovoltaica');
-                const dataPotenciaRed = proyectosContadores.find(item => item.DESCRIPCION === 'Potencia Red');
-                const dataPotenciaCargas = proyectosContadores.find(item => item.DESCRIPCION === 'Potencia Cargas');
-                const dataToneladas = proyectosContadores.find(item => item.DESCRIPCION === 'Toneladas CO2');
-                const dataArboles = proyectosContadores.find(item => item.DESCRIPCION === 'Arboles');
+                // Verifica si los datos son un array antes de realizar la propagación
+                if (Array.isArray(data)) {
+                    // Reemplazar el array de proyectosContadores con los nuevos datos
+                    proyectosContadores.length = 0; // Vaciar el array sin perder la referencia
+                    proyectosContadores.push(...data); // Agregar los nuevos valores
 
-                // Actualizar la interfaz con los nuevos valores
-                updateLastReadingValue(dataRadiacion, 'radiacionLecturaValor');
-                updateLastReadingValue(dataFtvTotal, 'ultimaLecturaFTV');
-                updateLastReadingValue(dataFtvHoy, 'hoyFTV');
-                updateLastReadingValue(dataPotenciaFotovoltaica, 'potenciaFotovoltaicaLecturaValor');
-                updateLastReadingValue(dataPotenciaRed, 'potenciaRedLecturaValor');
-                updateLastReadingValue(dataPotenciaCargas, 'potenciaCargasLecturaValor');
-                updateLastReadingValue(dataToneladas, 'toneladasValor');
-                updateLastReadingValueArboles(dataArboles, 'arbolesValor');
-                updateLastReadingDate();
-            } else {
-                throw new Error("Los datos recibidos no son un array válido");
-            }
-        })
-        .catch(error => {
-            console.error("Error al obtener los datos:", error);
-        });
-}
+                    // Actualizar las variables con los nuevos datos
+                     dataRadiacion = proyectosContadores.find(item => item.DESCRIPCION === 'Radiacion');
+                     dataFtvTotal = proyectosContadores.find(item => item.DESCRIPCION === 'Produccion FTV Total');
+                     dataFtvHoy = proyectosContadores.find(item => item.DESCRIPCION === 'Produccion FTV Hoy');
+                     dataPotenciaFotovoltaica = proyectosContadores.find(item => item.DESCRIPCION === 'Potencia Fotovoltaica');
+                     dataPotenciaRed = proyectosContadores.find(item => item.DESCRIPCION === 'Potencia Red');
+                     dataPotenciaCargas = proyectosContadores.find(item => item.DESCRIPCION === 'Potencia Cargas');
+                     dataToneladas = proyectosContadores.find(item => item.DESCRIPCION === 'Toneladas CO2');
+                     dataArboles = proyectosContadores.find(item => item.DESCRIPCION === 'Arboles');
 
-// Inicializar los datos cuando se carga la página
-cargarDatosIniciales();
+                    // Actualizar la interfaz con los nuevos valores
+                    updateLastReadingValue(dataRadiacion, 'radiacionLecturaValor');
+                    updateLastReadingValue(dataFtvTotal, 'ultimaLecturaFTV');
+                    updateLastReadingValue(dataFtvHoy, 'hoyFTV');
+                    updateLastReadingValue(dataPotenciaFotovoltaica, 'potenciaFotovoltaicaLecturaValor');
+                    updateLastReadingValue(dataPotenciaRed, 'potenciaRedLecturaValor');
+                    updateLastReadingValue(dataPotenciaCargas, 'potenciaCargasLecturaValor');
+                    updateLastReadingValue(dataToneladas, 'toneladasValor');
+                    updateLastReadingValueArboles(dataArboles, 'arbolesValor');
+                    updateLastReadingDate();
+                } else {
+                    throw new Error("Los datos recibidos no son un array válido");
+                }
+            })
+            .catch(error => {
+                console.error("Error al obtener los datos:", error);
+            });
+    }
 
-// Configurar la actualización automática cada 5 minutos (o el intervalo que necesites)
-setInterval(actualizarDatos, 5 * 60 * 1000);
+    // Inicializar los datos cuando se carga la página
+    cargarDatosIniciales();
+
+    // Configurar la actualización automática cada 5 minutos 
+    setInterval(actualizarDatos, 0.5 * 60 * 1000);
 
 
-    </script>
-</body>
+        </script>
+    </body>
 </html>

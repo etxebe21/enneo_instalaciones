@@ -31,7 +31,7 @@ class Controllers extends Controller
     public function lecturasFtv()
     {
         // Listado de tablas por cada mes
-        $tablas = ['lecturas_2024_12', 'lecturas_2025_01', 'lecturas_2025_02', 'lecturas_2025_03']; 
+        $tablas = ['lecturas_2024_12', 'lecturas_2025_01', 'lecturas_2025_02', 'lecturas_2025_03','lecturas_205_04']; 
     
         $lecturasFtvMaxMonth = collect(); // Colección vacía para almacenar los datos
     
@@ -154,7 +154,7 @@ class Controllers extends Controller
     }
             
         // Definir las tablas por mes (Añadir más meses si es necesario)
-        $tablas = ['lecturas_2024_12', 'lecturas_2025_01', 'lecturas_2025_02', 'lecturas_2025_03']; 
+        $tablas = ['lecturas_2024_12', 'lecturas_2025_01', 'lecturas_2025_02', 'lecturas_2025_03', 'lecturas_2025_04']; 
         
         $lecturasFtvMaxMonth = collect(); // Colección vacía para almacenar las lecturas
     
